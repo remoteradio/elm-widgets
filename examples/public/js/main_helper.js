@@ -3,7 +3,7 @@ function main() {
 
   var pressTimer = 0;
   var monitorNumberPressed = '';
-  var elm = Elm.embed(Elm.SvgGraphWidgets.Main, elmDiv,  {
+  var elm = Elm.embed(Elm.Example.Main, elmDiv,  {
     
   });
 
