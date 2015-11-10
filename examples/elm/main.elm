@@ -3,8 +3,10 @@ module Example.Main where
 
 import Window
 import Html exposing (..)
+import Html.Attributes exposing (..)
 
-import Svg.Widgets exposing (..)
+import Html.Widgets exposing (..)
+
 
 main : Html
-main = text author
+main = div [ style [("width","400px")] ] [ sevenSegment "0123 456789" [] ]

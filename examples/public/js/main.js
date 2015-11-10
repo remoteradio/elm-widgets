@@ -1815,12 +1815,19 @@ Elm.Example.Main.make = function (_elm) {
    $moduleName = "Example.Main",
    $Basics = Elm.Basics.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Widgets = Elm.Html.Widgets.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $Svg$Widgets = Elm.Svg.Widgets.make(_elm);
-   var main = $Html.text($Svg$Widgets.author);
+   $Signal = Elm.Signal.make(_elm);
+   var main = A2($Html.div,
+   _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                      ,_0: "width"
+                                                      ,_1: "400px"}]))]),
+   _L.fromArray([A2($Html$Widgets.sevenSegment,
+   "0123 456789",
+   _L.fromArray([]))]));
    _elm.Example.Main.values = {_op: _op
                               ,main: main};
    return _elm.Example.Main.values;
@@ -2939,6 +2946,978 @@ Elm.Html.make = function (_elm) {
                       ,menuitem: menuitem
                       ,menu: menu};
    return _elm.Html.values;
+};
+Elm.Html = Elm.Html || {};
+Elm.Html.Attributes = Elm.Html.Attributes || {};
+Elm.Html.Attributes.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Attributes = _elm.Html.Attributes || {};
+   if (_elm.Html.Attributes.values)
+   return _elm.Html.Attributes.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Attributes",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var attribute = $VirtualDom.attribute;
+   var property = $VirtualDom.property;
+   var stringProperty = F2(function (name,
+   string) {
+      return A2(property,
+      name,
+      $Json$Encode.string(string));
+   });
+   var $class = function (name) {
+      return A2(stringProperty,
+      "className",
+      name);
+   };
+   var id = function (name) {
+      return A2(stringProperty,
+      "id",
+      name);
+   };
+   var title = function (name) {
+      return A2(stringProperty,
+      "title",
+      name);
+   };
+   var accesskey = function ($char) {
+      return A2(stringProperty,
+      "accesskey",
+      $String.fromList(_L.fromArray([$char])));
+   };
+   var contextmenu = function (value) {
+      return A2(stringProperty,
+      "contextmenu",
+      value);
+   };
+   var dir = function (value) {
+      return A2(stringProperty,
+      "dir",
+      value);
+   };
+   var draggable = function (value) {
+      return A2(stringProperty,
+      "draggable",
+      value);
+   };
+   var dropzone = function (value) {
+      return A2(stringProperty,
+      "dropzone",
+      value);
+   };
+   var itemprop = function (value) {
+      return A2(stringProperty,
+      "itemprop",
+      value);
+   };
+   var lang = function (value) {
+      return A2(stringProperty,
+      "lang",
+      value);
+   };
+   var tabindex = function (n) {
+      return A2(stringProperty,
+      "tabIndex",
+      $Basics.toString(n));
+   };
+   var charset = function (value) {
+      return A2(stringProperty,
+      "charset",
+      value);
+   };
+   var content = function (value) {
+      return A2(stringProperty,
+      "content",
+      value);
+   };
+   var httpEquiv = function (value) {
+      return A2(stringProperty,
+      "httpEquiv",
+      value);
+   };
+   var language = function (value) {
+      return A2(stringProperty,
+      "language",
+      value);
+   };
+   var src = function (value) {
+      return A2(stringProperty,
+      "src",
+      value);
+   };
+   var height = function (value) {
+      return A2(stringProperty,
+      "height",
+      $Basics.toString(value));
+   };
+   var width = function (value) {
+      return A2(stringProperty,
+      "width",
+      $Basics.toString(value));
+   };
+   var alt = function (value) {
+      return A2(stringProperty,
+      "alt",
+      value);
+   };
+   var preload = function (value) {
+      return A2(stringProperty,
+      "preload",
+      value);
+   };
+   var poster = function (value) {
+      return A2(stringProperty,
+      "poster",
+      value);
+   };
+   var kind = function (value) {
+      return A2(stringProperty,
+      "kind",
+      value);
+   };
+   var srclang = function (value) {
+      return A2(stringProperty,
+      "srclang",
+      value);
+   };
+   var sandbox = function (value) {
+      return A2(stringProperty,
+      "sandbox",
+      value);
+   };
+   var srcdoc = function (value) {
+      return A2(stringProperty,
+      "srcdoc",
+      value);
+   };
+   var type$ = function (value) {
+      return A2(stringProperty,
+      "type",
+      value);
+   };
+   var value = function (value) {
+      return A2(stringProperty,
+      "value",
+      value);
+   };
+   var placeholder = function (value) {
+      return A2(stringProperty,
+      "placeholder",
+      value);
+   };
+   var accept = function (value) {
+      return A2(stringProperty,
+      "accept",
+      value);
+   };
+   var acceptCharset = function (value) {
+      return A2(stringProperty,
+      "acceptCharset",
+      value);
+   };
+   var action = function (value) {
+      return A2(stringProperty,
+      "action",
+      value);
+   };
+   var autocomplete = function (bool) {
+      return A2(stringProperty,
+      "autocomplete",
+      bool ? "on" : "off");
+   };
+   var autosave = function (value) {
+      return A2(stringProperty,
+      "autosave",
+      value);
+   };
+   var enctype = function (value) {
+      return A2(stringProperty,
+      "enctype",
+      value);
+   };
+   var formaction = function (value) {
+      return A2(stringProperty,
+      "formaction",
+      value);
+   };
+   var list = function (value) {
+      return A2(stringProperty,
+      "list",
+      value);
+   };
+   var minlength = function (n) {
+      return A2(stringProperty,
+      "minLength",
+      $Basics.toString(n));
+   };
+   var maxlength = function (n) {
+      return A2(stringProperty,
+      "maxLength",
+      $Basics.toString(n));
+   };
+   var method = function (value) {
+      return A2(stringProperty,
+      "method",
+      value);
+   };
+   var name = function (value) {
+      return A2(stringProperty,
+      "name",
+      value);
+   };
+   var pattern = function (value) {
+      return A2(stringProperty,
+      "pattern",
+      value);
+   };
+   var size = function (n) {
+      return A2(stringProperty,
+      "size",
+      $Basics.toString(n));
+   };
+   var $for = function (value) {
+      return A2(stringProperty,
+      "htmlFor",
+      value);
+   };
+   var form = function (value) {
+      return A2(stringProperty,
+      "form",
+      value);
+   };
+   var max = function (value) {
+      return A2(stringProperty,
+      "max",
+      value);
+   };
+   var min = function (value) {
+      return A2(stringProperty,
+      "min",
+      value);
+   };
+   var step = function (n) {
+      return A2(stringProperty,
+      "step",
+      n);
+   };
+   var cols = function (n) {
+      return A2(stringProperty,
+      "cols",
+      $Basics.toString(n));
+   };
+   var rows = function (n) {
+      return A2(stringProperty,
+      "rows",
+      $Basics.toString(n));
+   };
+   var wrap = function (value) {
+      return A2(stringProperty,
+      "wrap",
+      value);
+   };
+   var usemap = function (value) {
+      return A2(stringProperty,
+      "useMap",
+      value);
+   };
+   var shape = function (value) {
+      return A2(stringProperty,
+      "shape",
+      value);
+   };
+   var coords = function (value) {
+      return A2(stringProperty,
+      "coords",
+      value);
+   };
+   var challenge = function (value) {
+      return A2(stringProperty,
+      "challenge",
+      value);
+   };
+   var keytype = function (value) {
+      return A2(stringProperty,
+      "keytype",
+      value);
+   };
+   var align = function (value) {
+      return A2(stringProperty,
+      "align",
+      value);
+   };
+   var cite = function (value) {
+      return A2(stringProperty,
+      "cite",
+      value);
+   };
+   var href = function (value) {
+      return A2(stringProperty,
+      "href",
+      value);
+   };
+   var target = function (value) {
+      return A2(stringProperty,
+      "target",
+      value);
+   };
+   var downloadAs = function (value) {
+      return A2(stringProperty,
+      "download",
+      value);
+   };
+   var hreflang = function (value) {
+      return A2(stringProperty,
+      "hreflang",
+      value);
+   };
+   var media = function (value) {
+      return A2(stringProperty,
+      "media",
+      value);
+   };
+   var ping = function (value) {
+      return A2(stringProperty,
+      "ping",
+      value);
+   };
+   var rel = function (value) {
+      return A2(stringProperty,
+      "rel",
+      value);
+   };
+   var datetime = function (value) {
+      return A2(stringProperty,
+      "datetime",
+      value);
+   };
+   var pubdate = function (value) {
+      return A2(stringProperty,
+      "pubdate",
+      value);
+   };
+   var start = function (n) {
+      return A2(stringProperty,
+      "start",
+      $Basics.toString(n));
+   };
+   var colspan = function (n) {
+      return A2(stringProperty,
+      "colSpan",
+      $Basics.toString(n));
+   };
+   var headers = function (value) {
+      return A2(stringProperty,
+      "headers",
+      value);
+   };
+   var rowspan = function (n) {
+      return A2(stringProperty,
+      "rowSpan",
+      $Basics.toString(n));
+   };
+   var scope = function (value) {
+      return A2(stringProperty,
+      "scope",
+      value);
+   };
+   var manifest = function (value) {
+      return A2(stringProperty,
+      "manifest",
+      value);
+   };
+   var boolProperty = F2(function (name,
+   bool) {
+      return A2(property,
+      name,
+      $Json$Encode.bool(bool));
+   });
+   var hidden = function (bool) {
+      return A2(boolProperty,
+      "hidden",
+      bool);
+   };
+   var contenteditable = function (bool) {
+      return A2(boolProperty,
+      "contentEditable",
+      bool);
+   };
+   var spellcheck = function (bool) {
+      return A2(boolProperty,
+      "spellcheck",
+      bool);
+   };
+   var async = function (bool) {
+      return A2(boolProperty,
+      "async",
+      bool);
+   };
+   var defer = function (bool) {
+      return A2(boolProperty,
+      "defer",
+      bool);
+   };
+   var scoped = function (bool) {
+      return A2(boolProperty,
+      "scoped",
+      bool);
+   };
+   var autoplay = function (bool) {
+      return A2(boolProperty,
+      "autoplay",
+      bool);
+   };
+   var controls = function (bool) {
+      return A2(boolProperty,
+      "controls",
+      bool);
+   };
+   var loop = function (bool) {
+      return A2(boolProperty,
+      "loop",
+      bool);
+   };
+   var $default = function (bool) {
+      return A2(boolProperty,
+      "default",
+      bool);
+   };
+   var seamless = function (bool) {
+      return A2(boolProperty,
+      "seamless",
+      bool);
+   };
+   var checked = function (bool) {
+      return A2(boolProperty,
+      "checked",
+      bool);
+   };
+   var selected = function (bool) {
+      return A2(boolProperty,
+      "selected",
+      bool);
+   };
+   var autofocus = function (bool) {
+      return A2(boolProperty,
+      "autofocus",
+      bool);
+   };
+   var disabled = function (bool) {
+      return A2(boolProperty,
+      "disabled",
+      bool);
+   };
+   var multiple = function (bool) {
+      return A2(boolProperty,
+      "multiple",
+      bool);
+   };
+   var novalidate = function (bool) {
+      return A2(boolProperty,
+      "noValidate",
+      bool);
+   };
+   var readonly = function (bool) {
+      return A2(boolProperty,
+      "readOnly",
+      bool);
+   };
+   var required = function (bool) {
+      return A2(boolProperty,
+      "required",
+      bool);
+   };
+   var ismap = function (value) {
+      return A2(boolProperty,
+      "isMap",
+      value);
+   };
+   var download = function (bool) {
+      return A2(boolProperty,
+      "download",
+      bool);
+   };
+   var reversed = function (bool) {
+      return A2(boolProperty,
+      "reversed",
+      bool);
+   };
+   var classList = function (list) {
+      return $class($String.join(" ")($List.map($Basics.fst)($List.filter($Basics.snd)(list))));
+   };
+   var style = function (props) {
+      return property("style")($Json$Encode.object($List.map(function (_v0) {
+         return function () {
+            switch (_v0.ctor)
+            {case "_Tuple2":
+               return {ctor: "_Tuple2"
+                      ,_0: _v0._0
+                      ,_1: $Json$Encode.string(_v0._1)};}
+            _U.badCase($moduleName,
+            "on line 156, column 35 to 57");
+         }();
+      })(props)));
+   };
+   var key = function (k) {
+      return A2(stringProperty,
+      "key",
+      k);
+   };
+   _elm.Html.Attributes.values = {_op: _op
+                                 ,key: key
+                                 ,style: style
+                                 ,$class: $class
+                                 ,classList: classList
+                                 ,id: id
+                                 ,title: title
+                                 ,hidden: hidden
+                                 ,type$: type$
+                                 ,value: value
+                                 ,checked: checked
+                                 ,placeholder: placeholder
+                                 ,selected: selected
+                                 ,accept: accept
+                                 ,acceptCharset: acceptCharset
+                                 ,action: action
+                                 ,autocomplete: autocomplete
+                                 ,autofocus: autofocus
+                                 ,autosave: autosave
+                                 ,disabled: disabled
+                                 ,enctype: enctype
+                                 ,formaction: formaction
+                                 ,list: list
+                                 ,maxlength: maxlength
+                                 ,minlength: minlength
+                                 ,method: method
+                                 ,multiple: multiple
+                                 ,name: name
+                                 ,novalidate: novalidate
+                                 ,pattern: pattern
+                                 ,readonly: readonly
+                                 ,required: required
+                                 ,size: size
+                                 ,$for: $for
+                                 ,form: form
+                                 ,max: max
+                                 ,min: min
+                                 ,step: step
+                                 ,cols: cols
+                                 ,rows: rows
+                                 ,wrap: wrap
+                                 ,href: href
+                                 ,target: target
+                                 ,download: download
+                                 ,downloadAs: downloadAs
+                                 ,hreflang: hreflang
+                                 ,media: media
+                                 ,ping: ping
+                                 ,rel: rel
+                                 ,ismap: ismap
+                                 ,usemap: usemap
+                                 ,shape: shape
+                                 ,coords: coords
+                                 ,src: src
+                                 ,height: height
+                                 ,width: width
+                                 ,alt: alt
+                                 ,autoplay: autoplay
+                                 ,controls: controls
+                                 ,loop: loop
+                                 ,preload: preload
+                                 ,poster: poster
+                                 ,$default: $default
+                                 ,kind: kind
+                                 ,srclang: srclang
+                                 ,sandbox: sandbox
+                                 ,seamless: seamless
+                                 ,srcdoc: srcdoc
+                                 ,reversed: reversed
+                                 ,start: start
+                                 ,align: align
+                                 ,colspan: colspan
+                                 ,rowspan: rowspan
+                                 ,headers: headers
+                                 ,scope: scope
+                                 ,async: async
+                                 ,charset: charset
+                                 ,content: content
+                                 ,defer: defer
+                                 ,httpEquiv: httpEquiv
+                                 ,language: language
+                                 ,scoped: scoped
+                                 ,accesskey: accesskey
+                                 ,contenteditable: contenteditable
+                                 ,contextmenu: contextmenu
+                                 ,dir: dir
+                                 ,draggable: draggable
+                                 ,dropzone: dropzone
+                                 ,itemprop: itemprop
+                                 ,lang: lang
+                                 ,spellcheck: spellcheck
+                                 ,tabindex: tabindex
+                                 ,challenge: challenge
+                                 ,keytype: keytype
+                                 ,cite: cite
+                                 ,datetime: datetime
+                                 ,pubdate: pubdate
+                                 ,manifest: manifest
+                                 ,property: property
+                                 ,attribute: attribute};
+   return _elm.Html.Attributes.values;
+};
+Elm.Html = Elm.Html || {};
+Elm.Html.Widgets = Elm.Html.Widgets || {};
+Elm.Html.Widgets.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Widgets = _elm.Html.Widgets || {};
+   if (_elm.Html.Widgets.values)
+   return _elm.Html.Widgets.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Widgets",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Svg = Elm.Svg.make(_elm),
+   $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
+   var sevenSegmentDigit = F3(function (_v0,
+   index,
+   digit) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var transformAttribute = A2($Basics._op["++"],
+                 "translate(",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v0._0 * index),
+                 " 0)"));
+                 var polygons = function () {
+                    switch (digit + "")
+                    {case " ":
+                       return _L.fromArray([]);
+                       case "0":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))]);
+                       case "1":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))]);
+                       case "2":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "3":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "4":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "5":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "6":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "7":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))]);
+                       case "8":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);
+                       case "9":
+                       return _L.fromArray([A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
+                                           _L.fromArray([]))
+                                           ,A2($Svg.polygon,
+                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
+                                                        ,$Svg$Attributes.fill("#7FD13B")
+                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
+                                           _L.fromArray([]))]);}
+                    _U.badCase($moduleName,
+                    "between lines 28 and 89");
+                 }();
+                 return A2($Svg.g,
+                 _L.fromArray([$Svg$Attributes.fillRule("evenodd")
+                              ,$Svg$Attributes.stroke("#FFFFFF")
+                              ,$Svg$Attributes.strokeWidth("0.5")
+                              ,$Svg$Attributes.strokeOpacity("1")]),
+                 polygons);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 27 and 89");
+      }();
+   });
+   var sevenSegment = F2(function (digits,
+   pointIndexes) {
+      return function () {
+         var digitLength = $String.length(digits);
+         var containerHeigth = 340;
+         var containerWidth = 200;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth * 2),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeigth)))))]),
+         A2($Basics._op["++"],
+         _L.fromArray([A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.fill("#000")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.width($Basics.toString(containerWidth * 2))
+                      ,$Svg$Attributes.height($Basics.toString(containerHeigth * 2))]),
+         _L.fromArray([]))]),
+         A2($List.indexedMap,
+         sevenSegmentDigit({ctor: "_Tuple2"
+                           ,_0: containerWidth
+                           ,_1: containerHeigth}),
+         $String.toList(digits))));
+      }();
+   });
+   _elm.Html.Widgets.values = {_op: _op
+                              ,sevenSegment: sevenSegment};
+   return _elm.Html.Widgets.values;
 };
 Elm.Json = Elm.Json || {};
 Elm.Json.Decode = Elm.Json.Decode || {};
@@ -11778,27 +12757,731 @@ Elm.String.make = function (_elm) {
    return _elm.String.values;
 };
 Elm.Svg = Elm.Svg || {};
-Elm.Svg.Widgets = Elm.Svg.Widgets || {};
-Elm.Svg.Widgets.make = function (_elm) {
+Elm.Svg.make = function (_elm) {
    "use strict";
    _elm.Svg = _elm.Svg || {};
-   _elm.Svg.Widgets = _elm.Svg.Widgets || {};
-   if (_elm.Svg.Widgets.values)
-   return _elm.Svg.Widgets.values;
+   if (_elm.Svg.values)
+   return _elm.Svg.values;
    var _op = {},
    _N = Elm.Native,
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
-   $moduleName = "Svg.Widgets",
+   $moduleName = "Svg",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var text = $VirtualDom.text;
+   var svgNamespace = A2($VirtualDom.property,
+   "namespace",
+   $Json$Encode.string("http://www.w3.org/2000/svg"));
+   var node = F3(function (name,
+   attributes,
+   children) {
+      return A3($VirtualDom.node,
+      name,
+      A2($List._op["::"],
+      svgNamespace,
+      attributes),
+      children);
+   });
+   var svg = node("svg");
+   var foreignObject = node("foreignObject");
+   var animate = node("animate");
+   var animateColor = node("animateColor");
+   var animateMotion = node("animateMotion");
+   var animateTransform = node("animateTransform");
+   var mpath = node("mpath");
+   var set = node("set");
+   var a = node("a");
+   var defs = node("defs");
+   var g = node("g");
+   var marker = node("marker");
+   var mask = node("mask");
+   var missingGlyph = node("missingGlyph");
+   var pattern = node("pattern");
+   var $switch = node("switch");
+   var symbol = node("symbol");
+   var desc = node("desc");
+   var metadata = node("metadata");
+   var title = node("title");
+   var feBlend = node("feBlend");
+   var feColorMatrix = node("feColorMatrix");
+   var feComponentTransfer = node("feComponentTransfer");
+   var feComposite = node("feComposite");
+   var feConvolveMatrix = node("feConvolveMatrix");
+   var feDiffuseLighting = node("feDiffuseLighting");
+   var feDisplacementMap = node("feDisplacementMap");
+   var feFlood = node("feFlood");
+   var feFuncA = node("feFuncA");
+   var feFuncB = node("feFuncB");
+   var feFuncG = node("feFuncG");
+   var feFuncR = node("feFuncR");
+   var feGaussianBlur = node("feGaussianBlur");
+   var feImage = node("feImage");
+   var feMerge = node("feMerge");
+   var feMergeNode = node("feMergeNode");
+   var feMorphology = node("feMorphology");
+   var feOffset = node("feOffset");
+   var feSpecularLighting = node("feSpecularLighting");
+   var feTile = node("feTile");
+   var feTurbulence = node("feTurbulence");
+   var font = node("font");
+   var fontFace = node("fontFace");
+   var fontFaceFormat = node("fontFaceFormat");
+   var fontFaceName = node("fontFaceName");
+   var fontFaceSrc = node("fontFaceSrc");
+   var fontFaceUri = node("fontFaceUri");
+   var hkern = node("hkern");
+   var vkern = node("vkern");
+   var linearGradient = node("linearGradient");
+   var radialGradient = node("radialGradient");
+   var stop = node("stop");
+   var circle = node("circle");
+   var ellipse = node("ellipse");
+   var image = node("image");
+   var line = node("line");
+   var path = node("path");
+   var polygon = node("polygon");
+   var polyline = node("polyline");
+   var rect = node("rect");
+   var use = node("use");
+   var feDistantLight = node("feDistantLight");
+   var fePointLight = node("fePointLight");
+   var feSpotLight = node("feSpotLight");
+   var altGlyph = node("altGlyph");
+   var altGlyphDef = node("altGlyphDef");
+   var altGlyphItem = node("altGlyphItem");
+   var glyph = node("glyph");
+   var glyphRef = node("glyphRef");
+   var textPath = node("textPath");
+   var text$ = node("text");
+   var tref = node("tref");
+   var tspan = node("tspan");
+   var clipPath = node("clipPath");
+   var colorProfile = node("colorProfile");
+   var cursor = node("cursor");
+   var filter = node("filter");
+   var script = node("script");
+   var style = node("style");
+   var view = node("view");
+   _elm.Svg.values = {_op: _op
+                     ,text: text
+                     ,node: node
+                     ,svg: svg
+                     ,foreignObject: foreignObject
+                     ,circle: circle
+                     ,ellipse: ellipse
+                     ,image: image
+                     ,line: line
+                     ,path: path
+                     ,polygon: polygon
+                     ,polyline: polyline
+                     ,rect: rect
+                     ,use: use
+                     ,animate: animate
+                     ,animateColor: animateColor
+                     ,animateMotion: animateMotion
+                     ,animateTransform: animateTransform
+                     ,mpath: mpath
+                     ,set: set
+                     ,desc: desc
+                     ,metadata: metadata
+                     ,title: title
+                     ,a: a
+                     ,defs: defs
+                     ,g: g
+                     ,marker: marker
+                     ,mask: mask
+                     ,missingGlyph: missingGlyph
+                     ,pattern: pattern
+                     ,$switch: $switch
+                     ,symbol: symbol
+                     ,altGlyph: altGlyph
+                     ,altGlyphDef: altGlyphDef
+                     ,altGlyphItem: altGlyphItem
+                     ,glyph: glyph
+                     ,glyphRef: glyphRef
+                     ,textPath: textPath
+                     ,text$: text$
+                     ,tref: tref
+                     ,tspan: tspan
+                     ,font: font
+                     ,fontFace: fontFace
+                     ,fontFaceFormat: fontFaceFormat
+                     ,fontFaceName: fontFaceName
+                     ,fontFaceSrc: fontFaceSrc
+                     ,fontFaceUri: fontFaceUri
+                     ,hkern: hkern
+                     ,vkern: vkern
+                     ,linearGradient: linearGradient
+                     ,radialGradient: radialGradient
+                     ,stop: stop
+                     ,feBlend: feBlend
+                     ,feColorMatrix: feColorMatrix
+                     ,feComponentTransfer: feComponentTransfer
+                     ,feComposite: feComposite
+                     ,feConvolveMatrix: feConvolveMatrix
+                     ,feDiffuseLighting: feDiffuseLighting
+                     ,feDisplacementMap: feDisplacementMap
+                     ,feFlood: feFlood
+                     ,feFuncA: feFuncA
+                     ,feFuncB: feFuncB
+                     ,feFuncG: feFuncG
+                     ,feFuncR: feFuncR
+                     ,feGaussianBlur: feGaussianBlur
+                     ,feImage: feImage
+                     ,feMerge: feMerge
+                     ,feMergeNode: feMergeNode
+                     ,feMorphology: feMorphology
+                     ,feOffset: feOffset
+                     ,feSpecularLighting: feSpecularLighting
+                     ,feTile: feTile
+                     ,feTurbulence: feTurbulence
+                     ,feDistantLight: feDistantLight
+                     ,fePointLight: fePointLight
+                     ,feSpotLight: feSpotLight
+                     ,clipPath: clipPath
+                     ,colorProfile: colorProfile
+                     ,cursor: cursor
+                     ,filter: filter
+                     ,script: script
+                     ,style: style
+                     ,view: view};
+   return _elm.Svg.values;
+};
+Elm.Svg = Elm.Svg || {};
+Elm.Svg.Attributes = Elm.Svg.Attributes || {};
+Elm.Svg.Attributes.make = function (_elm) {
+   "use strict";
+   _elm.Svg = _elm.Svg || {};
+   _elm.Svg.Attributes = _elm.Svg.Attributes || {};
+   if (_elm.Svg.Attributes.values)
+   return _elm.Svg.Attributes.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Svg.Attributes",
    $Basics = Elm.Basics.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var author = "JunDatox";
-   _elm.Svg.Widgets.values = {_op: _op
-                             ,author: author};
-   return _elm.Svg.Widgets.values;
+   $Signal = Elm.Signal.make(_elm),
+   $Svg = Elm.Svg.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var writingMode = $VirtualDom.attribute("writing-mode");
+   var wordSpacing = $VirtualDom.attribute("word-spacing");
+   var visibility = $VirtualDom.attribute("visibility");
+   var unicodeBidi = $VirtualDom.attribute("unicode-bidi");
+   var textRendering = $VirtualDom.attribute("text-rendering");
+   var textDecoration = $VirtualDom.attribute("text-decoration");
+   var textAnchor = $VirtualDom.attribute("text-anchor");
+   var stroke = $VirtualDom.attribute("stroke");
+   var strokeWidth = $VirtualDom.attribute("stroke-width");
+   var strokeOpacity = $VirtualDom.attribute("stroke-opacity");
+   var strokeMiterlimit = $VirtualDom.attribute("stroke-miterlimit");
+   var strokeLinejoin = $VirtualDom.attribute("stroke-linejoin");
+   var strokeLinecap = $VirtualDom.attribute("stroke-linecap");
+   var strokeDashoffset = $VirtualDom.attribute("stroke-dashoffset");
+   var strokeDasharray = $VirtualDom.attribute("stroke-dasharray");
+   var stopOpacity = $VirtualDom.attribute("stop-opacity");
+   var stopColor = $VirtualDom.attribute("stop-color");
+   var shapeRendering = $VirtualDom.attribute("shape-rendering");
+   var pointerEvents = $VirtualDom.attribute("pointer-events");
+   var overflow = $VirtualDom.attribute("overflow");
+   var opacity = $VirtualDom.attribute("opacity");
+   var mask = $VirtualDom.attribute("mask");
+   var markerStart = $VirtualDom.attribute("marker-start");
+   var markerMid = $VirtualDom.attribute("marker-mid");
+   var markerEnd = $VirtualDom.attribute("marker-end");
+   var lightingColor = $VirtualDom.attribute("lighting-color");
+   var letterSpacing = $VirtualDom.attribute("letter-spacing");
+   var kerning = $VirtualDom.attribute("kerning");
+   var imageRendering = $VirtualDom.attribute("image-rendering");
+   var glyphOrientationVertical = $VirtualDom.attribute("glyph-orientation-vertical");
+   var glyphOrientationHorizontal = $VirtualDom.attribute("glyph-orientation-horizontal");
+   var fontWeight = $VirtualDom.attribute("font-weight");
+   var fontVariant = $VirtualDom.attribute("font-variant");
+   var fontStyle = $VirtualDom.attribute("font-style");
+   var fontStretch = $VirtualDom.attribute("font-stretch");
+   var fontSize = $VirtualDom.attribute("font-size");
+   var fontSizeAdjust = $VirtualDom.attribute("font-size-adjust");
+   var fontFamily = $VirtualDom.attribute("font-family");
+   var floodOpacity = $VirtualDom.attribute("flood-opacity");
+   var floodColor = $VirtualDom.attribute("flood-color");
+   var filter = $VirtualDom.attribute("filter");
+   var fill = $VirtualDom.attribute("fill");
+   var fillRule = $VirtualDom.attribute("fill-rule");
+   var fillOpacity = $VirtualDom.attribute("fill-opacity");
+   var enableBackground = $VirtualDom.attribute("enable-background");
+   var dominantBaseline = $VirtualDom.attribute("dominant-baseline");
+   var display = $VirtualDom.attribute("display");
+   var direction = $VirtualDom.attribute("direction");
+   var cursor = $VirtualDom.attribute("cursor");
+   var color = $VirtualDom.attribute("color");
+   var colorRendering = $VirtualDom.attribute("color-rendering");
+   var colorProfile = $VirtualDom.attribute("color-profile");
+   var colorInterpolation = $VirtualDom.attribute("color-interpolation");
+   var colorInterpolationFilters = $VirtualDom.attribute("color-interpolation-filters");
+   var clip = $VirtualDom.attribute("clip");
+   var clipRule = $VirtualDom.attribute("clip-rule");
+   var clipPath = $VirtualDom.attribute("clip-path");
+   var baselineShift = $VirtualDom.attribute("baseline-shift");
+   var alignmentBaseline = $VirtualDom.attribute("alignment-baseline");
+   var zoomAndPan = $VirtualDom.attribute("zoomAndPan");
+   var z = $VirtualDom.attribute("z");
+   var yChannelSelector = $VirtualDom.attribute("yChannelSelector");
+   var y2 = $VirtualDom.attribute("y2");
+   var y1 = $VirtualDom.attribute("y1");
+   var y = $VirtualDom.attribute("y");
+   var xmlSpace = $VirtualDom.attribute("xml:space");
+   var xmlLang = $VirtualDom.attribute("xml:lang");
+   var xmlBase = $VirtualDom.attribute("xml:base");
+   var xlinkType = $VirtualDom.attribute("xlink:type");
+   var xlinkTitle = $VirtualDom.attribute("xlink:title");
+   var xlinkShow = $VirtualDom.attribute("xlink:show");
+   var xlinkRole = $VirtualDom.attribute("xlink:role");
+   var xlinkHref = $VirtualDom.attribute("xlink:href");
+   var xlinkArcrole = $VirtualDom.attribute("xlink:arcrole");
+   var xlinkActuate = $VirtualDom.attribute("xlink:actuate");
+   var xChannelSelector = $VirtualDom.attribute("xChannelSelector");
+   var x2 = $VirtualDom.attribute("x2");
+   var x1 = $VirtualDom.attribute("x1");
+   var xHeight = $VirtualDom.attribute("x-height");
+   var x = $VirtualDom.attribute("x");
+   var widths = $VirtualDom.attribute("widths");
+   var width = $VirtualDom.attribute("width");
+   var viewTarget = $VirtualDom.attribute("viewTarget");
+   var viewBox = $VirtualDom.attribute("viewBox");
+   var vertOriginY = $VirtualDom.attribute("vert-origin-y");
+   var vertOriginX = $VirtualDom.attribute("vert-origin-x");
+   var vertAdvY = $VirtualDom.attribute("vert-adv-y");
+   var version = $VirtualDom.attribute("version");
+   var values = $VirtualDom.attribute("values");
+   var vMathematical = $VirtualDom.attribute("v-mathematical");
+   var vIdeographic = $VirtualDom.attribute("v-ideographic");
+   var vHanging = $VirtualDom.attribute("v-hanging");
+   var vAlphabetic = $VirtualDom.attribute("v-alphabetic");
+   var unitsPerEm = $VirtualDom.attribute("units-per-em");
+   var unicodeRange = $VirtualDom.attribute("unicode-range");
+   var unicode = $VirtualDom.attribute("unicode");
+   var underlineThickness = $VirtualDom.attribute("underline-thickness");
+   var underlinePosition = $VirtualDom.attribute("underline-position");
+   var u2 = $VirtualDom.attribute("u2");
+   var u1 = $VirtualDom.attribute("u1");
+   var type$ = $VirtualDom.attribute("type");
+   var transform = $VirtualDom.attribute("transform");
+   var to = $VirtualDom.attribute("to");
+   var title = $VirtualDom.attribute("title");
+   var textLength = $VirtualDom.attribute("textLength");
+   var targetY = $VirtualDom.attribute("targetY");
+   var targetX = $VirtualDom.attribute("targetX");
+   var target = $VirtualDom.attribute("target");
+   var tableValues = $VirtualDom.attribute("tableValues");
+   var systemLanguage = $VirtualDom.attribute("systemLanguage");
+   var surfaceScale = $VirtualDom.attribute("surfaceScale");
+   var style = $VirtualDom.attribute("style");
+   var string = $VirtualDom.attribute("string");
+   var strikethroughThickness = $VirtualDom.attribute("strikethrough-thickness");
+   var strikethroughPosition = $VirtualDom.attribute("strikethrough-position");
+   var stitchTiles = $VirtualDom.attribute("stitchTiles");
+   var stemv = $VirtualDom.attribute("stemv");
+   var stemh = $VirtualDom.attribute("stemh");
+   var stdDeviation = $VirtualDom.attribute("stdDeviation");
+   var startOffset = $VirtualDom.attribute("startOffset");
+   var spreadMethod = $VirtualDom.attribute("spreadMethod");
+   var speed = $VirtualDom.attribute("speed");
+   var specularExponent = $VirtualDom.attribute("specularExponent");
+   var specularConstant = $VirtualDom.attribute("specularConstant");
+   var spacing = $VirtualDom.attribute("spacing");
+   var slope = $VirtualDom.attribute("slope");
+   var seed = $VirtualDom.attribute("seed");
+   var scale = $VirtualDom.attribute("scale");
+   var ry = $VirtualDom.attribute("ry");
+   var rx = $VirtualDom.attribute("rx");
+   var rotate = $VirtualDom.attribute("rotate");
+   var result = $VirtualDom.attribute("result");
+   var restart = $VirtualDom.attribute("restart");
+   var requiredFeatures = $VirtualDom.attribute("requiredFeatures");
+   var requiredExtensions = $VirtualDom.attribute("requiredExtensions");
+   var repeatDur = $VirtualDom.attribute("repeatDur");
+   var repeatCount = $VirtualDom.attribute("repeatCount");
+   var renderingIntent = $VirtualDom.attribute("rendering-intent");
+   var refY = $VirtualDom.attribute("refY");
+   var refX = $VirtualDom.attribute("refX");
+   var radius = $VirtualDom.attribute("radius");
+   var r = $VirtualDom.attribute("r");
+   var primitiveUnits = $VirtualDom.attribute("primitiveUnits");
+   var preserveAspectRatio = $VirtualDom.attribute("preserveAspectRatio");
+   var preserveAlpha = $VirtualDom.attribute("preserveAlpha");
+   var pointsAtZ = $VirtualDom.attribute("pointsAtZ");
+   var pointsAtY = $VirtualDom.attribute("pointsAtY");
+   var pointsAtX = $VirtualDom.attribute("pointsAtX");
+   var points = $VirtualDom.attribute("points");
+   var pointOrder = $VirtualDom.attribute("point-order");
+   var patternUnits = $VirtualDom.attribute("patternUnits");
+   var patternTransform = $VirtualDom.attribute("patternTransform");
+   var patternContentUnits = $VirtualDom.attribute("patternContentUnits");
+   var pathLength = $VirtualDom.attribute("pathLength");
+   var path = $VirtualDom.attribute("path");
+   var panose1 = $VirtualDom.attribute("panose-1");
+   var overlineThickness = $VirtualDom.attribute("overline-thickness");
+   var overlinePosition = $VirtualDom.attribute("overline-position");
+   var origin = $VirtualDom.attribute("origin");
+   var orientation = $VirtualDom.attribute("orientation");
+   var orient = $VirtualDom.attribute("orient");
+   var order = $VirtualDom.attribute("order");
+   var operator = $VirtualDom.attribute("operator");
+   var offset = $VirtualDom.attribute("offset");
+   var numOctaves = $VirtualDom.attribute("numOctaves");
+   var name = $VirtualDom.attribute("name");
+   var mode = $VirtualDom.attribute("mode");
+   var min = $VirtualDom.attribute("min");
+   var method = $VirtualDom.attribute("method");
+   var media = $VirtualDom.attribute("media");
+   var max = $VirtualDom.attribute("max");
+   var mathematical = $VirtualDom.attribute("mathematical");
+   var maskUnits = $VirtualDom.attribute("maskUnits");
+   var maskContentUnits = $VirtualDom.attribute("maskContentUnits");
+   var markerWidth = $VirtualDom.attribute("markerWidth");
+   var markerUnits = $VirtualDom.attribute("markerUnits");
+   var markerHeight = $VirtualDom.attribute("markerHeight");
+   var local = $VirtualDom.attribute("local");
+   var limitingConeAngle = $VirtualDom.attribute("limitingConeAngle");
+   var lengthAdjust = $VirtualDom.attribute("lengthAdjust");
+   var lang = $VirtualDom.attribute("lang");
+   var keyTimes = $VirtualDom.attribute("keyTimes");
+   var keySplines = $VirtualDom.attribute("keySplines");
+   var keyPoints = $VirtualDom.attribute("keyPoints");
+   var kernelUnitLength = $VirtualDom.attribute("kernelUnitLength");
+   var kernelMatrix = $VirtualDom.attribute("kernelMatrix");
+   var k4 = $VirtualDom.attribute("k4");
+   var k3 = $VirtualDom.attribute("k3");
+   var k2 = $VirtualDom.attribute("k2");
+   var k1 = $VirtualDom.attribute("k1");
+   var k = $VirtualDom.attribute("k");
+   var intercept = $VirtualDom.attribute("intercept");
+   var in2 = $VirtualDom.attribute("in2");
+   var in$ = $VirtualDom.attribute("in");
+   var ideographic = $VirtualDom.attribute("ideographic");
+   var id = $VirtualDom.attribute("id");
+   var horizOriginY = $VirtualDom.attribute("horiz-origin-y");
+   var horizOriginX = $VirtualDom.attribute("horiz-origin-x");
+   var horizAdvX = $VirtualDom.attribute("horiz-adv-x");
+   var height = $VirtualDom.attribute("height");
+   var hanging = $VirtualDom.attribute("hanging");
+   var gradientUnits = $VirtualDom.attribute("gradientUnits");
+   var gradientTransform = $VirtualDom.attribute("gradientTransform");
+   var glyphRef = $VirtualDom.attribute("glyphRef");
+   var glyphName = $VirtualDom.attribute("glyph-name");
+   var g2 = $VirtualDom.attribute("g2");
+   var g1 = $VirtualDom.attribute("g1");
+   var fy = $VirtualDom.attribute("fy");
+   var fx = $VirtualDom.attribute("fx");
+   var from = $VirtualDom.attribute("from");
+   var format = $VirtualDom.attribute("format");
+   var filterUnits = $VirtualDom.attribute("filterUnits");
+   var filterRes = $VirtualDom.attribute("filterRes");
+   var externalResourcesRequired = $VirtualDom.attribute("externalResourcesRequired");
+   var exponent = $VirtualDom.attribute("exponent");
+   var end = $VirtualDom.attribute("end");
+   var elevation = $VirtualDom.attribute("elevation");
+   var edgeMode = $VirtualDom.attribute("edgeMode");
+   var dy = $VirtualDom.attribute("dy");
+   var dx = $VirtualDom.attribute("dx");
+   var dur = $VirtualDom.attribute("dur");
+   var divisor = $VirtualDom.attribute("divisor");
+   var diffuseConstant = $VirtualDom.attribute("diffuseConstant");
+   var descent = $VirtualDom.attribute("descent");
+   var decelerate = $VirtualDom.attribute("decelerate");
+   var d = $VirtualDom.attribute("d");
+   var cy = $VirtualDom.attribute("cy");
+   var cx = $VirtualDom.attribute("cx");
+   var contentStyleType = $VirtualDom.attribute("contentStyleType");
+   var contentScriptType = $VirtualDom.attribute("contentScriptType");
+   var clipPathUnits = $VirtualDom.attribute("clipPathUnits");
+   var $class = $VirtualDom.attribute("class");
+   var capHeight = $VirtualDom.attribute("cap-height");
+   var calcMode = $VirtualDom.attribute("calcMode");
+   var by = $VirtualDom.attribute("by");
+   var bias = $VirtualDom.attribute("bias");
+   var begin = $VirtualDom.attribute("begin");
+   var bbox = $VirtualDom.attribute("bbox");
+   var baseProfile = $VirtualDom.attribute("baseProfile");
+   var baseFrequency = $VirtualDom.attribute("baseFrequency");
+   var azimuth = $VirtualDom.attribute("azimuth");
+   var autoReverse = $VirtualDom.attribute("autoReverse");
+   var attributeType = $VirtualDom.attribute("attributeType");
+   var attributeName = $VirtualDom.attribute("attributeName");
+   var ascent = $VirtualDom.attribute("ascent");
+   var arabicForm = $VirtualDom.attribute("arabic-form");
+   var amplitude = $VirtualDom.attribute("amplitude");
+   var allowReorder = $VirtualDom.attribute("allowReorder");
+   var alphabetic = $VirtualDom.attribute("alphabetic");
+   var additive = $VirtualDom.attribute("additive");
+   var accumulate = $VirtualDom.attribute("accumulate");
+   var accelerate = $VirtualDom.attribute("accelerate");
+   var accentHeight = $VirtualDom.attribute("accent-height");
+   _elm.Svg.Attributes.values = {_op: _op
+                                ,accentHeight: accentHeight
+                                ,accelerate: accelerate
+                                ,accumulate: accumulate
+                                ,additive: additive
+                                ,alphabetic: alphabetic
+                                ,allowReorder: allowReorder
+                                ,amplitude: amplitude
+                                ,arabicForm: arabicForm
+                                ,ascent: ascent
+                                ,attributeName: attributeName
+                                ,attributeType: attributeType
+                                ,autoReverse: autoReverse
+                                ,azimuth: azimuth
+                                ,baseFrequency: baseFrequency
+                                ,baseProfile: baseProfile
+                                ,bbox: bbox
+                                ,begin: begin
+                                ,bias: bias
+                                ,by: by
+                                ,calcMode: calcMode
+                                ,capHeight: capHeight
+                                ,$class: $class
+                                ,clipPathUnits: clipPathUnits
+                                ,contentScriptType: contentScriptType
+                                ,contentStyleType: contentStyleType
+                                ,cx: cx
+                                ,cy: cy
+                                ,d: d
+                                ,decelerate: decelerate
+                                ,descent: descent
+                                ,diffuseConstant: diffuseConstant
+                                ,divisor: divisor
+                                ,dur: dur
+                                ,dx: dx
+                                ,dy: dy
+                                ,edgeMode: edgeMode
+                                ,elevation: elevation
+                                ,end: end
+                                ,exponent: exponent
+                                ,externalResourcesRequired: externalResourcesRequired
+                                ,filterRes: filterRes
+                                ,filterUnits: filterUnits
+                                ,format: format
+                                ,from: from
+                                ,fx: fx
+                                ,fy: fy
+                                ,g1: g1
+                                ,g2: g2
+                                ,glyphName: glyphName
+                                ,glyphRef: glyphRef
+                                ,gradientTransform: gradientTransform
+                                ,gradientUnits: gradientUnits
+                                ,hanging: hanging
+                                ,height: height
+                                ,horizAdvX: horizAdvX
+                                ,horizOriginX: horizOriginX
+                                ,horizOriginY: horizOriginY
+                                ,id: id
+                                ,ideographic: ideographic
+                                ,in$: in$
+                                ,in2: in2
+                                ,intercept: intercept
+                                ,k: k
+                                ,k1: k1
+                                ,k2: k2
+                                ,k3: k3
+                                ,k4: k4
+                                ,kernelMatrix: kernelMatrix
+                                ,kernelUnitLength: kernelUnitLength
+                                ,keyPoints: keyPoints
+                                ,keySplines: keySplines
+                                ,keyTimes: keyTimes
+                                ,lang: lang
+                                ,lengthAdjust: lengthAdjust
+                                ,limitingConeAngle: limitingConeAngle
+                                ,local: local
+                                ,markerHeight: markerHeight
+                                ,markerUnits: markerUnits
+                                ,markerWidth: markerWidth
+                                ,maskContentUnits: maskContentUnits
+                                ,maskUnits: maskUnits
+                                ,mathematical: mathematical
+                                ,max: max
+                                ,media: media
+                                ,method: method
+                                ,min: min
+                                ,mode: mode
+                                ,name: name
+                                ,numOctaves: numOctaves
+                                ,offset: offset
+                                ,operator: operator
+                                ,order: order
+                                ,orient: orient
+                                ,orientation: orientation
+                                ,origin: origin
+                                ,overlinePosition: overlinePosition
+                                ,overlineThickness: overlineThickness
+                                ,panose1: panose1
+                                ,path: path
+                                ,pathLength: pathLength
+                                ,patternContentUnits: patternContentUnits
+                                ,patternTransform: patternTransform
+                                ,patternUnits: patternUnits
+                                ,pointOrder: pointOrder
+                                ,points: points
+                                ,pointsAtX: pointsAtX
+                                ,pointsAtY: pointsAtY
+                                ,pointsAtZ: pointsAtZ
+                                ,preserveAlpha: preserveAlpha
+                                ,preserveAspectRatio: preserveAspectRatio
+                                ,primitiveUnits: primitiveUnits
+                                ,r: r
+                                ,radius: radius
+                                ,refX: refX
+                                ,refY: refY
+                                ,renderingIntent: renderingIntent
+                                ,repeatCount: repeatCount
+                                ,repeatDur: repeatDur
+                                ,requiredExtensions: requiredExtensions
+                                ,requiredFeatures: requiredFeatures
+                                ,restart: restart
+                                ,result: result
+                                ,rotate: rotate
+                                ,rx: rx
+                                ,ry: ry
+                                ,scale: scale
+                                ,seed: seed
+                                ,slope: slope
+                                ,spacing: spacing
+                                ,specularConstant: specularConstant
+                                ,specularExponent: specularExponent
+                                ,speed: speed
+                                ,spreadMethod: spreadMethod
+                                ,startOffset: startOffset
+                                ,stdDeviation: stdDeviation
+                                ,stemh: stemh
+                                ,stemv: stemv
+                                ,stitchTiles: stitchTiles
+                                ,strikethroughPosition: strikethroughPosition
+                                ,strikethroughThickness: strikethroughThickness
+                                ,string: string
+                                ,style: style
+                                ,surfaceScale: surfaceScale
+                                ,systemLanguage: systemLanguage
+                                ,tableValues: tableValues
+                                ,target: target
+                                ,targetX: targetX
+                                ,targetY: targetY
+                                ,textLength: textLength
+                                ,title: title
+                                ,to: to
+                                ,transform: transform
+                                ,type$: type$
+                                ,u1: u1
+                                ,u2: u2
+                                ,underlinePosition: underlinePosition
+                                ,underlineThickness: underlineThickness
+                                ,unicode: unicode
+                                ,unicodeRange: unicodeRange
+                                ,unitsPerEm: unitsPerEm
+                                ,vAlphabetic: vAlphabetic
+                                ,vHanging: vHanging
+                                ,vIdeographic: vIdeographic
+                                ,vMathematical: vMathematical
+                                ,values: values
+                                ,version: version
+                                ,vertAdvY: vertAdvY
+                                ,vertOriginX: vertOriginX
+                                ,vertOriginY: vertOriginY
+                                ,viewBox: viewBox
+                                ,viewTarget: viewTarget
+                                ,width: width
+                                ,widths: widths
+                                ,x: x
+                                ,xHeight: xHeight
+                                ,x1: x1
+                                ,x2: x2
+                                ,xChannelSelector: xChannelSelector
+                                ,xlinkActuate: xlinkActuate
+                                ,xlinkArcrole: xlinkArcrole
+                                ,xlinkHref: xlinkHref
+                                ,xlinkRole: xlinkRole
+                                ,xlinkShow: xlinkShow
+                                ,xlinkTitle: xlinkTitle
+                                ,xlinkType: xlinkType
+                                ,xmlBase: xmlBase
+                                ,xmlLang: xmlLang
+                                ,xmlSpace: xmlSpace
+                                ,y: y
+                                ,y1: y1
+                                ,y2: y2
+                                ,yChannelSelector: yChannelSelector
+                                ,z: z
+                                ,zoomAndPan: zoomAndPan
+                                ,alignmentBaseline: alignmentBaseline
+                                ,baselineShift: baselineShift
+                                ,clipPath: clipPath
+                                ,clipRule: clipRule
+                                ,clip: clip
+                                ,colorInterpolationFilters: colorInterpolationFilters
+                                ,colorInterpolation: colorInterpolation
+                                ,colorProfile: colorProfile
+                                ,colorRendering: colorRendering
+                                ,color: color
+                                ,cursor: cursor
+                                ,direction: direction
+                                ,display: display
+                                ,dominantBaseline: dominantBaseline
+                                ,enableBackground: enableBackground
+                                ,fillOpacity: fillOpacity
+                                ,fillRule: fillRule
+                                ,fill: fill
+                                ,filter: filter
+                                ,floodColor: floodColor
+                                ,floodOpacity: floodOpacity
+                                ,fontFamily: fontFamily
+                                ,fontSizeAdjust: fontSizeAdjust
+                                ,fontSize: fontSize
+                                ,fontStretch: fontStretch
+                                ,fontStyle: fontStyle
+                                ,fontVariant: fontVariant
+                                ,fontWeight: fontWeight
+                                ,glyphOrientationHorizontal: glyphOrientationHorizontal
+                                ,glyphOrientationVertical: glyphOrientationVertical
+                                ,imageRendering: imageRendering
+                                ,kerning: kerning
+                                ,letterSpacing: letterSpacing
+                                ,lightingColor: lightingColor
+                                ,markerEnd: markerEnd
+                                ,markerMid: markerMid
+                                ,markerStart: markerStart
+                                ,mask: mask
+                                ,opacity: opacity
+                                ,overflow: overflow
+                                ,pointerEvents: pointerEvents
+                                ,shapeRendering: shapeRendering
+                                ,stopColor: stopColor
+                                ,stopOpacity: stopOpacity
+                                ,strokeDasharray: strokeDasharray
+                                ,strokeDashoffset: strokeDashoffset
+                                ,strokeLinecap: strokeLinecap
+                                ,strokeLinejoin: strokeLinejoin
+                                ,strokeMiterlimit: strokeMiterlimit
+                                ,strokeOpacity: strokeOpacity
+                                ,strokeWidth: strokeWidth
+                                ,stroke: stroke
+                                ,textAnchor: textAnchor
+                                ,textDecoration: textDecoration
+                                ,textRendering: textRendering
+                                ,unicodeBidi: unicodeBidi
+                                ,visibility: visibility
+                                ,wordSpacing: wordSpacing
+                                ,writingMode: writingMode};
+   return _elm.Svg.Attributes.values;
 };
 Elm.Task = Elm.Task || {};
 Elm.Task.make = function (_elm) {
