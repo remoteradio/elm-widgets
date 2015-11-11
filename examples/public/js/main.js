@@ -1814,22 +1814,258 @@ Elm.Example.Main.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Example.Main",
    $Basics = Elm.Basics.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
    $Html$Widgets = Elm.Html.Widgets.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var main = A2($Html.div,
-   _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                      ,_0: "width"
-                                                      ,_1: "400px"}]))]),
-   _L.fromArray([A2($Html$Widgets.sevenSegment,
-   "0123 456789",
-   _L.fromArray([]))]));
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Svg$Attributes = Elm.Svg.Attributes.make(_elm),
+   $Window = Elm.Window.make(_elm);
+   var segmentedBarGraphView = F2(function (address,
+   sevenSegmentSample$) {
+      return function () {
+         var foregroundAttributes = _L.fromArray([$Svg$Attributes.fill("#7FD13B")]);
+         var containerAttributes = _L.fromArray([$Svg$Attributes.fill("#000")]);
+         return A2($Html.div,
+         _L.fromArray([]),
+         _L.fromArray([]));
+      }();
+   });
+   var update = F2(function (action,
+   appState) {
+      return function () {
+         switch (action.ctor)
+         {case "NoOp": return appState;
+            case "SeventSegmentColonsChange":
+            return function () {
+                 var convert = function (digit) {
+                    return A2($Maybe.withDefault,
+                    -1,
+                    $Result.toMaybe($String.toInt(digit)));
+                 };
+                 var colonIndexes$ = A2($List.filter,
+                 function (y) {
+                    return !_U.eq(y,-1);
+                 },
+                 A2($List.map,
+                 function (x) {
+                    return convert(x);
+                 },
+                 A2($String.split,
+                 ",",
+                 action._0)));
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["colonIndexes"
+                                                 ,colonIndexes$]
+                                                ,["colonIndexesText"
+                                                 ,action._0]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();
+            case "SeventSegmentPointsChange":
+            return function () {
+                 var convert = function (digit) {
+                    return A2($Maybe.withDefault,
+                    -1,
+                    $Result.toMaybe($String.toInt(digit)));
+                 };
+                 var pointIndexes$ = A2($List.filter,
+                 function (y) {
+                    return !_U.eq(y,-1);
+                 },
+                 A2($List.map,
+                 function (x) {
+                    return convert(x);
+                 },
+                 A2($String.split,
+                 ",",
+                 action._0)));
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["pointIndexes"
+                                                 ,pointIndexes$]
+                                                ,["pointIndexesText"
+                                                 ,action._0]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();
+            case "SeventSegmentTextChange":
+            return function () {
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["text"
+                                                 ,action._0]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 58 and 74");
+      }();
+   });
+   var SeventSegmentColonsChange = function (a) {
+      return {ctor: "SeventSegmentColonsChange"
+             ,_0: a};
+   };
+   var SeventSegmentPointsChange = function (a) {
+      return {ctor: "SeventSegmentPointsChange"
+             ,_0: a};
+   };
+   var SeventSegmentTextChange = function (a) {
+      return {ctor: "SeventSegmentTextChange"
+             ,_0: a};
+   };
+   var sevenSegmentSampleView = F2(function (address,
+   sevenSegmentSample$) {
+      return function () {
+         var foregroundAttributes = _L.fromArray([$Svg$Attributes.fill("#7FD13B")]);
+         var containerAttributes = _L.fromArray([$Svg$Attributes.fill("#000")]);
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([sevenSegmentSample$.isVisible ? {ctor: "_Tuple2"
+                                                                                            ,_0: ""
+                                                                                            ,_1: ""} : {ctor: "_Tuple2"
+                                                                                                       ,_0: "display"
+                                                                                                       ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SEVENT SEGMENT EXAMPLE")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "68px"}]))]),
+                      _L.fromArray([A5($Html$Widgets.sevenSegment,
+                      sevenSegmentSample$.text,
+                      sevenSegmentSample$.pointIndexes,
+                      sevenSegmentSample$.colonIndexes,
+                      containerAttributes,
+                      foregroundAttributes)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("TEXT")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(sevenSegmentSample$.text)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentTextChange($));
+                                                })]),
+                                   _L.fromArray([]))]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("POINTS")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(sevenSegmentSample$.pointIndexesText)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentPointsChange($));
+                                                })]),
+                                   _L.fromArray([]))]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("COLONS")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(sevenSegmentSample$.colonIndexesText)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentColonsChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
+      }();
+   });
+   var appView = F3(function (address,
+   appState,
+   _v4) {
+      return function () {
+         switch (_v4.ctor)
+         {case "_Tuple2":
+            return A2($Html.toElement,
+              _v4._0,
+              _v4._1)(A2($Html.div,
+              _L.fromArray([]),
+              _L.fromArray([A2(sevenSegmentSampleView,
+              address,
+              appState.sevenSegmentSample)])));}
+         _U.badCase($moduleName,
+         "on line 97, column 34 to 120");
+      }();
+   });
+   var NoOp = {ctor: "NoOp"};
+   var actions = $Signal.mailbox(NoOp);
+   var mergedActions = $Signal.mergeMany(_L.fromArray([actions.signal]));
+   var segmentedBarGraphSample = {_: {}};
+   var defaultSevenSegmentSample = {_: {}
+                                   ,colonIndexes: _L.fromArray([4
+                                                               ,5])
+                                   ,colonIndexesText: "4,5"
+                                   ,isVisible: true
+                                   ,pointIndexes: _L.fromArray([0
+                                                               ,3])
+                                   ,pointIndexesText: "0,3"
+                                   ,text: "0123456789"};
+   var defaultAppState = {_: {}
+                         ,sevenSegmentSample: defaultSevenSegmentSample};
+   var appState = A3($Signal.foldp,
+   update,
+   defaultAppState,
+   mergedActions);
+   var main = A3($Signal.map2,
+   appView(actions.address),
+   appState,
+   $Window.dimensions);
+   var SegmentedBarGraphSample = {_: {}};
+   var SevenSegmentSample = F6(function (a,
+   b,
+   c,
+   d,
+   e,
+   f) {
+      return {_: {}
+             ,colonIndexes: d
+             ,colonIndexesText: e
+             ,isVisible: f
+             ,pointIndexes: b
+             ,pointIndexesText: c
+             ,text: a};
+   });
+   var AppState = function (a) {
+      return {_: {}
+             ,sevenSegmentSample: a};
+   };
    _elm.Example.Main.values = {_op: _op
-                              ,main: main};
+                              ,AppState: AppState
+                              ,SevenSegmentSample: SevenSegmentSample
+                              ,SegmentedBarGraphSample: SegmentedBarGraphSample
+                              ,defaultAppState: defaultAppState
+                              ,defaultSevenSegmentSample: defaultSevenSegmentSample
+                              ,segmentedBarGraphSample: segmentedBarGraphSample
+                              ,NoOp: NoOp
+                              ,SeventSegmentTextChange: SeventSegmentTextChange
+                              ,SeventSegmentPointsChange: SeventSegmentPointsChange
+                              ,SeventSegmentColonsChange: SeventSegmentColonsChange
+                              ,update: update
+                              ,main: main
+                              ,appState: appState
+                              ,actions: actions
+                              ,mergedActions: mergedActions
+                              ,appView: appView
+                              ,sevenSegmentSampleView: sevenSegmentSampleView
+                              ,segmentedBarGraphView: segmentedBarGraphView};
    return _elm.Example.Main.values;
 };
 Elm.Graphics = Elm.Graphics || {};
@@ -2720,6 +2956,37 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
 };
+Elm.Graphics = Elm.Graphics || {};
+Elm.Graphics.Input = Elm.Graphics.Input || {};
+Elm.Graphics.Input.make = function (_elm) {
+   "use strict";
+   _elm.Graphics = _elm.Graphics || {};
+   _elm.Graphics.Input = _elm.Graphics.Input || {};
+   if (_elm.Graphics.Input.values)
+   return _elm.Graphics.Input.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Graphics.Input",
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Native$Graphics$Input = Elm.Native.Graphics.Input.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var clickable = $Native$Graphics$Input.clickable;
+   var hoverable = $Native$Graphics$Input.hoverable;
+   var dropDown = $Native$Graphics$Input.dropDown;
+   var checkbox = $Native$Graphics$Input.checkbox;
+   var customButton = $Native$Graphics$Input.customButton;
+   var button = $Native$Graphics$Input.button;
+   _elm.Graphics.Input.values = {_op: _op
+                                ,button: button
+                                ,customButton: customButton
+                                ,checkbox: checkbox
+                                ,dropDown: dropDown
+                                ,hoverable: hoverable
+                                ,clickable: clickable};
+   return _elm.Graphics.Input.values;
+};
 Elm.Html = Elm.Html || {};
 Elm.Html.make = function (_elm) {
    "use strict";
@@ -3577,6 +3844,113 @@ Elm.Html.Attributes.make = function (_elm) {
    return _elm.Html.Attributes.values;
 };
 Elm.Html = Elm.Html || {};
+Elm.Html.Events = Elm.Html.Events || {};
+Elm.Html.Events.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Events = _elm.Html.Events || {};
+   if (_elm.Html.Events.values)
+   return _elm.Html.Events.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Events",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var keyCode = A2($Json$Decode._op[":="],
+   "keyCode",
+   $Json$Decode.$int);
+   var targetChecked = A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"checked"]),
+   $Json$Decode.bool);
+   var targetValue = A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"value"]),
+   $Json$Decode.string);
+   var defaultOptions = $VirtualDom.defaultOptions;
+   var Options = F2(function (a,
+   b) {
+      return {_: {}
+             ,preventDefault: b
+             ,stopPropagation: a};
+   });
+   var onWithOptions = $VirtualDom.onWithOptions;
+   var on = $VirtualDom.on;
+   var messageOn = F3(function (name,
+   addr,
+   msg) {
+      return A3(on,
+      name,
+      $Json$Decode.value,
+      function (_v0) {
+         return function () {
+            return A2($Signal.message,
+            addr,
+            msg);
+         }();
+      });
+   });
+   var onClick = messageOn("click");
+   var onDoubleClick = messageOn("dblclick");
+   var onMouseMove = messageOn("mousemove");
+   var onMouseDown = messageOn("mousedown");
+   var onMouseUp = messageOn("mouseup");
+   var onMouseEnter = messageOn("mouseenter");
+   var onMouseLeave = messageOn("mouseleave");
+   var onMouseOver = messageOn("mouseover");
+   var onMouseOut = messageOn("mouseout");
+   var onBlur = messageOn("blur");
+   var onFocus = messageOn("focus");
+   var onSubmit = messageOn("submit");
+   var onKey = F3(function (name,
+   addr,
+   handler) {
+      return A3(on,
+      name,
+      keyCode,
+      function (code) {
+         return A2($Signal.message,
+         addr,
+         handler(code));
+      });
+   });
+   var onKeyUp = onKey("keyup");
+   var onKeyDown = onKey("keydown");
+   var onKeyPress = onKey("keypress");
+   _elm.Html.Events.values = {_op: _op
+                             ,onBlur: onBlur
+                             ,onFocus: onFocus
+                             ,onSubmit: onSubmit
+                             ,onKeyUp: onKeyUp
+                             ,onKeyDown: onKeyDown
+                             ,onKeyPress: onKeyPress
+                             ,onClick: onClick
+                             ,onDoubleClick: onDoubleClick
+                             ,onMouseMove: onMouseMove
+                             ,onMouseDown: onMouseDown
+                             ,onMouseUp: onMouseUp
+                             ,onMouseEnter: onMouseEnter
+                             ,onMouseLeave: onMouseLeave
+                             ,onMouseOver: onMouseOver
+                             ,onMouseOut: onMouseOut
+                             ,on: on
+                             ,onWithOptions: onWithOptions
+                             ,defaultOptions: defaultOptions
+                             ,targetValue: targetValue
+                             ,targetChecked: targetChecked
+                             ,keyCode: keyCode
+                             ,Options: Options};
+   return _elm.Html.Events.values;
+};
+Elm.Html = Elm.Html || {};
 Elm.Html.Widgets = Elm.Html.Widgets || {};
 Elm.Html.Widgets.make = function (_elm) {
    "use strict";
@@ -3598,321 +3972,262 @@ Elm.Html.Widgets.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Svg = Elm.Svg.make(_elm),
    $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
-   var sevenSegmentDigit = F3(function (_v0,
-   index,
-   digit) {
+   var segmentedBarGraph = F3(function (currentValue,
+   maxValue,
+   segments) {
       return function () {
-         switch (_v0.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var transformAttribute = A2($Basics._op["++"],
-                 "translate(",
-                 A2($Basics._op["++"],
-                 $Basics.toString(_v0._0 * index),
-                 " 0)"));
-                 var polygons = function () {
-                    switch (digit + "")
-                    {case " ":
-                       return _L.fromArray([]);
-                       case "0":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))]);
-                       case "1":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))]);
-                       case "2":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "3":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "4":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "5":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "6":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "7":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))]);
-                       case "8":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);
-                       case "9":
-                       return _L.fromArray([A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points("145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ")]),
-                                           _L.fromArray([]))
-                                           ,A2($Svg.polygon,
-                                           _L.fromArray([$Svg$Attributes.transform(transformAttribute)
-                                                        ,$Svg$Attributes.fill("#7FD13B")
-                                                        ,$Svg$Attributes.points(" 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9")]),
-                                           _L.fromArray([]))]);}
-                    _U.badCase($moduleName,
-                    "between lines 28 and 89");
-                 }();
-                 return A2($Svg.g,
-                 _L.fromArray([$Svg$Attributes.fillRule("evenodd")
-                              ,$Svg$Attributes.stroke("#FFFFFF")
-                              ,$Svg$Attributes.strokeWidth("0.5")
-                              ,$Svg$Attributes.strokeOpacity("1")]),
-                 polygons);
-              }();}
-         _U.badCase($moduleName,
-         "between lines 27 and 89");
-      }();
-   });
-   var sevenSegment = F2(function (digits,
-   pointIndexes) {
-      return function () {
-         var digitLength = $String.length(digits);
-         var containerHeigth = 340;
-         var containerWidth = 200;
+         var containerHeight = 340;
+         var barWidth = 10;
          return A2($Svg.svg,
          _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
                       ,$Svg$Attributes.x("0")
                       ,$Svg$Attributes.y("0")
                       ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
                       "0 0 ",
                       A2($Basics._op["++"],
-                      $Basics.toString(containerWidth * 2),
+                      $Basics.toString(barWidth * segments),
                       A2($Basics._op["++"],
                       " ",
-                      $Basics.toString(containerHeigth)))))]),
-         A2($Basics._op["++"],
-         _L.fromArray([A2($Svg.rect,
-         _L.fromArray([$Svg$Attributes.fill("#000")
+                      $Basics.toString(containerHeight)))))]),
+         _L.fromArray([]));
+      }();
+   });
+   var seventSegmentColon = F3(function (attributes,
+   containerWidth,
+   index) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A2($Svg.circle,
+                   A2($Basics._op["++"],
+                   attributes,
+                   _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                                ,$Svg$Attributes.cy("110")
+                                ,$Svg$Attributes.r("16")])),
+                   _L.fromArray([]))
+                   ,A2($Svg.circle,
+                   A2($Basics._op["++"],
+                   attributes,
+                   _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                                ,$Svg$Attributes.cy("230")
+                                ,$Svg$Attributes.r("16")])),
+                   _L.fromArray([]))]));
+   });
+   var seventSegmentColons = F3(function (_v0,
+   indexes,
+   attributes) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return A2($List.map,
+              A2(seventSegmentColon,
+              attributes,
+              _v0._0),
+              indexes);}
+         _U.badCase($moduleName,
+         "on line 118, column 3 to 57");
+      }();
+   });
+   var sevenSegmentPoint = F3(function (attributes,
+   containerWidth,
+   index) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A2($Svg.circle,
+      A2($Basics._op["++"],
+      attributes,
+      _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                   ,$Svg$Attributes.cy("300")
+                   ,$Svg$Attributes.r("16")])),
+      _L.fromArray([]))]));
+   });
+   var sevenSegmentPoints = F3(function (_v4,
+   indexes,
+   attributes) {
+      return function () {
+         switch (_v4.ctor)
+         {case "_Tuple2":
+            return A2($List.map,
+              A2(sevenSegmentPoint,
+              attributes,
+              _v4._0),
+              indexes);}
+         _U.badCase($moduleName,
+         "on line 109, column 3 to 56");
+      }();
+   });
+   var sevenSegmentDigitPolygon = F2(function (points$,
+   attributes) {
+      return A2($Svg.polygon,
+      A2($Basics._op["++"],
+      _L.fromArray([$Svg$Attributes.points(points$)]),
+      attributes),
+      _L.fromArray([]));
+   });
+   var sevenSegmentDigit = F4(function (_v8,
+   foregroundAttributes,
+   index,
+   digit) {
+      return function () {
+         switch (_v8.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
+                 "translate(",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v8._0 * index),
+                 " 0)")));
+                 var newForegroundAttribute = A2($Basics._op["++"],
+                 foregroundAttributes,
+                 _L.fromArray([transformAttribute]));
+                 var segmentA = A2(sevenSegmentDigitPolygon,
+                 " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2",
+                 newForegroundAttribute);
+                 var segmentB = A2(sevenSegmentDigitPolygon,
+                 "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2",
+                 newForegroundAttribute);
+                 var segmentC = A2(sevenSegmentDigitPolygon,
+                 "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6",
+                 newForegroundAttribute);
+                 var segmentD = A2(sevenSegmentDigitPolygon,
+                 "145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1",
+                 newForegroundAttribute);
+                 var segmentE = A2(sevenSegmentDigitPolygon,
+                 " 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8",
+                 newForegroundAttribute);
+                 var segmentF = A2(sevenSegmentDigitPolygon,
+                 " 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ",
+                 newForegroundAttribute);
+                 var segmentG = A2(sevenSegmentDigitPolygon,
+                 " 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9",
+                 newForegroundAttribute);
+                 var polygons = function () {
+                    switch (digit + "")
+                    {case " ":
+                       return _L.fromArray([]);
+                       case "0":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF]);
+                       case "1":
+                       return _L.fromArray([segmentB
+                                           ,segmentC]);
+                       case "2":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentG]);
+                       case "3":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentG]);
+                       case "4":
+                       return _L.fromArray([segmentB
+                                           ,segmentC
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "5":
+                       return _L.fromArray([segmentA
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "6":
+                       return _L.fromArray([segmentA
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "7":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC]);
+                       case "8":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "9":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentF
+                                           ,segmentG]);}
+                    _U.badCase($moduleName,
+                    "between lines 40 and 101");
+                 }();
+                 return A2($Svg.g,
+                 _L.fromArray([]),
+                 polygons);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 31 and 101");
+      }();
+   });
+   var sevenSegment = F5(function (digits,
+   pointIndexes,
+   colonIndexes,
+   containerAttributes,
+   foregroundAttributes) {
+      return function () {
+         var digitLength = $String.length(digits);
+         var containerHeight = 340;
+         var containerWidth = 200;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
                       ,$Svg$Attributes.x("0")
                       ,$Svg$Attributes.y("0")
-                      ,$Svg$Attributes.width($Basics.toString(containerWidth * 2))
-                      ,$Svg$Attributes.height($Basics.toString(containerHeigth * 2))]),
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth * digitLength),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         A2($Basics._op["++"],
+         _L.fromArray([A2($Svg.rect,
+         A2($Basics._op["++"],
+         _L.fromArray([$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.width($Basics.toString(containerWidth * digitLength))
+                      ,$Svg$Attributes.height($Basics.toString(containerHeight))]),
+         containerAttributes),
          _L.fromArray([]))]),
+         A2($Basics._op["++"],
          A2($List.indexedMap,
-         sevenSegmentDigit({ctor: "_Tuple2"
-                           ,_0: containerWidth
-                           ,_1: containerHeigth}),
-         $String.toList(digits))));
+         A2(sevenSegmentDigit,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         foregroundAttributes),
+         $String.toList(digits)),
+         A2($Basics._op["++"],
+         A3(sevenSegmentPoints,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         pointIndexes,
+         foregroundAttributes),
+         A3(seventSegmentColons,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         colonIndexes,
+         foregroundAttributes)))));
       }();
    });
    _elm.Html.Widgets.values = {_op: _op
@@ -7117,6 +7432,479 @@ Elm.Native.Graphics.Element.make = function(localRuntime) {
 
 		block: block,
 		markdown: markdown
+	};
+
+};
+
+// setup
+Elm.Native = Elm.Native || {};
+Elm.Native.Graphics = Elm.Native.Graphics || {};
+Elm.Native.Graphics.Input = Elm.Native.Graphics.Input || {};
+
+// definition
+Elm.Native.Graphics.Input.make = function(localRuntime) {
+	'use strict';
+
+	// attempt to short-circuit
+	if ('values' in Elm.Native.Graphics.Input) {
+		return Elm.Native.Graphics.Input.values;
+	}
+
+	var Color = Elm.Native.Color.make(localRuntime);
+	var List = Elm.Native.List.make(localRuntime);
+	var Signal = Elm.Native.Signal.make(localRuntime);
+	var Text = Elm.Native.Text.make(localRuntime);
+	var Utils = Elm.Native.Utils.make(localRuntime);
+
+	var Element = Elm.Native.Graphics.Element.make(localRuntime);
+
+
+	function renderDropDown(model)
+	{
+		var drop = Element.createNode('select');
+		drop.style.border = '0 solid';
+		drop.style.pointerEvents = 'auto';
+		drop.style.display = 'block';
+
+		drop.elm_values = List.toArray(model.values);
+		drop.elm_handler = model.handler;
+		var values = drop.elm_values;
+
+		for (var i = 0; i < values.length; ++i)
+		{
+			var option = Element.createNode('option');
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+			drop.appendChild(option);
+		}
+		drop.addEventListener('change', function() {
+			Signal.sendMessage(drop.elm_handler(drop.elm_values[drop.selectedIndex]._1));
+		});
+
+		return drop;
+	}
+
+	function updateDropDown(node, oldModel, newModel)
+	{
+		node.elm_values = List.toArray(newModel.values);
+		node.elm_handler = newModel.handler;
+
+		var values = node.elm_values;
+		var kids = node.childNodes;
+		var kidsLength = kids.length;
+
+		var i = 0;
+		for (; i < kidsLength && i < values.length; ++i)
+		{
+			var option = kids[i];
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+		}
+		for (; i < kidsLength; ++i)
+		{
+			node.removeChild(node.lastChild);
+		}
+		for (; i < values.length; ++i)
+		{
+			var option = Element.createNode('option');
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+			node.appendChild(option);
+		}
+		return node;
+	}
+
+	function dropDown(handler, values)
+	{
+		return A3(Element.newElement, 100, 24, {
+			ctor: 'Custom',
+			type: 'DropDown',
+			render: renderDropDown,
+			update: updateDropDown,
+			model: {
+				values: values,
+				handler: handler
+			}
+		});
+	}
+
+	function renderButton(model)
+	{
+		var node = Element.createNode('button');
+		node.style.display = 'block';
+		node.style.pointerEvents = 'auto';
+		node.elm_message = model.message;
+		function click()
+		{
+			Signal.sendMessage(node.elm_message);
+		}
+		node.addEventListener('click', click);
+		node.innerHTML = model.text;
+		return node;
+	}
+
+	function updateButton(node, oldModel, newModel)
+	{
+		node.elm_message = newModel.message;
+		var txt = newModel.text;
+		if (oldModel.text !== txt)
+		{
+			node.innerHTML = txt;
+		}
+		return node;
+	}
+
+	function button(message, text)
+	{
+		return A3(Element.newElement, 100, 40, {
+			ctor: 'Custom',
+			type: 'Button',
+			render: renderButton,
+			update: updateButton,
+			model: {
+				message: message,
+				text:text
+			}
+		});
+	}
+
+	function renderCustomButton(model)
+	{
+		var btn = Element.createNode('div');
+		btn.style.pointerEvents = 'auto';
+		btn.elm_message = model.message;
+
+		btn.elm_up    = Element.render(model.up);
+		btn.elm_hover = Element.render(model.hover);
+		btn.elm_down  = Element.render(model.down);
+
+		btn.elm_up.style.display = 'block';
+		btn.elm_hover.style.display = 'none';
+		btn.elm_down.style.display = 'none';
+
+		btn.appendChild(btn.elm_up);
+		btn.appendChild(btn.elm_hover);
+		btn.appendChild(btn.elm_down);
+
+		function swap(visibleNode, hiddenNode1, hiddenNode2)
+		{
+			visibleNode.style.display = 'block';
+			hiddenNode1.style.display = 'none';
+			hiddenNode2.style.display = 'none';
+		}
+
+		var overCount = 0;
+		function over(e)
+		{
+			if (overCount++ > 0) return;
+			swap(btn.elm_hover, btn.elm_down, btn.elm_up);
+		}
+		function out(e)
+		{
+			if (btn.contains(e.toElement || e.relatedTarget)) return;
+			overCount = 0;
+			swap(btn.elm_up, btn.elm_down, btn.elm_hover);
+		}
+		function up()
+		{
+			swap(btn.elm_hover, btn.elm_down, btn.elm_up);
+			Signal.sendMessage(btn.elm_message);
+		}
+		function down()
+		{
+			swap(btn.elm_down, btn.elm_hover, btn.elm_up);
+		}
+
+		btn.addEventListener('mouseover', over);
+		btn.addEventListener('mouseout' , out);
+		btn.addEventListener('mousedown', down);
+		btn.addEventListener('mouseup'  , up);
+
+		return btn;
+	}
+
+	function updateCustomButton(node, oldModel, newModel)
+	{
+		node.elm_message = newModel.message;
+
+		var kids = node.childNodes;
+		var styleUp    = kids[0].style.display;
+		var styleHover = kids[1].style.display;
+		var styleDown  = kids[2].style.display;
+
+		Element.updateAndReplace(kids[0], oldModel.up, newModel.up);
+		Element.updateAndReplace(kids[1], oldModel.hover, newModel.hover);
+		Element.updateAndReplace(kids[2], oldModel.down, newModel.down);
+
+		var kids = node.childNodes;
+		kids[0].style.display = styleUp;
+		kids[1].style.display = styleHover;
+		kids[2].style.display = styleDown;
+
+		return node;
+	}
+
+	function max3(a,b,c)
+	{
+		var ab = a > b ? a : b;
+		return ab > c ? ab : c;
+	}
+
+	function customButton(message, up, hover, down)
+	{
+		return A3(Element.newElement,
+				  max3(up.props.width, hover.props.width, down.props.width),
+				  max3(up.props.height, hover.props.height, down.props.height),
+				  { ctor: 'Custom',
+					type: 'CustomButton',
+					render: renderCustomButton,
+					update: updateCustomButton,
+					model: {
+						message: message,
+						up: up,
+						hover: hover,
+						down: down
+					}
+				  });
+	}
+
+	function renderCheckbox(model)
+	{
+		var node = Element.createNode('input');
+		node.type = 'checkbox';
+		node.checked = model.checked;
+		node.style.display = 'block';
+		node.style.pointerEvents = 'auto';
+		node.elm_handler = model.handler;
+		function change()
+		{
+			Signal.sendMessage(node.elm_handler(node.checked));
+		}
+		node.addEventListener('change', change);
+		return node;
+	}
+
+	function updateCheckbox(node, oldModel, newModel)
+	{
+		node.elm_handler = newModel.handler;
+		node.checked = newModel.checked;
+		return node;
+	}
+
+	function checkbox(handler, checked)
+	{
+		return A3(Element.newElement, 13, 13, {
+			ctor: 'Custom',
+			type: 'CheckBox',
+			render: renderCheckbox,
+			update: updateCheckbox,
+			model: { handler:handler, checked:checked }
+		});
+	}
+
+	function setRange(node, start, end, dir)
+	{
+		if (node.parentNode)
+		{
+			node.setSelectionRange(start, end, dir);
+		}
+		else
+		{
+			setTimeout(function(){node.setSelectionRange(start, end, dir);}, 0);
+		}
+	}
+
+	function updateIfNeeded(css, attribute, latestAttribute)
+	{
+		if (css[attribute] !== latestAttribute)
+		{
+			css[attribute] = latestAttribute;
+		}
+	}
+	function cssDimensions(dimensions)
+	{
+		return dimensions.top    + 'px ' +
+			   dimensions.right  + 'px ' +
+			   dimensions.bottom + 'px ' +
+			   dimensions.left   + 'px';
+	}
+	function updateFieldStyle(css, style)
+	{
+		updateIfNeeded(css, 'padding', cssDimensions(style.padding));
+
+		var outline = style.outline;
+		updateIfNeeded(css, 'border-width', cssDimensions(outline.width));
+		updateIfNeeded(css, 'border-color', Color.toCss(outline.color));
+		updateIfNeeded(css, 'border-radius', outline.radius + 'px');
+
+		var highlight = style.highlight;
+		if (highlight.width === 0)
+		{
+			css.outline = 'none';
+		}
+		else
+		{
+			updateIfNeeded(css, 'outline-width', highlight.width + 'px');
+			updateIfNeeded(css, 'outline-color', Color.toCss(highlight.color));
+		}
+
+		var textStyle = style.style;
+		updateIfNeeded(css, 'color', Color.toCss(textStyle.color));
+		if (textStyle.typeface.ctor !== '[]')
+		{
+			updateIfNeeded(css, 'font-family', Text.toTypefaces(textStyle.typeface));
+		}
+		if (textStyle.height.ctor !== "Nothing")
+		{
+			updateIfNeeded(css, 'font-size', textStyle.height._0 + 'px');
+		}
+		updateIfNeeded(css, 'font-weight', textStyle.bold ? 'bold' : 'normal');
+		updateIfNeeded(css, 'font-style', textStyle.italic ? 'italic' : 'normal');
+		if (textStyle.line.ctor !== 'Nothing')
+		{
+			updateIfNeeded(css, 'text-decoration', Text.toLine(textStyle.line._0));
+		}
+	}
+
+	function renderField(model)
+	{
+		var field = Element.createNode('input');
+		updateFieldStyle(field.style, model.style);
+		field.style.borderStyle = 'solid';
+		field.style.pointerEvents = 'auto';
+
+		field.type = model.type;
+		field.placeholder = model.placeHolder;
+		field.value = model.content.string;
+
+		field.elm_handler = model.handler;
+		field.elm_old_value = field.value;
+
+		function inputUpdate(event)
+		{
+			var curr = field.elm_old_value;
+			var next = field.value;
+			if (curr === next)
+			{
+				return;
+			}
+
+			var direction = field.selectionDirection === 'forward' ? 'Forward' : 'Backward';
+			var start = field.selectionStart;
+			var end = field.selectionEnd;
+			field.value = field.elm_old_value;
+
+			Signal.sendMessage(field.elm_handler({
+				_:{},
+				string: next,
+				selection: {
+					_:{},
+					start: start,
+					end: end,
+					direction: { ctor: direction }
+				}
+			}));
+		}
+
+		field.addEventListener('input', inputUpdate);
+		field.addEventListener('focus', function() {
+			field.elm_hasFocus = true;
+		});
+		field.addEventListener('blur', function() {
+			field.elm_hasFocus = false;
+		});
+
+		return field;
+	}
+
+	function updateField(field, oldModel, newModel)
+	{
+		if (oldModel.style !== newModel.style)
+		{
+			updateFieldStyle(field.style, newModel.style);
+		}
+		field.elm_handler = newModel.handler;
+
+		field.type = newModel.type;
+		field.placeholder = newModel.placeHolder;
+		var value = newModel.content.string;
+		field.value = value;
+		field.elm_old_value = value;
+		if (field.elm_hasFocus)
+		{
+			var selection = newModel.content.selection;
+			var direction = selection.direction.ctor === 'Forward' ? 'forward' : 'backward';
+			setRange(field, selection.start, selection.end, direction);
+		}
+		return field;
+	}
+
+	function mkField(type)
+	{
+		function field(style, handler, placeHolder, content)
+		{
+			var padding = style.padding;
+			var outline = style.outline.width;
+			var adjustWidth = padding.left + padding.right + outline.left + outline.right;
+			var adjustHeight = padding.top + padding.bottom + outline.top + outline.bottom;
+			return A3(Element.newElement, 200, 30, {
+				ctor: 'Custom',
+				type: type + 'Field',
+				adjustWidth: adjustWidth,
+				adjustHeight: adjustHeight,
+				render: renderField,
+				update: updateField,
+				model: {
+					handler:handler,
+					placeHolder:placeHolder,
+					content:content,
+					style:style,
+					type:type
+				}
+			});
+		}
+		return F4(field);
+	}
+
+	function hoverable(handler, elem)
+	{
+		function onHover(bool)
+		{
+			Signal.sendMessage(handler(bool));
+		}
+		var props = Utils.replace([['hover',onHover]], elem.props);
+		return {
+			props: props,
+			element: elem.element
+		};
+	}
+
+	function clickable(message, elem)
+	{
+		function onClick()
+		{
+			Signal.sendMessage(message);
+		}
+		var props = Utils.replace([['click',onClick]], elem.props);
+		return {
+			props: props,
+			element: elem.element
+		};
+	}
+
+	return Elm.Native.Graphics.Input.values = {
+		button: F2(button),
+		customButton: F4(customButton),
+		checkbox: F2(checkbox),
+		dropDown: F2(dropDown),
+		field: mkField('text'),
+		email: mkField('email'),
+		password: mkField('password'),
+		hoverable: F2(hoverable),
+		clickable: F2(clickable)
 	};
 
 };
