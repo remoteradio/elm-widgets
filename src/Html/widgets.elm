@@ -1,35 +1,66 @@
 -- author: virgilio dato
-module Html.Widgets (sevenSegment) where
+module Html.Widgets (sevenSegment
+                    , defaultSevenSegmentProperties
+                    , defaultSevenSegmentStyle
+                    , SevenSegmentProperties
+                    , SevenSegmentStyle
+                    ,segmentedBarGraph
+                    ,defaultSegmentedBarGraphProperties
+                    ,SegmentedBarGraphProperties) where
 
 import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import String
 
+---- ALIASES
+-- model that defines the values for the controls
+type alias SevenSegmentProperties = { digits : String
+                                    , pointIndexes : List Int
+                                    , colonIndexes : List Int }
+-- model that defines the colors for the parts of each control
+type alias SevenSegmentStyle =  { backgroundColor : String
+                                , textColor : String }
+
+-- model that defines the values for the controls
+type alias SegmentedBarGraphProperties =  { currentValue : Int
+                                          , maxValue : Int
+                                          , segments : Int }
+
+---- ALIAS CONSTRUCTORS
+defaultSevenSegmentProperties = { digits = "1234 4567890"
+                                , pointIndexes = [ 7 ]
+                                , colonIndexes = [ 1 ]
+                                }
+defaultSevenSegmentStyle =  { backgroundColor = "#000"
+                            , textColor = "#0F0"}
+
+defaultSegmentedBarGraphProperties : SegmentedBarGraphProperties
+defaultSegmentedBarGraphProperties =  { currentValue = 0
+                                      , maxValue = 100
+                                      , segments = 10 }
+
 ---- SEVEN SEGMENT WIDGET
--- creates sevent segments given string and integers
--- digits       - example 12345
--- pointIndexes - example [1, 2] -> would generate 1.2.345
--- colonIndexes - example [2, 3] -> would generate 12:3:45
-sevenSegment : String -> List Int -> List Int -> List Attribute -> List Attribute -> Html
-sevenSegment digits pointIndexes colonIndexes containerAttributes foregroundAttributes = 
+-- creates seven segments properties and sevent segment styles
+sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Html
+sevenSegment properties style = 
   let containerWidth = 200
       containerHeight = 340
-      digitLength = (String.length digits)
-  in Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (containerWidth * digitLength)) ++ " " ++ (toString containerHeight)) ]
-              ([ rect ([x "0", y "0", width (toString (containerWidth * digitLength)), height (toString (containerHeight ))] ++ containerAttributes) [ ] ] 
+      digitLength = (String.length properties.digits)
+  in svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (containerWidth * digitLength)) ++ " " ++ (toString containerHeight)) ]
+              ([ rect [x "0", y "0", width (toString (containerWidth * digitLength)), height (toString (containerHeight )), fill style.backgroundColor ] [ ] ] 
                 ++
-              (List.indexedMap (sevenSegmentDigit ( containerWidth, containerHeight) foregroundAttributes) (String.toList digits))
+              (List.indexedMap (sevenSegmentDigit ( containerWidth, containerHeight) style) (String.toList properties.digits))
                 ++
-              (sevenSegmentPoints (containerWidth, containerHeight) pointIndexes foregroundAttributes)
+              (sevenSegmentPoints (containerWidth, containerHeight) properties.pointIndexes style)
                 ++
-              (seventSegmentColons (containerWidth, containerHeight) colonIndexes foregroundAttributes))
+              (seventSegmentColons (containerWidth, containerHeight) properties.colonIndexes style))
 
 --seven segment widget digit
-sevenSegmentDigit : (Int, Int) -> List Attribute -> Int -> Char  -> Svg
-sevenSegmentDigit (width, height) foregroundAttributes index digit  =
+sevenSegmentDigit : (Int, Int) -> SevenSegmentStyle -> Int -> Char  -> Svg
+sevenSegmentDigit (width, height) style index digit  =
   let transformAttribute = transform ("translate(" ++ (toString (width * index)) ++ " 0)")  
-      newForegroundAttribute = foregroundAttributes ++ [ transformAttribute ]
+      newForegroundAttribute = [ transformAttribute, fill style.textColor ]
       segmentA = sevenSegmentDigitPolygon " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2" newForegroundAttribute
       segmentB = sevenSegmentDigitPolygon "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2" newForegroundAttribute
       segmentC = sevenSegmentDigitPolygon "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6" newForegroundAttribute
@@ -100,32 +131,50 @@ sevenSegmentDigit (width, height) foregroundAttributes index digit  =
                     ' ' -> [ ]
   in Svg.g [ ] polygons
 
+-- element for a segment
+
 sevenSegmentDigitPolygon : String -> List Attribute -> Svg
 sevenSegmentDigitPolygon points' attributes =
   polygon ([ points points' ] ++ attributes) [ ]
 
-sevenSegmentPoints : (Int, Int) -> List Int -> List Attribute -> List Svg
-sevenSegmentPoints (width, height) indexes attributes =
-  List.map (sevenSegmentPoint attributes width) indexes
+-- element for a list of points
 
-sevenSegmentPoint :  List Attribute ->Int -> Int -> Svg
-sevenSegmentPoint attributes containerWidth index =               
+sevenSegmentPoints : (Int, Int) -> List Int -> SevenSegmentStyle -> List Svg
+sevenSegmentPoints (width, height) indexes style =
+  List.map (sevenSegmentPoint style width) indexes
+
+-- element for a point
+sevenSegmentPoint : SevenSegmentStyle ->Int -> Int -> Svg
+sevenSegmentPoint style containerWidth index =               
   Svg.g [ ] 
-        [ circle (attributes ++ [ cx (toString ((index + 1) * containerWidth)), cy "300" , r "16" ] ) [ ] ]
+        [ circle [ cx (toString ((index + 1) * containerWidth)), cy "300" , r "16", fill style.textColor ] [ ] ]
 
-seventSegmentColons : (Int, Int) -> List Int -> List Attribute -> List Svg
-seventSegmentColons (width, height) indexes attributes =
-  List.map (seventSegmentColon attributes width) indexes
+-- element for list of colons
+seventSegmentColons : (Int, Int) -> List Int -> SevenSegmentStyle -> List Svg
+seventSegmentColons (width, height) indexes style =
+  List.map (seventSegmentColon style width) indexes
 
-seventSegmentColon :  List Attribute ->Int -> Int -> Svg
-seventSegmentColon attributes containerWidth index =               
+-- element for colon
+seventSegmentColon : SevenSegmentStyle ->Int -> Int -> Svg
+seventSegmentColon style containerWidth index =               
   Svg.g [ ] 
-        [ circle (attributes ++ [ cx (toString ((index + 1) * containerWidth)), cy "110" , r "16" ] ) [ ]
-        , circle (attributes ++ [ cx (toString ((index + 1) * containerWidth)), cy "230" , r "16" ] ) [ ] ]
+        [ circle [ cx (toString ((index + 1) * containerWidth)), cy "110" , r "16", fill style.textColor ] [ ]
+        , circle [ cx (toString ((index + 1) * containerWidth)), cy "230" , r "16", fill style.textColor ] [ ] ]
 
-segmentedBarGraph : Int -> Int -> Int -> Html
-segmentedBarGraph currentValue maxValue segments =
-  let barWidth = 10
+---- SEGMENTED BAR GRAPH WIDGET
+-- creates a segmented bar graph widget given the following
+-- current value - current value of meter 
+-- max value - maximum value of the meter
+-- number of polygons that make up the value of the bar
+segmentedBarGraph : SegmentedBarGraphProperties -> Html
+segmentedBarGraph segmentedBarGraphProperties =
+  let barWidth = 100
       containerHeight = 340
-  in  Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (barWidth * segments)) ++ " " ++ (toString containerHeight)) ]
-              [ ]
+  in  Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (barWidth * segmentedBarGraphProperties.segments)) ++ " " ++ (toString containerHeight)) ]
+              [ Svg.rect [ fill "#000", width "100%", height "340" ] [] ]
+
+segmentedBarGraphBar : (Int, Int) -> Int -> Svg
+segmentedBarGraphBar (width', height) index =
+  let transformAttribute = transform ("translate(" ++ (toString (width' * index)) ++ " 0)")  
+  in rect [] []
+  --rect ([ transformAttribute ] ++ [ fill "#000", width "100%", height "340" ]) []
