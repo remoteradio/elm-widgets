@@ -1825,31 +1825,28 @@ Elm.Example.Main.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var segmentedBarGraphView = F2(function (address,
-   segmentedBarGraphSample) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.style(_L.fromArray([segmentedBarGraphSample.isVisible ? {ctor: "_Tuple2"
-                                                                                             ,_0: ""
-                                                                                             ,_1: ""} : {ctor: "_Tuple2"
-                                                                                                        ,_0: "display"
-                                                                                                        ,_1: "none"}]))]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([]),
-                   _L.fromArray([$Html.text("SEGMENTED BAR GRAPH SAMPLE")]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                                      ,_0: "width"
-                                                                      ,_1: "400px"}
-                                                                     ,{ctor: "_Tuple2"
-                                                                      ,_0: "height"
-                                                                      ,_1: "68px"}]))]),
-                   _L.fromArray([$Html$Widgets.segmentedBarGraph(segmentedBarGraphSample.properties)]))]));
-   });
+   var convertToInt = function (digit) {
+      return A2($Maybe.withDefault,
+      -1,
+      $Result.toMaybe($String.toInt(digit)));
+   };
    var update = F2(function (action,
    appState) {
       return function () {
          switch (action.ctor)
          {case "NoOp": return appState;
+            case "SegmentedBarGraphValueChange":
+            return function () {
+                 var segmentedBarGraphSample$ = appState.segmentedBarGraphSample;
+                 var properties$ = segmentedBarGraphSample$.properties;
+                 return _U.replace([["segmentedBarGraphSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["currentValue"
+                                                              ,convertToInt(action._0)]],
+                                                 properties$)]],
+                                    segmentedBarGraphSample$)]],
+                 appState);
+              }();
             case "SeventSegmentColonsChange":
             return function () {
                  var convert = function (digit) {
@@ -1923,7 +1920,49 @@ Elm.Example.Main.make = function (_elm) {
                  appState);
               }();}
          _U.badCase($moduleName,
-         "between lines 61 and 80");
+         "between lines 64 and 86");
+      }();
+   });
+   var SegmentedBarGraphValueChange = function (a) {
+      return {ctor: "SegmentedBarGraphValueChange"
+             ,_0: a};
+   };
+   var segmentedBarGraphView = F2(function (address,
+   segmentedBarGraphSample) {
+      return function () {
+         var properties = segmentedBarGraphSample.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([segmentedBarGraphSample.isVisible ? {ctor: "_Tuple2"
+                                                                                                ,_0: ""
+                                                                                                ,_1: ""} : {ctor: "_Tuple2"
+                                                                                                           ,_0: "display"
+                                                                                                           ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SEGMENTED BAR GRAPH SAMPLE")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "68px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.segmentedBarGraph,
+                      segmentedBarGraphSample.properties,
+                      segmentedBarGraphSample.style)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("VALUE")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value($Basics.toString(properties.currentValue))
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SegmentedBarGraphValueChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
       }();
    });
    var SeventSegmentColonsChange = function (a) {
@@ -2004,13 +2043,13 @@ Elm.Example.Main.make = function (_elm) {
    });
    var appView = F3(function (address,
    appState,
-   _v4) {
+   _v5) {
       return function () {
-         switch (_v4.ctor)
+         switch (_v5.ctor)
          {case "_Tuple2":
             return A2($Html.toElement,
-              _v4._0,
-              _v4._1)(A2($Html.div,
+              _v5._0,
+              _v5._1)(A2($Html.div,
               _L.fromArray([]),
               _L.fromArray([A2(sevenSegmentSampleView,
                            address,
@@ -2019,7 +2058,7 @@ Elm.Example.Main.make = function (_elm) {
                            address,
                            appState.segmentedBarGraphSample)])));}
          _U.badCase($moduleName,
-         "between lines 103 and 104");
+         "between lines 109 and 110");
       }();
    });
    var NoOp = {ctor: "NoOp"};
@@ -2027,11 +2066,24 @@ Elm.Example.Main.make = function (_elm) {
    var mergedActions = $Signal.mergeMany(_L.fromArray([actions.signal]));
    var defaultSegmentedBarGraphSample = {_: {}
                                         ,isVisible: true
-                                        ,properties: $Html$Widgets.defaultSegmentedBarGraphProperties};
+                                        ,properties: $Html$Widgets.defaultSegmentedBarGraphProperties
+                                        ,style: $Html$Widgets.defaultSegmentBarGraphStyle};
    var defaultSevenSegmentSample = {_: {}
-                                   ,colonIndexesText: ""
+                                   ,colonIndexesText: A2($String.join,
+                                   ",",
+                                   A2($List.map,
+                                   function (i) {
+                                      return $Basics.toString(i);
+                                   },
+                                   $Html$Widgets.defaultSevenSegmentProperties.colonIndexes))
                                    ,isVisible: true
-                                   ,pointIndexesText: ""
+                                   ,pointIndexesText: A2($String.join,
+                                   ",",
+                                   A2($List.map,
+                                   function (i) {
+                                      return $Basics.toString(i);
+                                   },
+                                   $Html$Widgets.defaultSevenSegmentProperties.pointIndexes))
                                    ,properties: $Html$Widgets.defaultSevenSegmentProperties
                                    ,style: $Html$Widgets.defaultSevenSegmentStyle};
    var defaultAppState = {_: {}
@@ -2045,11 +2097,13 @@ Elm.Example.Main.make = function (_elm) {
    appView(actions.address),
    appState,
    $Window.dimensions);
-   var SegmentedBarGraphSample = F2(function (a,
-   b) {
+   var SegmentedBarGraphSample = F3(function (a,
+   b,
+   c) {
       return {_: {}
              ,isVisible: a
-             ,properties: b};
+             ,properties: b
+             ,style: c};
    });
    var SevenSegmentSample = F5(function (a,
    b,
@@ -2080,6 +2134,7 @@ Elm.Example.Main.make = function (_elm) {
                               ,SeventSegmentTextChange: SeventSegmentTextChange
                               ,SeventSegmentPointsChange: SeventSegmentPointsChange
                               ,SeventSegmentColonsChange: SeventSegmentColonsChange
+                              ,SegmentedBarGraphValueChange: SegmentedBarGraphValueChange
                               ,update: update
                               ,main: main
                               ,appState: appState
@@ -2087,7 +2142,8 @@ Elm.Example.Main.make = function (_elm) {
                               ,mergedActions: mergedActions
                               ,appView: appView
                               ,sevenSegmentSampleView: sevenSegmentSampleView
-                              ,segmentedBarGraphView: segmentedBarGraphView};
+                              ,segmentedBarGraphView: segmentedBarGraphView
+                              ,convertToInt: convertToInt};
    return _elm.Example.Main.values;
 };
 Elm.Graphics = Elm.Graphics || {};
@@ -3994,26 +4050,56 @@ Elm.Html.Widgets.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Svg = Elm.Svg.make(_elm),
    $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
-   var segmentedBarGraphBar = F2(function (_v0,
+   var segmentedBarGraphBar = F4(function (_v0,
+   properties,
+   style,
    index) {
       return function () {
          switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
+                 var ranges = properties.ranges;
+                 var barValue = $Basics.toFloat(index) / $Basics.toFloat(properties.segments) * $Basics.toFloat(properties.maxValue);
+                 var getRange = A2($List.filter,
+                 function (r) {
+                    return _U.cmp(r.minValue,
+                    barValue) < 1 && _U.cmp(barValue,
+                    r.maxValue) < 1;
+                 },
+                 ranges);
+                 var rangeFound = A2($List.take,
+                 1,
+                 getRange);
+                 var barColor = function () {
+                    switch (rangeFound.ctor)
+                    {case "::":
+                       switch (rangeFound._1.ctor)
+                         {case "[]":
+                            return _U.cmp($Basics.toFloat(properties.currentValue),
+                              barValue) < 1 ? style.emptyColor : rangeFound._0.color;}
+                         break;}
+                    return style.emptyColor;
+                 }();
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v0._0 * index),
-                 " 0)")));
+                 $Basics.toString(_v0._0 * index + 4),
+                 " 8)")));
                  return A2($Svg.rect,
-                 _L.fromArray([]),
+                 A2($Basics._op["++"],
+                 _L.fromArray([transformAttribute]),
+                 _L.fromArray([$Svg$Attributes.$class($Basics.toString(barValue))
+                              ,$Svg$Attributes.fill(barColor)
+                              ,$Svg$Attributes.width($Basics.toString(_v0._0 - 8))
+                              ,$Svg$Attributes.height($Basics.toString(_v0._1 - 16))])),
                  _L.fromArray([]));
               }();}
          _U.badCase($moduleName,
-         "between lines 178 and 179");
+         "between lines 167 and 175");
       }();
    });
-   var segmentedBarGraph = function (segmentedBarGraphProperties) {
+   var segmentedBarGraph = F2(function (properties,
+   style) {
       return function () {
          var containerHeight = 340;
          var barWidth = 100;
@@ -4026,17 +4112,27 @@ Elm.Html.Widgets.make = function (_elm) {
                       ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
                       "0 0 ",
                       A2($Basics._op["++"],
-                      $Basics.toString(barWidth * segmentedBarGraphProperties.segments),
+                      $Basics.toString(barWidth * properties.segments),
                       A2($Basics._op["++"],
                       " ",
                       $Basics.toString(containerHeight)))))]),
+         A2($Basics._op["++"],
          _L.fromArray([A2($Svg.rect,
-         _L.fromArray([$Svg$Attributes.fill("#000")
+         _L.fromArray([$Svg$Attributes.fill(style.backgroundColor)
                       ,$Svg$Attributes.width("100%")
                       ,$Svg$Attributes.height("340")]),
-         _L.fromArray([]))]));
+         _L.fromArray([]))]),
+         A2($List.map,
+         A3(segmentedBarGraphBar,
+         {ctor: "_Tuple2"
+         ,_0: barWidth
+         ,_1: containerHeight},
+         properties,
+         style),
+         _L.range(0,
+         properties.segments - 1))));
       }();
-   };
+   });
    var seventSegmentColon = F3(function (style,
    containerWidth,
    index) {
@@ -4055,19 +4151,19 @@ Elm.Html.Widgets.make = function (_elm) {
                                 ,$Svg$Attributes.fill(style.textColor)]),
                    _L.fromArray([]))]));
    });
-   var seventSegmentColons = F3(function (_v4,
+   var seventSegmentColons = F3(function (_v7,
    indexes,
    style) {
       return function () {
-         switch (_v4.ctor)
+         switch (_v7.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(seventSegmentColon,
               style,
-              _v4._0),
+              _v7._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 155, column 3 to 52");
+         "on line 140, column 3 to 52");
       }();
    });
    var sevenSegmentPoint = F3(function (style,
@@ -4082,19 +4178,19 @@ Elm.Html.Widgets.make = function (_elm) {
                    ,$Svg$Attributes.fill(style.textColor)]),
       _L.fromArray([]))]));
    });
-   var sevenSegmentPoints = F3(function (_v8,
+   var sevenSegmentPoints = F3(function (_v11,
    indexes,
    style) {
       return function () {
-         switch (_v8.ctor)
+         switch (_v11.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(sevenSegmentPoint,
               style,
-              _v8._0),
+              _v11._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 144, column 3 to 51");
+         "on line 129, column 3 to 51");
       }();
    });
    var sevenSegmentDigitPolygon = F2(function (points$,
@@ -4105,18 +4201,18 @@ Elm.Html.Widgets.make = function (_elm) {
       attributes),
       _L.fromArray([]));
    });
-   var sevenSegmentDigit = F4(function (_v12,
+   var sevenSegmentDigit = F4(function (_v15,
    style,
    index,
    digit) {
       return function () {
-         switch (_v12.ctor)
+         switch (_v15.ctor)
          {case "_Tuple2":
             return function () {
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v12._0 * index),
+                 $Basics.toString(_v15._0 * index),
                  " 0)")));
                  var newForegroundAttribute = _L.fromArray([transformAttribute
                                                            ,$Svg$Attributes.fill(style.textColor)]);
@@ -4205,14 +4301,14 @@ Elm.Html.Widgets.make = function (_elm) {
                                            ,segmentF
                                            ,segmentG]);}
                     _U.badCase($moduleName,
-                    "between lines 71 and 132");
+                    "between lines 106 and 118");
                  }();
                  return A2($Svg.g,
                  _L.fromArray([]),
                  polygons);
               }();}
          _U.badCase($moduleName,
-         "between lines 62 and 132");
+         "between lines 97 and 118");
       }();
    });
    var sevenSegment = F2(function (properties,
@@ -4265,10 +4361,23 @@ Elm.Html.Widgets.make = function (_elm) {
          style)))));
       }();
    });
-   var defaultSegmentedBarGraphProperties = {_: {}
-                                            ,currentValue: 0
+   var defaultSegmentBarGraphStyle = {_: {}
+                                     ,backgroundColor: "#000"
+                                     ,emptyColor: "#444"};
+   var defaultSegmentedBarGraphRangeAlert = {_: {}
+                                            ,color: "#F00"
                                             ,maxValue: 100
-                                            ,segments: 10};
+                                            ,minValue: 50};
+   var defaultSegmentedBarGraphRangeOk = {_: {}
+                                         ,color: "#0F0"
+                                         ,maxValue: 49
+                                         ,minValue: 0};
+   var defaultSegmentedBarGraphProperties = {_: {}
+                                            ,currentValue: 70
+                                            ,maxValue: 100
+                                            ,ranges: _L.fromArray([defaultSegmentedBarGraphRangeOk
+                                                                  ,defaultSegmentedBarGraphRangeAlert])
+                                            ,segments: 20};
    var defaultSevenSegmentStyle = {_: {}
                                   ,backgroundColor: "#000"
                                   ,textColor: "#0F0"};
@@ -4276,12 +4385,28 @@ Elm.Html.Widgets.make = function (_elm) {
                                        ,colonIndexes: _L.fromArray([1])
                                        ,digits: "1234 4567890"
                                        ,pointIndexes: _L.fromArray([7])};
-   var SegmentedBarGraphProperties = F3(function (a,
+   var SegmentedBarGraphStyle = F2(function (a,
+   b) {
+      return {_: {}
+             ,backgroundColor: b
+             ,emptyColor: a};
+   });
+   var SegmentedBarGraphRange = F3(function (a,
    b,
    c) {
       return {_: {}
+             ,color: a
+             ,maxValue: c
+             ,minValue: b};
+   });
+   var SegmentedBarGraphProperties = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
              ,currentValue: a
              ,maxValue: b
+             ,ranges: d
              ,segments: c};
    });
    var SevenSegmentStyle = F2(function (a,
@@ -4304,9 +4429,11 @@ Elm.Html.Widgets.make = function (_elm) {
                               ,defaultSevenSegmentStyle: defaultSevenSegmentStyle
                               ,segmentedBarGraph: segmentedBarGraph
                               ,defaultSegmentedBarGraphProperties: defaultSegmentedBarGraphProperties
+                              ,defaultSegmentBarGraphStyle: defaultSegmentBarGraphStyle
                               ,SevenSegmentProperties: SevenSegmentProperties
                               ,SevenSegmentStyle: SevenSegmentStyle
-                              ,SegmentedBarGraphProperties: SegmentedBarGraphProperties};
+                              ,SegmentedBarGraphProperties: SegmentedBarGraphProperties
+                              ,SegmentedBarGraphStyle: SegmentedBarGraphStyle};
    return _elm.Html.Widgets.values;
 };
 Elm.Json = Elm.Json || {};

@@ -15,14 +15,22 @@ import String
 
 ---- ALIASES
 -- model that defines the values for the controls
+-- digits - the values displayed
+-- pointIndexes - the indexes where the points are displayed
+-- colonIndexes - the indexes where colons are displayed
 type alias SevenSegmentProperties = { digits : String
                                     , pointIndexes : List Int
                                     , colonIndexes : List Int }
 -- model that defines the colors for the parts of each control
+-- backgroundColor - color for the background
+-- textColor - color for the values displayed
 type alias SevenSegmentStyle =  { backgroundColor : String
                                 , textColor : String }
 
 -- model that defines the values for the controls
+-- currentValue - current value of the meter
+-- maxValue - the maximum value of the meter
+-- segments - the number of segments that are goint to be displayed in the meter
 type alias SegmentedBarGraphProperties =  { currentValue : Int
                                           , maxValue : Int
                                           , segments : Int }
@@ -38,7 +46,7 @@ defaultSevenSegmentStyle =  { backgroundColor = "#000"
 defaultSegmentedBarGraphProperties : SegmentedBarGraphProperties
 defaultSegmentedBarGraphProperties =  { currentValue = 0
                                       , maxValue = 100
-                                      , segments = 10 }
+                                      , segments = 20 }
 
 ---- SEVEN SEGMENT WIDGET
 -- creates seven segments properties and sevent segment styles
@@ -166,15 +174,19 @@ seventSegmentColon style containerWidth index =
 -- current value - current value of meter 
 -- max value - maximum value of the meter
 -- number of polygons that make up the value of the bar
-segmentedBarGraph : SegmentedBarGraphProperties -> Html
+segmentedBarGraph : SegmentedBarGraphProperties -> Svg
 segmentedBarGraph segmentedBarGraphProperties =
   let barWidth = 100
       containerHeight = 340
   in  Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (barWidth * segmentedBarGraphProperties.segments)) ++ " " ++ (toString containerHeight)) ]
-              [ Svg.rect [ fill "#000", width "100%", height "340" ] [] ]
+              (([ Svg.rect [ fill "#000", width "100%", height "340" ] [] ])
+                ++
+              --[ segmentedBarGraphBar (barWidth, containerHeight) 0 ]
+              (List.map (segmentedBarGraphBar (barWidth, containerHeight)) [0..(segmentedBarGraphProperties.segments - 1 )])
+              )
 
 segmentedBarGraphBar : (Int, Int) -> Int -> Svg
-segmentedBarGraphBar (width', height) index =
-  let transformAttribute = transform ("translate(" ++ (toString (width' * index)) ++ " 0)")  
-  in rect [] []
+segmentedBarGraphBar (width', height') index =
+  let transformAttribute = transform ("translate(" ++ (toString ((width' * index) + 4)) ++ " 4)")  
+  in rect [ fill "#0F0", width "92" , height "332",transformAttribute ] [ ]
   --rect ([ transformAttribute ] ++ [ fill "#000", width "100%", height "340" ]) []

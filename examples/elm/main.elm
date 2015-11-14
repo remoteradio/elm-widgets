@@ -24,7 +24,8 @@ type alias SevenSegmentSample = { properties : SevenSegmentProperties
                                 , colonIndexesText : String
                                 }
 type alias SegmentedBarGraphSample = { isVisible : Bool
-                                     , properties : SegmentedBarGraphProperties }
+                                     , properties : SegmentedBarGraphProperties
+                                     , style : SegmentedBarGraphStyle }
 
 
 ------ DEFAULT MODELS
@@ -38,13 +39,14 @@ defaultSevenSegmentSample : SevenSegmentSample
 defaultSevenSegmentSample = { properties = defaultSevenSegmentProperties
                             , style = defaultSevenSegmentStyle
                             , isVisible = True
-                            , pointIndexesText = ""
-                            , colonIndexesText = ""
+                            , pointIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.pointIndexes)
+                            , colonIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.colonIndexes)
                             }
   
 defaultSegmentedBarGraphSample : SegmentedBarGraphSample
 defaultSegmentedBarGraphSample = { isVisible = True
-                                 , properties = defaultSegmentedBarGraphProperties }
+                                 , properties = defaultSegmentedBarGraphProperties
+                                 , style = defaultSegmentBarGraphStyle }
 
 
 -- actions
@@ -53,6 +55,7 @@ type Action
   | SeventSegmentTextChange String
   | SeventSegmentPointsChange String
   | SeventSegmentColonsChange String
+  | SegmentedBarGraphValueChange String
 
 
 -- logic when an update signal is emitted
@@ -69,8 +72,7 @@ update action appState =
           properties' = sevenSegmentSample'.properties
           convert digit = (Maybe.withDefault -1 (Result.toMaybe (String.toInt digit )))
           pointIndexes' = (List.filter (\y -> y /= -1 ) (List.map (\x -> convert x ) (String.split "," value)))
-      in { appState | sevenSegmentSample <- { sevenSegmentSample' | properties <- { properties' | pointIndexes <- pointIndexes' }
-                                                                  , pointIndexesText <- value }}
+      in { appState | sevenSegmentSample <- { sevenSegmentSample' | properties <- { properties' | pointIndexes <- pointIndexes' }                                                            , pointIndexesText <- value }}
     SeventSegmentColonsChange value ->
       let sevenSegmentSample' = appState.sevenSegmentSample
           properties' = sevenSegmentSample'.properties
@@ -78,6 +80,10 @@ update action appState =
           colonIndexes' = (List.filter (\y -> y /= -1 ) (List.map (\x -> convert x ) (String.split "," value)))
       in { appState | sevenSegmentSample <- { sevenSegmentSample' | properties <- { properties' | colonIndexes <- colonIndexes' }
                                                                   , colonIndexesText <- value }}
+    SegmentedBarGraphValueChange value ->
+      let segmentedBarGraphSample' = appState.segmentedBarGraphSample
+          properties' = segmentedBarGraphSample'.properties
+      in { appState | segmentedBarGraphSample <- { segmentedBarGraphSample' | properties <- { properties' | currentValue <- convertToInt value } } }
 --- 
 
 
@@ -124,12 +130,23 @@ sevenSegmentSampleView address sevenSegmentSample' =
                             , on "input" targetValue (Signal.message address << SeventSegmentColonsChange) ][ ] ]
           ]
 
-
+--type alias SegmentedBarGraphProperties =  { currentValue : Int
+--                                          , maxValue : Int
+--                                          , segments : Int
+--                                          , ranges : List SegmentedBarGraphRange }
 segmentedBarGraphView : Address Action -> SegmentedBarGraphSample -> Html
 segmentedBarGraphView address segmentedBarGraphSample =
-  div [ style [if segmentedBarGraphSample.isVisible then ("","") else ("display","none")] ] 
-      [ div [ ] [ text "SEGMENTED BAR GRAPH SAMPLE" ]
-      , div [ Html.Attributes.style [("width","400px"),("height", "68px")] ]
-            [ segmentedBarGraph segmentedBarGraphSample.properties ] ]
+  let properties = segmentedBarGraphSample.properties
+  in  div [ style [if segmentedBarGraphSample.isVisible then ("","") else ("display","none")] ] 
+          [ div [ ] [ text "SEGMENTED BAR GRAPH SAMPLE" ]
+          , div [ Html.Attributes.style [("width","400px"),("height", "68px")] ]
+                [ segmentedBarGraph segmentedBarGraphSample.properties segmentedBarGraphSample.style  ]
+          , div [ ] [ text "VALUE"
+                        , input [ type' "text"
+                                , value (toString properties.currentValue)
+                                , on "input" targetValue (Signal.message address << SegmentedBarGraphValueChange) ][ ] ] ]
 
+--helpers
+convertToInt : String -> Int
+convertToInt digit = (Maybe.withDefault -1 (Result.toMaybe (String.toInt digit )))
 
