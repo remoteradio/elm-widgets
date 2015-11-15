@@ -4118,7 +4118,6 @@ Elm.Html.Widgets.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Html.Widgets",
    $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -4547,7 +4546,7 @@ Elm.Html.Widgets.make = function (_elm) {
                  _L.fromArray([]));
               }();}
          _U.badCase($moduleName,
-         "between lines 193 and 201");
+         "between lines 192 and 200");
       }();
    });
    var segmentedBarGraph = F2(function (properties,
@@ -4615,7 +4614,7 @@ Elm.Html.Widgets.make = function (_elm) {
               _v16._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 166, column 3 to 52");
+         "on line 165, column 3 to 52");
       }();
    });
    var sevenSegmentPoint = F3(function (style,
@@ -4642,7 +4641,7 @@ Elm.Html.Widgets.make = function (_elm) {
               _v20._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 155, column 3 to 51");
+         "on line 154, column 3 to 51");
       }();
    });
    var sevenSegmentDigitPolygon = F2(function (points$,
@@ -4753,14 +4752,14 @@ Elm.Html.Widgets.make = function (_elm) {
                                            ,segmentF
                                            ,segmentG]);}
                     _U.badCase($moduleName,
-                    "between lines 132 and 144");
+                    "between lines 131 and 143");
                  }();
                  return A2($Svg.g,
                  _L.fromArray([]),
                  polygons);
               }();}
          _U.badCase($moduleName,
-         "between lines 123 and 144");
+         "between lines 122 and 143");
       }();
    });
    var sevenSegment = F2(function (properties,
