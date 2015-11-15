@@ -4821,7 +4821,7 @@ Elm.Html.Widgets.make = function (_elm) {
    var defaultMeterRangeAlert = {_: {}
                                 ,color: "#F00"
                                 ,maxValue: 100
-                                ,minValue: 50.001};
+                                ,minValue: 50.0};
    var defaultMeterRangeOk = {_: {}
                              ,color: "#0F0"
                              ,maxValue: 49.99
