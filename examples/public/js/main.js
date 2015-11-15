@@ -4378,7 +4378,7 @@ Elm.Html.Widgets.make = function (_elm) {
                    100,
                    54,
                    -24,
-                   0.25,
+                   0.249,
                    properties,
                    style)
                    ,A6(simulatedAnalogMeterSmallBar,
@@ -4406,7 +4406,7 @@ Elm.Html.Widgets.make = function (_elm) {
                    200,
                    38,
                    0,
-                   0.5,
+                   0.499,
                    properties,
                    style)
                    ,A6(simulatedAnalogMeterSmallBar,
@@ -4462,7 +4462,7 @@ Elm.Html.Widgets.make = function (_elm) {
                    400,
                    114,
                    45,
-                   1.0,
+                   1,
                    properties,
                    style)]));
    });
@@ -4825,7 +4825,7 @@ Elm.Html.Widgets.make = function (_elm) {
                                 ,minValue: 50.001};
    var defaultMeterRangeOk = {_: {}
                              ,color: "#0F0"
-                             ,maxValue: 50
+                             ,maxValue: 49.99
                              ,minValue: 0};
    var defaultSimulatedAnalogMeterProperties = {_: {}
                                                ,currentValue: 50
