@@ -45,13 +45,13 @@ defaultAppState = { sevenSegmentSample  = defaultSevenSegmentSample
 defaultSevenSegmentSample : SevenSegmentSample
 defaultSevenSegmentSample = { properties = defaultSevenSegmentProperties
                             , style = defaultSevenSegmentStyle
-                            , isVisible = False
+                            , isVisible = True
                             , pointIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.pointIndexes)
                             , colonIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.colonIndexes)
                             }
   
 defaultSegmentedBarGraphSample : SegmentedBarGraphSample
-defaultSegmentedBarGraphSample = { isVisible = False
+defaultSegmentedBarGraphSample = { isVisible = True
                                  , properties = defaultSegmentedBarGraphProperties
                                  , style = defaultSegmentBarGraphStyle }
 

@@ -2126,7 +2126,7 @@ Elm.Example.Main.make = function (_elm) {
                                            ,properties: $Html$Widgets.defaultSimulatedAnalogMeterProperties
                                            ,style: $Html$Widgets.defaultSimulatedAnalogMeterStyle};
    var defaultSegmentedBarGraphSample = {_: {}
-                                        ,isVisible: false
+                                        ,isVisible: true
                                         ,properties: $Html$Widgets.defaultSegmentedBarGraphProperties
                                         ,style: $Html$Widgets.defaultSegmentBarGraphStyle};
    var defaultSevenSegmentSample = {_: {}
@@ -2137,7 +2137,7 @@ Elm.Example.Main.make = function (_elm) {
                                       return $Basics.toString(i);
                                    },
                                    $Html$Widgets.defaultSevenSegmentProperties.colonIndexes))
-                                   ,isVisible: false
+                                   ,isVisible: true
                                    ,pointIndexesText: A2($String.join,
                                    ",",
                                    A2($List.map,

@@ -6,7 +6,14 @@ module Html.Widgets (sevenSegment
                     , SevenSegmentStyle
                     ,segmentedBarGraph
                     ,defaultSegmentedBarGraphProperties
-                    ,SegmentedBarGraphProperties) where
+                    ,defaultSegmentBarGraphStyle
+                    ,SegmentedBarGraphProperties
+                    ,SegmentedBarGraphStyle
+                    ,simulatedAnalogMeter
+                    ,defaultSimulatedAnalogMeterProperties
+                    ,defaultSimulatedAnalogMeterStyle
+                    ,SimulatedAnalogMeterProperties
+                    ,SimulatedAnalogMeterStyle) where
 
 import Html exposing (Html)
 import Svg exposing (..)
@@ -33,7 +40,33 @@ type alias SevenSegmentStyle =  { backgroundColor : String
 -- segments - the number of segments that are goint to be displayed in the meter
 type alias SegmentedBarGraphProperties =  { currentValue : Int
                                           , maxValue : Int
-                                          , segments : Int }
+                                          , segments : Int
+                                          , ranges : List MeterRange }
+
+-- model that defines the range and what colors it will display
+type alias SegmentedBarGraphRange = { color : String
+                                    , minValue : Float
+                                    , maxValue : Float }
+
+-- model that defines the style for the graph
+type alias SegmentedBarGraphStyle = { emptyColor : String
+                                    , backgroundColor : String }
+
+
+-- model that defines the value range of the meter
+type alias SimulatedAnalogMeterProperties = { currentValue : Int
+                                            , maxValue : Int
+                                            , ranges : List MeterRange }
+
+-- model that defines the range and what colors it will display
+type alias MeterRange = { color : String
+                        , minValue : Float
+                        , maxValue : Float }
+
+
+-- model that defines style of the meter
+type alias SimulatedAnalogMeterStyle =  { foreColor : String
+                                        , backgroundColor : String }
 
 ---- ALIAS CONSTRUCTORS
 defaultSevenSegmentProperties = { digits = "1234 4567890"
@@ -44,9 +77,29 @@ defaultSevenSegmentStyle =  { backgroundColor = "#000"
                             , textColor = "#0F0"}
 
 defaultSegmentedBarGraphProperties : SegmentedBarGraphProperties
-defaultSegmentedBarGraphProperties =  { currentValue = 0
+defaultSegmentedBarGraphProperties =  { currentValue = 70
                                       , maxValue = 100
-                                      , segments = 20 }
+                                      , segments = 50
+                                      , ranges  = [ defaultMeterRangeOk, defaultMeterRangeAlert ] }
+
+defaultMeterRangeOk : MeterRange
+defaultMeterRangeOk = { color = "#0F0"
+                                , minValue = 0
+                                , maxValue = 50 }
+
+defaultMeterRangeAlert : MeterRange
+defaultMeterRangeAlert =  { color = "#F00"
+                          , minValue = 50.001
+                          , maxValue = 100 }
+
+defaultSegmentBarGraphStyle = { emptyColor = "#444"
+                              , backgroundColor = "#000" }
+
+defaultSimulatedAnalogMeterProperties = { currentValue = 50
+                                        , maxValue = 100
+                                        , ranges  = [ defaultMeterRangeOk, defaultMeterRangeAlert ]}
+defaultSimulatedAnalogMeterStyle =  { foreColor = "#fff"
+                                    , backgroundColor = "#000"  }
 
 ---- SEVEN SEGMENT WIDGET
 -- creates seven segments properties and sevent segment styles
@@ -77,70 +130,20 @@ sevenSegmentDigit (width, height) style index digit  =
       segmentF = sevenSegmentDigitPolygon " 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  " newForegroundAttribute
       segmentG = sevenSegmentDigitPolygon " 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9" newForegroundAttribute
       polygons =  case digit of
-                    '0' -> 
-                      [ segmentA
-                      , segmentB
-                      , segmentC
-                      , segmentD
-                      , segmentE
-                      , segmentF ]
-                    '1' -> 
-                      [ segmentB
-                      , segmentC ]
-                    '2' ->
-                      [ segmentA 
-                      , segmentB
-                      , segmentD
-                      , segmentE
-                      , segmentG ]
-                    '3' ->
-                      [ segmentA
-                      , segmentB
-                      , segmentC
-                      , segmentD
-                      , segmentG ]
-                    '4' ->
-                      [ segmentB
-                      , segmentC
-                      , segmentF
-                      , segmentG ]
-                    '5' ->
-                      [ segmentA
-                      , segmentC
-                      , segmentD
-                      , segmentF
-                      , segmentG ]
-                    '6' ->
-                      [ segmentA
-                      , segmentC
-                      , segmentD
-                      , segmentE
-                      , segmentF
-                      , segmentG ]
-                    '7' ->
-                      [ segmentA
-                      , segmentB
-                      , segmentC ]
-                    '8' ->
-                      [ segmentA
-                      , segmentB
-                      , segmentC
-                      , segmentD
-                      , segmentE
-                      , segmentF
-                      , segmentG ]
-                    '9' ->
-                      [ segmentA
-                      , segmentB
-                      , segmentC
-                      , segmentD
-                      , segmentF
-                      , segmentG ]
+                    '0' -> [ segmentA, segmentB, segmentC, segmentD, segmentE, segmentF ]
+                    '1' -> [ segmentB, segmentC ]
+                    '2' -> [ segmentA, segmentB, segmentD, segmentE, segmentG ]
+                    '3' -> [ segmentA, segmentB, segmentC, segmentD, segmentG ]
+                    '4' -> [ segmentB, segmentC, segmentF, segmentG ]
+                    '5' -> [ segmentA, segmentC, segmentD, segmentF, segmentG ]
+                    '6' -> [ segmentA, segmentC, segmentD, segmentE, segmentF, segmentG ]
+                    '7' -> [ segmentA, segmentB, segmentC ]
+                    '8' -> [ segmentA, segmentB, segmentC, segmentD, segmentE, segmentF, segmentG ]
+                    '9' -> [ segmentA, segmentB, segmentC, segmentD, segmentF, segmentG ]
                     ' ' -> [ ]
   in Svg.g [ ] polygons
 
 -- element for a segment
-
 sevenSegmentDigitPolygon : String -> List Attribute -> Svg
 sevenSegmentDigitPolygon points' attributes =
   polygon ([ points points' ] ++ attributes) [ ]
@@ -174,19 +177,125 @@ seventSegmentColon style containerWidth index =
 -- current value - current value of meter 
 -- max value - maximum value of the meter
 -- number of polygons that make up the value of the bar
-segmentedBarGraph : SegmentedBarGraphProperties -> Svg
-segmentedBarGraph segmentedBarGraphProperties =
+segmentedBarGraph : SegmentedBarGraphProperties -> SegmentedBarGraphStyle -> Svg
+segmentedBarGraph properties style =
   let barWidth = 100
       containerHeight = 340
-  in  Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (barWidth * segmentedBarGraphProperties.segments)) ++ " " ++ (toString containerHeight)) ]
-              (([ Svg.rect [ fill "#000", width "100%", height "340" ] [] ])
+  in  Svg.svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (barWidth * properties.segments)) ++ " " ++ (toString containerHeight)) ]
+              (([ Svg.rect [ fill style.backgroundColor, width "100%", height "340" ] [] ])
                 ++
-              --[ segmentedBarGraphBar (barWidth, containerHeight) 0 ]
-              (List.map (segmentedBarGraphBar (barWidth, containerHeight)) [0..(segmentedBarGraphProperties.segments - 1 )])
+              (List.map (segmentedBarGraphBar (barWidth, containerHeight) properties style) [0..(properties.segments - 1 )])
               )
 
-segmentedBarGraphBar : (Int, Int) -> Int -> Svg
-segmentedBarGraphBar (width', height') index =
-  let transformAttribute = transform ("translate(" ++ (toString ((width' * index) + 4)) ++ " 4)")  
-  in rect [ fill "#0F0", width "92" , height "332",transformAttribute ] [ ]
-  --rect ([ transformAttribute ] ++ [ fill "#000", width "100%", height "340" ]) []
+-- bar element for segmented bar graph
+segmentedBarGraphBar : (Int, Int) -> SegmentedBarGraphProperties -> SegmentedBarGraphStyle -> Int -> Svg
+segmentedBarGraphBar (width', height') properties style index =
+  let transformAttribute = transform ("translate(" ++ (toString ((width' * index) + 4)) ++ " 8)") 
+      barValue = ((toFloat index) / (toFloat properties.segments)) * (toFloat properties.maxValue)
+      ranges = properties.ranges
+      getRange = List.filter (\r -> r.minValue <= barValue && barValue <= r.maxValue ) ranges
+      rangeFound = List.take 1 getRange
+      barColor = case rangeFound of
+        [range] -> if (toFloat properties.currentValue) <= barValue then style.emptyColor else range.color
+        _ -> style.emptyColor
+  in rect ([ transformAttribute ] ++ [ class (toString barValue) , fill barColor, width (toString (width' - 8)), height (toString (height' - 16)) ]) []
+
+-- analog meter (Volume Unit Metra)
+
+simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeter properties style' = 
+  let containerWidth = 400
+      containerHeight = 200
+  in svg  [ Svg.Attributes.style "background:#000", version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString containerWidth) ++ " " ++ (toString containerHeight)) ]
+          [ rect [ fill style'.backgroundColor, x "2" ,width (toString  containerWidth), height (toString  containerHeight)] [ ]
+          , simulatedAnalogMeterBars properties style'
+          , simulatedAnalogMeterLabels properties style'
+          , simulatedAnalogMeterPointer properties style' ]
+
+simulatedAnalogMeterBars : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterBars properties style = 
+  Svg.g [ ] [ simulatedAnalogMeterBar       0.0   114   -45 0     properties style
+            , simulatedAnalogMeterSmallBar  25    97    -37 0.062 properties style
+            , simulatedAnalogMeterSmallBar  50    79    -34 0.125 properties style
+            , simulatedAnalogMeterSmallBar  75    67    -30 0.187 properties style
+            , simulatedAnalogMeterBar       100   54    -24 0.25  properties style
+            , simulatedAnalogMeterSmallBar  125   50    -18 0.312 properties style
+            , simulatedAnalogMeterSmallBar  150   45    -11 0.375 properties style
+            , simulatedAnalogMeterSmallBar  175   42    -6  0.437 properties style
+            , simulatedAnalogMeterBar       200   38    -0  0.5   properties style
+            , simulatedAnalogMeterSmallBar  225   42    6   0.562 properties style
+            , simulatedAnalogMeterSmallBar  250   45    11  0.625 properties style
+            , simulatedAnalogMeterSmallBar  275   50    18  0.687 properties style
+            , simulatedAnalogMeterBar       300   54    24  0.75  properties style
+            , simulatedAnalogMeterSmallBar  325   67    30  0.812 properties style
+            , simulatedAnalogMeterSmallBar  350   79    34  0.875 properties style
+            , simulatedAnalogMeterSmallBar  375   97    37  0.937 properties style
+            , simulatedAnalogMeterBar       400   114   45  1.0   properties style ]
+
+simulatedAnalogMeterLabels : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterLabels properties style = 
+  Svg.g [ ] [ simulatedAnalogMeterLabel -10 110 -45 0     properties style
+            , simulatedAnalogMeterLabel 97   47 -24 0.25  properties style
+            , simulatedAnalogMeterLabel 202  30   0 0.5   properties style
+            , simulatedAnalogMeterLabel 312  51  24 0.75  properties style
+            , simulatedAnalogMeterLabel 416 114  45 1     properties style ]
+
+simulatedAnalogMeterLabel : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterLabel x' y' rotation percentage properties style = 
+  let ranges = properties.ranges
+      valueToCheck = percentage * (toFloat properties.maxValue)
+      getRange = List.filter (\r -> r.minValue <= valueToCheck && valueToCheck <= r.maxValue ) ranges
+      rangeFound = List.take 1 getRange
+      foreColor = case rangeFound of
+        [range] -> if (toFloat properties.currentValue) <= valueToCheck then style.foreColor else range.color
+        _ -> style.foreColor
+  in text'  [ x (toString x')
+            , y (toString y')
+            , fill foreColor
+            , class (toString valueToCheck)
+            , textAnchor "middle"
+            , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ] 
+            [ text (toString valueToCheck) ]
+
+
+simulatedAnalogMeterBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterBar x' y' rotation percentage properties style = 
+  let height' = 20
+      width' = 8
+      ranges = properties.ranges
+      valueToCheck = percentage * (toFloat properties.maxValue)
+      getRange = List.filter (\r -> r.minValue <= valueToCheck && valueToCheck <= r.maxValue ) ranges
+      rangeFound = List.take 1 getRange
+      foreColor = case rangeFound of
+        [range] -> if (toFloat properties.currentValue) <= valueToCheck then style.foreColor else range.color
+        _ -> style.foreColor
+  in rect [ x (toString x')
+          , y (toString y')
+          , fill foreColor
+          , width (toString width')
+          , height (toString height')
+          , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString (x' + ((width' - 10) / 2))) ++ "," ++ (toString (y' + (height' / 2))) ++ ")") ] [ ]
+
+simulatedAnalogMeterSmallBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterSmallBar x' y' rotation percentage properties style = 
+  let height' = 10
+      width' = 6
+      ranges = properties.ranges
+      valueToCheck = percentage * (toFloat properties.maxValue)
+      getRange = List.filter (\r -> r.minValue <= valueToCheck && valueToCheck <= r.maxValue ) ranges
+      rangeFound = List.take 1 getRange
+      foreColor = case rangeFound of
+        [range] -> if (toFloat properties.currentValue) <= valueToCheck then style.foreColor else range.color
+        _ -> style.foreColor
+  in rect [ x (toString x')
+          , y (toString y')
+          , fill foreColor
+          , width (toString width')
+          , height (toString height')
+          , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString (x' + ((width' - 10) / 2))) ++ "," ++ (toString (y' + (height' / 2))) ++ ")") ] [ ]
+
+simulatedAnalogMeterPointer : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterPointer properties style = 
+  let percentage = clamp -50 50 ((((toFloat properties.currentValue) / (toFloat properties.maxValue) ) * 100) - 50)
+  in Svg.g  [ transform ("rotate(" ++ (toString percentage) ++ " 204,300)") ] 
+            [ polygon [ points "199,300 203,62 205,62 209,300", fill style.foreColor ] [ ]  ]
