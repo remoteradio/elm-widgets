@@ -16,16 +16,22 @@ import String exposing (..)
 
 ------ TYPES
 type alias AppState = { sevenSegmentSample : SevenSegmentSample
-                      , segmentedBarGraphSample : SegmentedBarGraphSample }
+                      , segmentedBarGraphSample : SegmentedBarGraphSample
+                      , simulatedAnalogMeterSample : SimulatedAnalogMeterSample }
+
 type alias SevenSegmentSample = { properties : SevenSegmentProperties
                                 , style : SevenSegmentStyle
                                 , isVisible : Bool
                                 , pointIndexesText : String
-                                , colonIndexesText : String
-                                }
+                                , colonIndexesText : String }
+
 type alias SegmentedBarGraphSample = { isVisible : Bool
                                      , properties : SegmentedBarGraphProperties
                                      , style : SegmentedBarGraphStyle }
+
+type alias SimulatedAnalogMeterSample = { isVisible : Bool
+                                        , properties : SimulatedAnalogMeterProperties
+                                        , style : SimulatedAnalogMeterStyle }
 
 
 ------ DEFAULT MODELS
@@ -33,21 +39,26 @@ type alias SegmentedBarGraphSample = { isVisible : Bool
 defaultAppState : AppState 
 defaultAppState = { sevenSegmentSample  = defaultSevenSegmentSample
                   , segmentedBarGraphSample = defaultSegmentedBarGraphSample
+                  , simulatedAnalogMeterSample = defaultSimulatedAnalogMeterSample
                   }
 
 defaultSevenSegmentSample : SevenSegmentSample
 defaultSevenSegmentSample = { properties = defaultSevenSegmentProperties
                             , style = defaultSevenSegmentStyle
-                            , isVisible = True
+                            , isVisible = False
                             , pointIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.pointIndexes)
                             , colonIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.colonIndexes)
                             }
   
 defaultSegmentedBarGraphSample : SegmentedBarGraphSample
-defaultSegmentedBarGraphSample = { isVisible = True
+defaultSegmentedBarGraphSample = { isVisible = False
                                  , properties = defaultSegmentedBarGraphProperties
                                  , style = defaultSegmentBarGraphStyle }
 
+defaultSimulatedAnalogMeterSample : SimulatedAnalogMeterSample
+defaultSimulatedAnalogMeterSample = { isVisible = True
+                              , properties = defaultSimulatedAnalogMeterProperties
+                              , style = defaultSimulatedAnalogMeterStyle }
 
 -- actions
 type Action 
@@ -56,6 +67,7 @@ type Action
   | SeventSegmentPointsChange String
   | SeventSegmentColonsChange String
   | SegmentedBarGraphValueChange String
+  | SimulatedAnalogMeterValueChange String
 
 
 -- logic when an update signal is emitted
@@ -84,6 +96,11 @@ update action appState =
       let segmentedBarGraphSample' = appState.segmentedBarGraphSample
           properties' = segmentedBarGraphSample'.properties
       in { appState | segmentedBarGraphSample <- { segmentedBarGraphSample' | properties <- { properties' | currentValue <- convertToInt value } } }
+    SimulatedAnalogMeterValueChange value ->
+      --appState
+      let simulatedAnalogMeterSample' = appState.simulatedAnalogMeterSample
+          properties' = simulatedAnalogMeterSample'.properties
+      in { appState | simulatedAnalogMeterSample <- { simulatedAnalogMeterSample' | properties <- { properties' | currentValue <- convertToInt value } } }
 --- 
 
 
@@ -107,7 +124,8 @@ mergedActions = Signal.mergeMany [ actions.signal ]
 
 appView :Address Action -> AppState -> (Int,Int) -> Element
 appView address appState (w,h) = div [] [ sevenSegmentSampleView address appState.sevenSegmentSample
-                                        , segmentedBarGraphView address appState.segmentedBarGraphSample ] |> toElement w h
+                                        , segmentedBarGraphView address appState.segmentedBarGraphSample
+                                        , simulatedAnalogMeterView address appState.simulatedAnalogMeterSample ] |> toElement w h
 
 sevenSegmentSampleView : Address Action -> SevenSegmentSample -> Html
 sevenSegmentSampleView address sevenSegmentSample' =
@@ -146,7 +164,19 @@ segmentedBarGraphView address segmentedBarGraphSample =
                                 , value (toString properties.currentValue)
                                 , on "input" targetValue (Signal.message address << SegmentedBarGraphValueChange) ][ ] ] ]
 
+simulatedAnalogMeterView : Address Action -> SimulatedAnalogMeterSample -> Html
+simulatedAnalogMeterView address sample = 
+  let properties = sample.properties
+  in  div [ style [if sample.isVisible then ("","") else ("display","none")] ] 
+          [ div [ ] [ text "SIMULATED ANALOG METER VIEW" ]
+          , div [ Html.Attributes.style [("width","400px"),("height", "136px")] ]
+                [ simulatedAnalogMeter sample.properties sample.style  ]
+          , div [ ] [ text "VALUE"
+                    , input [ type' "text" 
+                            , value (toString properties.currentValue)
+                            , on "input" targetValue (Signal.message address << SimulatedAnalogMeterValueChange) ] [ ] ] ]
+              
 --helpers
 convertToInt : String -> Int
-convertToInt digit = (Maybe.withDefault -1 (Result.toMaybe (String.toInt digit )))
+convertToInt digit = (Maybe.withDefault 0 (Result.toMaybe (String.toInt digit )))
 

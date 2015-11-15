@@ -1827,7 +1827,7 @@ Elm.Example.Main.make = function (_elm) {
    $Window = Elm.Window.make(_elm);
    var convertToInt = function (digit) {
       return A2($Maybe.withDefault,
-      -1,
+      0,
       $Result.toMaybe($String.toInt(digit)));
    };
    var update = F2(function (action,
@@ -1918,9 +1918,63 @@ Elm.Example.Main.make = function (_elm) {
                                                  properties$)]],
                                     sevenSegmentSample$)]],
                  appState);
+              }();
+            case "SimulatedAnalogMeterValueChange":
+            return function () {
+                 var simulatedAnalogMeterSample$ = appState.simulatedAnalogMeterSample;
+                 var properties$ = simulatedAnalogMeterSample$.properties;
+                 return _U.replace([["simulatedAnalogMeterSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["currentValue"
+                                                              ,convertToInt(action._0)]],
+                                                 properties$)]],
+                                    simulatedAnalogMeterSample$)]],
+                 appState);
               }();}
          _U.badCase($moduleName,
-         "between lines 64 and 86");
+         "between lines 76 and 103");
+      }();
+   });
+   var SimulatedAnalogMeterValueChange = function (a) {
+      return {ctor: "SimulatedAnalogMeterValueChange"
+             ,_0: a};
+   };
+   var simulatedAnalogMeterView = F2(function (address,
+   sample) {
+      return function () {
+         var properties = sample.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([sample.isVisible ? {ctor: "_Tuple2"
+                                                                               ,_0: ""
+                                                                               ,_1: ""} : {ctor: "_Tuple2"
+                                                                                          ,_0: "display"
+                                                                                          ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SIMULATED ANALOG METER VIEW")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "136px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.simulatedAnalogMeter,
+                      sample.properties,
+                      sample.style)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("VALUE")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value($Basics.toString(properties.currentValue))
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SimulatedAnalogMeterValueChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
       }();
    });
    var SegmentedBarGraphValueChange = function (a) {
@@ -2043,29 +2097,36 @@ Elm.Example.Main.make = function (_elm) {
    });
    var appView = F3(function (address,
    appState,
-   _v5) {
+   _v6) {
       return function () {
-         switch (_v5.ctor)
+         switch (_v6.ctor)
          {case "_Tuple2":
             return A2($Html.toElement,
-              _v5._0,
-              _v5._1)(A2($Html.div,
+              _v6._0,
+              _v6._1)(A2($Html.div,
               _L.fromArray([]),
               _L.fromArray([A2(sevenSegmentSampleView,
                            address,
                            appState.sevenSegmentSample)
                            ,A2(segmentedBarGraphView,
                            address,
-                           appState.segmentedBarGraphSample)])));}
+                           appState.segmentedBarGraphSample)
+                           ,A2(simulatedAnalogMeterView,
+                           address,
+                           appState.simulatedAnalogMeterSample)])));}
          _U.badCase($moduleName,
-         "between lines 109 and 110");
+         "between lines 126 and 128");
       }();
    });
    var NoOp = {ctor: "NoOp"};
    var actions = $Signal.mailbox(NoOp);
    var mergedActions = $Signal.mergeMany(_L.fromArray([actions.signal]));
+   var defaultSimulatedAnalogMeterSample = {_: {}
+                                           ,isVisible: true
+                                           ,properties: $Html$Widgets.defaultSimulatedAnalogMeterProperties
+                                           ,style: $Html$Widgets.defaultSimulatedAnalogMeterStyle};
    var defaultSegmentedBarGraphSample = {_: {}
-                                        ,isVisible: true
+                                        ,isVisible: false
                                         ,properties: $Html$Widgets.defaultSegmentedBarGraphProperties
                                         ,style: $Html$Widgets.defaultSegmentBarGraphStyle};
    var defaultSevenSegmentSample = {_: {}
@@ -2076,7 +2137,7 @@ Elm.Example.Main.make = function (_elm) {
                                       return $Basics.toString(i);
                                    },
                                    $Html$Widgets.defaultSevenSegmentProperties.colonIndexes))
-                                   ,isVisible: true
+                                   ,isVisible: false
                                    ,pointIndexesText: A2($String.join,
                                    ",",
                                    A2($List.map,
@@ -2088,7 +2149,8 @@ Elm.Example.Main.make = function (_elm) {
                                    ,style: $Html$Widgets.defaultSevenSegmentStyle};
    var defaultAppState = {_: {}
                          ,segmentedBarGraphSample: defaultSegmentedBarGraphSample
-                         ,sevenSegmentSample: defaultSevenSegmentSample};
+                         ,sevenSegmentSample: defaultSevenSegmentSample
+                         ,simulatedAnalogMeterSample: defaultSimulatedAnalogMeterSample};
    var appState = A3($Signal.foldp,
    update,
    defaultAppState,
@@ -2097,6 +2159,14 @@ Elm.Example.Main.make = function (_elm) {
    appView(actions.address),
    appState,
    $Window.dimensions);
+   var SimulatedAnalogMeterSample = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,isVisible: a
+             ,properties: b
+             ,style: c};
+   });
    var SegmentedBarGraphSample = F3(function (a,
    b,
    c) {
@@ -2117,24 +2187,29 @@ Elm.Example.Main.make = function (_elm) {
              ,properties: a
              ,style: b};
    });
-   var AppState = F2(function (a,
-   b) {
+   var AppState = F3(function (a,
+   b,
+   c) {
       return {_: {}
              ,segmentedBarGraphSample: b
-             ,sevenSegmentSample: a};
+             ,sevenSegmentSample: a
+             ,simulatedAnalogMeterSample: c};
    });
    _elm.Example.Main.values = {_op: _op
                               ,AppState: AppState
                               ,SevenSegmentSample: SevenSegmentSample
                               ,SegmentedBarGraphSample: SegmentedBarGraphSample
+                              ,SimulatedAnalogMeterSample: SimulatedAnalogMeterSample
                               ,defaultAppState: defaultAppState
                               ,defaultSevenSegmentSample: defaultSevenSegmentSample
                               ,defaultSegmentedBarGraphSample: defaultSegmentedBarGraphSample
+                              ,defaultSimulatedAnalogMeterSample: defaultSimulatedAnalogMeterSample
                               ,NoOp: NoOp
                               ,SeventSegmentTextChange: SeventSegmentTextChange
                               ,SeventSegmentPointsChange: SeventSegmentPointsChange
                               ,SeventSegmentColonsChange: SeventSegmentColonsChange
                               ,SegmentedBarGraphValueChange: SegmentedBarGraphValueChange
+                              ,SimulatedAnalogMeterValueChange: SimulatedAnalogMeterValueChange
                               ,update: update
                               ,main: main
                               ,appState: appState
@@ -2143,6 +2218,7 @@ Elm.Example.Main.make = function (_elm) {
                               ,appView: appView
                               ,sevenSegmentSampleView: sevenSegmentSampleView
                               ,segmentedBarGraphView: segmentedBarGraphView
+                              ,simulatedAnalogMeterView: simulatedAnalogMeterView
                               ,convertToInt: convertToInt};
    return _elm.Example.Main.values;
 };
@@ -4050,12 +4126,388 @@ Elm.Html.Widgets.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Svg = Elm.Svg.make(_elm),
    $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
-   var segmentedBarGraphBar = F4(function (_v0,
+   var simulatedAnalogMeterPointer = F2(function (properties,
+   style) {
+      return function () {
+         var percentage = A3($Basics.clamp,
+         -50,
+         50,
+         $Basics.toFloat(properties.currentValue) / $Basics.toFloat(properties.maxValue) * 100 - 50);
+         return A2($Svg.g,
+         _L.fromArray([$Svg$Attributes.transform(A2($Basics._op["++"],
+         "rotate(",
+         A2($Basics._op["++"],
+         $Basics.toString(percentage),
+         " 204,300)")))]),
+         _L.fromArray([A2($Svg.polygon,
+         _L.fromArray([$Svg$Attributes.points("199,300 203,62 205,62 209,300")
+                      ,$Svg$Attributes.fill(style.foreColor)]),
+         _L.fromArray([]))]));
+      }();
+   });
+   var simulatedAnalogMeterSmallBar = F6(function (x$,
+   y$,
+   rotation,
+   percentage,
+   properties,
+   style) {
+      return function () {
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         var width$ = 6;
+         var height$ = 10;
+         return A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.width($Basics.toString(width$))
+                      ,$Svg$Attributes.height($Basics.toString(height$))
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$ + (width$ - 10) / 2),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$ + height$ / 2),
+                      ")")))))))]),
+         _L.fromArray([]));
+      }();
+   });
+   var simulatedAnalogMeterBar = F6(function (x$,
+   y$,
+   rotation,
+   percentage,
+   properties,
+   style) {
+      return function () {
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         var width$ = 8;
+         var height$ = 20;
+         return A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.width($Basics.toString(width$))
+                      ,$Svg$Attributes.height($Basics.toString(height$))
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$ + (width$ - 10) / 2),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$ + height$ / 2),
+                      ")")))))))]),
+         _L.fromArray([]));
+      }();
+   });
+   var simulatedAnalogMeterLabel = F6(function (x$,
+   y$,
+   rotation,
+   percentage,
+   properties,
+   style) {
+      return function () {
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         return A2($Svg.text$,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.$class($Basics.toString(valueToCheck))
+                      ,$Svg$Attributes.textAnchor("middle")
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$),
+                      ")")))))))]),
+         _L.fromArray([$Svg.text($Basics.toString(valueToCheck))]));
+      }();
+   });
+   var simulatedAnalogMeterLabels = F2(function (properties,
+   style) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A6(simulatedAnalogMeterLabel,
+                   -10,
+                   110,
+                   -45,
+                   0,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterLabel,
+                   97,
+                   47,
+                   -24,
+                   0.25,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterLabel,
+                   202,
+                   30,
+                   0,
+                   0.5,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterLabel,
+                   312,
+                   51,
+                   24,
+                   0.75,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterLabel,
+                   416,
+                   114,
+                   45,
+                   1,
+                   properties,
+                   style)]));
+   });
+   var simulatedAnalogMeterBars = F2(function (properties,
+   style) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A6(simulatedAnalogMeterBar,
+                   0.0,
+                   114,
+                   -45,
+                   0,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   25,
+                   97,
+                   -37,
+                   6.2e-2,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   50,
+                   79,
+                   -34,
+                   0.125,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   75,
+                   67,
+                   -30,
+                   0.187,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   100,
+                   54,
+                   -24,
+                   0.25,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   125,
+                   50,
+                   -18,
+                   0.312,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   150,
+                   45,
+                   -11,
+                   0.375,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   175,
+                   42,
+                   -6,
+                   0.437,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   200,
+                   38,
+                   0,
+                   0.5,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   225,
+                   42,
+                   6,
+                   0.562,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   250,
+                   45,
+                   11,
+                   0.625,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   275,
+                   50,
+                   18,
+                   0.687,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   300,
+                   54,
+                   24,
+                   0.75,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   325,
+                   67,
+                   30,
+                   0.812,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   350,
+                   79,
+                   34,
+                   0.875,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   375,
+                   97,
+                   37,
+                   0.937,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   400,
+                   114,
+                   45,
+                   1.0,
+                   properties,
+                   style)]));
+   });
+   var simulatedAnalogMeter = F2(function (properties,
+   style$) {
+      return function () {
+         var containerHeight = 200;
+         var containerWidth = 400;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.style("background:#000")
+                      ,$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         _L.fromArray([A2($Svg.rect,
+                      _L.fromArray([$Svg$Attributes.fill(style$.backgroundColor)
+                                   ,$Svg$Attributes.x("2")
+                                   ,$Svg$Attributes.width($Basics.toString(containerWidth))
+                                   ,$Svg$Attributes.height($Basics.toString(containerHeight))]),
+                      _L.fromArray([]))
+                      ,A2(simulatedAnalogMeterBars,
+                      properties,
+                      style$)
+                      ,A2(simulatedAnalogMeterLabels,
+                      properties,
+                      style$)
+                      ,A2(simulatedAnalogMeterPointer,
+                      properties,
+                      style$)]));
+      }();
+   });
+   var segmentedBarGraphBar = F4(function (_v9,
    properties,
    style,
    index) {
       return function () {
-         switch (_v0.ctor)
+         switch (_v9.ctor)
          {case "_Tuple2":
             return function () {
                  var ranges = properties.ranges;
@@ -4083,19 +4535,19 @@ Elm.Html.Widgets.make = function (_elm) {
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v0._0 * index + 4),
+                 $Basics.toString(_v9._0 * index + 4),
                  " 8)")));
                  return A2($Svg.rect,
                  A2($Basics._op["++"],
                  _L.fromArray([transformAttribute]),
                  _L.fromArray([$Svg$Attributes.$class($Basics.toString(barValue))
                               ,$Svg$Attributes.fill(barColor)
-                              ,$Svg$Attributes.width($Basics.toString(_v0._0 - 8))
-                              ,$Svg$Attributes.height($Basics.toString(_v0._1 - 16))])),
+                              ,$Svg$Attributes.width($Basics.toString(_v9._0 - 8))
+                              ,$Svg$Attributes.height($Basics.toString(_v9._1 - 16))])),
                  _L.fromArray([]));
               }();}
          _U.badCase($moduleName,
-         "between lines 167 and 175");
+         "between lines 193 and 201");
       }();
    });
    var segmentedBarGraph = F2(function (properties,
@@ -4151,19 +4603,19 @@ Elm.Html.Widgets.make = function (_elm) {
                                 ,$Svg$Attributes.fill(style.textColor)]),
                    _L.fromArray([]))]));
    });
-   var seventSegmentColons = F3(function (_v7,
+   var seventSegmentColons = F3(function (_v16,
    indexes,
    style) {
       return function () {
-         switch (_v7.ctor)
+         switch (_v16.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(seventSegmentColon,
               style,
-              _v7._0),
+              _v16._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 140, column 3 to 52");
+         "on line 166, column 3 to 52");
       }();
    });
    var sevenSegmentPoint = F3(function (style,
@@ -4178,19 +4630,19 @@ Elm.Html.Widgets.make = function (_elm) {
                    ,$Svg$Attributes.fill(style.textColor)]),
       _L.fromArray([]))]));
    });
-   var sevenSegmentPoints = F3(function (_v11,
+   var sevenSegmentPoints = F3(function (_v20,
    indexes,
    style) {
       return function () {
-         switch (_v11.ctor)
+         switch (_v20.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(sevenSegmentPoint,
               style,
-              _v11._0),
+              _v20._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 129, column 3 to 51");
+         "on line 155, column 3 to 51");
       }();
    });
    var sevenSegmentDigitPolygon = F2(function (points$,
@@ -4201,18 +4653,18 @@ Elm.Html.Widgets.make = function (_elm) {
       attributes),
       _L.fromArray([]));
    });
-   var sevenSegmentDigit = F4(function (_v15,
+   var sevenSegmentDigit = F4(function (_v24,
    style,
    index,
    digit) {
       return function () {
-         switch (_v15.ctor)
+         switch (_v24.ctor)
          {case "_Tuple2":
             return function () {
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v15._0 * index),
+                 $Basics.toString(_v24._0 * index),
                  " 0)")));
                  var newForegroundAttribute = _L.fromArray([transformAttribute
                                                            ,$Svg$Attributes.fill(style.textColor)]);
@@ -4301,14 +4753,14 @@ Elm.Html.Widgets.make = function (_elm) {
                                            ,segmentF
                                            ,segmentG]);}
                     _U.badCase($moduleName,
-                    "between lines 106 and 118");
+                    "between lines 132 and 144");
                  }();
                  return A2($Svg.g,
                  _L.fromArray([]),
                  polygons);
               }();}
          _U.badCase($moduleName,
-         "between lines 97 and 118");
+         "between lines 123 and 144");
       }();
    });
    var sevenSegment = F2(function (properties,
@@ -4361,23 +4813,31 @@ Elm.Html.Widgets.make = function (_elm) {
          style)))));
       }();
    });
+   var defaultSimulatedAnalogMeterStyle = {_: {}
+                                          ,backgroundColor: "#000"
+                                          ,foreColor: "#fff"};
    var defaultSegmentBarGraphStyle = {_: {}
                                      ,backgroundColor: "#000"
                                      ,emptyColor: "#444"};
-   var defaultSegmentedBarGraphRangeAlert = {_: {}
-                                            ,color: "#F00"
-                                            ,maxValue: 100
-                                            ,minValue: 50};
-   var defaultSegmentedBarGraphRangeOk = {_: {}
-                                         ,color: "#0F0"
-                                         ,maxValue: 49
-                                         ,minValue: 0};
+   var defaultMeterRangeAlert = {_: {}
+                                ,color: "#F00"
+                                ,maxValue: 100
+                                ,minValue: 50.001};
+   var defaultMeterRangeOk = {_: {}
+                             ,color: "#0F0"
+                             ,maxValue: 50
+                             ,minValue: 0};
+   var defaultSimulatedAnalogMeterProperties = {_: {}
+                                               ,currentValue: 50
+                                               ,maxValue: 100
+                                               ,ranges: _L.fromArray([defaultMeterRangeOk
+                                                                     ,defaultMeterRangeAlert])};
    var defaultSegmentedBarGraphProperties = {_: {}
                                             ,currentValue: 70
                                             ,maxValue: 100
-                                            ,ranges: _L.fromArray([defaultSegmentedBarGraphRangeOk
-                                                                  ,defaultSegmentedBarGraphRangeAlert])
-                                            ,segments: 20};
+                                            ,ranges: _L.fromArray([defaultMeterRangeOk
+                                                                  ,defaultMeterRangeAlert])
+                                            ,segments: 50};
    var defaultSevenSegmentStyle = {_: {}
                                   ,backgroundColor: "#000"
                                   ,textColor: "#0F0"};
@@ -4385,6 +4845,28 @@ Elm.Html.Widgets.make = function (_elm) {
                                        ,colonIndexes: _L.fromArray([1])
                                        ,digits: "1234 4567890"
                                        ,pointIndexes: _L.fromArray([7])};
+   var SimulatedAnalogMeterStyle = F2(function (a,
+   b) {
+      return {_: {}
+             ,backgroundColor: b
+             ,foreColor: a};
+   });
+   var MeterRange = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,color: a
+             ,maxValue: c
+             ,minValue: b};
+   });
+   var SimulatedAnalogMeterProperties = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,currentValue: a
+             ,maxValue: b
+             ,ranges: c};
+   });
    var SegmentedBarGraphStyle = F2(function (a,
    b) {
       return {_: {}
@@ -4430,10 +4912,15 @@ Elm.Html.Widgets.make = function (_elm) {
                               ,segmentedBarGraph: segmentedBarGraph
                               ,defaultSegmentedBarGraphProperties: defaultSegmentedBarGraphProperties
                               ,defaultSegmentBarGraphStyle: defaultSegmentBarGraphStyle
+                              ,simulatedAnalogMeter: simulatedAnalogMeter
+                              ,defaultSimulatedAnalogMeterProperties: defaultSimulatedAnalogMeterProperties
+                              ,defaultSimulatedAnalogMeterStyle: defaultSimulatedAnalogMeterStyle
                               ,SevenSegmentProperties: SevenSegmentProperties
                               ,SevenSegmentStyle: SevenSegmentStyle
                               ,SegmentedBarGraphProperties: SegmentedBarGraphProperties
-                              ,SegmentedBarGraphStyle: SegmentedBarGraphStyle};
+                              ,SegmentedBarGraphStyle: SegmentedBarGraphStyle
+                              ,SimulatedAnalogMeterProperties: SimulatedAnalogMeterProperties
+                              ,SimulatedAnalogMeterStyle: SimulatedAnalogMeterStyle};
    return _elm.Html.Widgets.values;
 };
 Elm.Json = Elm.Json || {};
