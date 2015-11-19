@@ -4250,13 +4250,15 @@ Elm.Html.Widgets.make = function (_elm) {
          _L.fromArray([]));
       }();
    });
-   var simulatedAnalogMeterLabel = F6(function (x$,
+   var simulatedAnalogMeterLabel = F7(function (x$,
    y$,
    rotation,
    percentage,
+   labelPercentage,
    properties,
    style) {
       return function () {
+         var labelPercentageValue = labelPercentage * $Basics.toFloat(properties.maxValue);
          var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
          var ranges = properties.ranges;
          var getRange = A2($List.filter,
@@ -4283,7 +4285,7 @@ Elm.Html.Widgets.make = function (_elm) {
          _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
                       ,$Svg$Attributes.y($Basics.toString(y$))
                       ,$Svg$Attributes.fill(foreColor)
-                      ,$Svg$Attributes.$class($Basics.toString(valueToCheck))
+                      ,$Svg$Attributes.$class($Basics.toString(properties.currentValue))
                       ,$Svg$Attributes.textAnchor("middle")
                       ,$Svg$Attributes.transform(A2($Basics._op["++"],
                       "rotate(",
@@ -4298,45 +4300,50 @@ Elm.Html.Widgets.make = function (_elm) {
                       A2($Basics._op["++"],
                       $Basics.toString(y$),
                       ")")))))))]),
-         _L.fromArray([$Svg.text($Basics.toString(valueToCheck))]));
+         _L.fromArray([$Svg.text($Basics.toString(labelPercentageValue))]));
       }();
    });
    var simulatedAnalogMeterLabels = F2(function (properties,
    style) {
       return A2($Svg.g,
       _L.fromArray([]),
-      _L.fromArray([A6(simulatedAnalogMeterLabel,
+      _L.fromArray([A7(simulatedAnalogMeterLabel,
                    -10,
                    110,
                    -45,
                    0,
+                   0,
                    properties,
                    style)
-                   ,A6(simulatedAnalogMeterLabel,
+                   ,A7(simulatedAnalogMeterLabel,
                    97,
                    47,
                    -24,
+                   0.244,
                    0.25,
                    properties,
                    style)
-                   ,A6(simulatedAnalogMeterLabel,
+                   ,A7(simulatedAnalogMeterLabel,
                    202,
                    30,
                    0,
+                   0.49,
                    0.5,
                    properties,
                    style)
-                   ,A6(simulatedAnalogMeterLabel,
+                   ,A7(simulatedAnalogMeterLabel,
                    312,
                    51,
                    24,
+                   0.749,
                    0.75,
                    properties,
                    style)
-                   ,A6(simulatedAnalogMeterLabel,
+                   ,A7(simulatedAnalogMeterLabel,
                    416,
                    114,
                    45,
+                   0.99,
                    1,
                    properties,
                    style)]));
@@ -4461,7 +4468,7 @@ Elm.Html.Widgets.make = function (_elm) {
                    400,
                    114,
                    45,
-                   1,
+                   0.999,
                    properties,
                    style)]));
    });
@@ -4546,7 +4553,7 @@ Elm.Html.Widgets.make = function (_elm) {
                  _L.fromArray([]));
               }();}
          _U.badCase($moduleName,
-         "between lines 192 and 200");
+         "between lines 203 and 211");
       }();
    });
    var segmentedBarGraph = F2(function (properties,
@@ -4614,7 +4621,7 @@ Elm.Html.Widgets.make = function (_elm) {
               _v16._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 165, column 3 to 52");
+         "on line 176, column 3 to 52");
       }();
    });
    var sevenSegmentPoint = F3(function (style,
@@ -4641,7 +4648,7 @@ Elm.Html.Widgets.make = function (_elm) {
               _v20._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 154, column 3 to 51");
+         "on line 165, column 3 to 51");
       }();
    });
    var sevenSegmentDigitPolygon = F2(function (points$,
@@ -4752,14 +4759,14 @@ Elm.Html.Widgets.make = function (_elm) {
                                            ,segmentF
                                            ,segmentG]);}
                     _U.badCase($moduleName,
-                    "between lines 131 and 143");
+                    "between lines 142 and 154");
                  }();
                  return A2($Svg.g,
                  _L.fromArray([]),
                  polygons);
               }();}
          _U.badCase($moduleName,
-         "between lines 122 and 143");
+         "between lines 126 and 154");
       }();
    });
    var sevenSegment = F2(function (properties,
@@ -4824,7 +4831,7 @@ Elm.Html.Widgets.make = function (_elm) {
                                 ,minValue: 50.0};
    var defaultMeterRangeOk = {_: {}
                              ,color: "#0F0"
-                             ,maxValue: 49.99
+                             ,maxValue: 50
                              ,minValue: 0};
    var defaultSimulatedAnalogMeterProperties = {_: {}
                                                ,currentValue: 50
@@ -4843,6 +4850,7 @@ Elm.Html.Widgets.make = function (_elm) {
    var defaultSevenSegmentProperties = {_: {}
                                        ,colonIndexes: _L.fromArray([1])
                                        ,digits: "1234 4567890"
+                                       ,isSlant: false
                                        ,pointIndexes: _L.fromArray([7])};
    var SimulatedAnalogMeterStyle = F2(function (a,
    b) {
@@ -4896,12 +4904,14 @@ Elm.Html.Widgets.make = function (_elm) {
              ,backgroundColor: a
              ,textColor: b};
    });
-   var SevenSegmentProperties = F3(function (a,
+   var SevenSegmentProperties = F4(function (a,
    b,
-   c) {
+   c,
+   d) {
       return {_: {}
              ,colonIndexes: c
              ,digits: a
+             ,isSlant: d
              ,pointIndexes: b};
    });
    _elm.Html.Widgets.values = {_op: _op

@@ -15,7 +15,6 @@ module Html.Widgets (sevenSegment
                     ,SimulatedAnalogMeterProperties
                     ,SimulatedAnalogMeterStyle) where
 
-import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import String
@@ -27,7 +26,8 @@ import String
 -- colonIndexes - the indexes where colons are displayed
 type alias SevenSegmentProperties = { digits : String
                                     , pointIndexes : List Int
-                                    , colonIndexes : List Int }
+                                    , colonIndexes : List Int
+                                    , isSlant : Bool }
 -- model that defines the colors for the parts of each control
 -- backgroundColor - color for the background
 -- textColor - color for the values displayed
@@ -72,6 +72,7 @@ type alias SimulatedAnalogMeterStyle =  { foreColor : String
 defaultSevenSegmentProperties = { digits = "1234 4567890"
                                 , pointIndexes = [ 7 ]
                                 , colonIndexes = [ 1 ]
+                                , isSlant = False
                                 }
 defaultSevenSegmentStyle =  { backgroundColor = "#000"
                             , textColor = "#0F0"}
@@ -89,7 +90,7 @@ defaultMeterRangeOk = { color = "#0F0"
 
 defaultMeterRangeAlert : MeterRange
 defaultMeterRangeAlert =  { color = "#F00"
-                          , minValue = 50.001
+                          , minValue = 50.00
                           , maxValue = 100 }
 
 defaultSegmentBarGraphStyle = { emptyColor = "#444"
@@ -103,7 +104,7 @@ defaultSimulatedAnalogMeterStyle =  { foreColor = "#fff"
 
 ---- SEVEN SEGMENT WIDGET
 -- creates seven segments properties and sevent segment styles
-sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Html
+sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Svg
 sevenSegment properties style = 
   let containerWidth = 200
       containerHeight = 340
@@ -117,11 +118,20 @@ sevenSegment properties style =
                 ++
               (seventSegmentColons (containerWidth, containerHeight) properties.colonIndexes style))
 
+
+
 --seven segment widget digit
 sevenSegmentDigit : (Int, Int) -> SevenSegmentStyle -> Int -> Char  -> Svg
 sevenSegmentDigit (width, height) style index digit  =
   let transformAttribute = transform ("translate(" ++ (toString (width * index)) ++ " 0)")  
       newForegroundAttribute = [ transformAttribute, fill style.textColor ]
+  ---91.8,122.4 -76.6,109.1 15.9,109.1 25.6,122.4 11.3,135.2 -81.2,135.2
+  --16.8,140.1 31.7,128.8 40.9,140.1 23.7,237.8 9.5,250.2 -0.5,238.2
+  --7.2,263.5 17.2,274.8 0,372.5 -14,383.7 -23.8,370.4 -7,275.6
+  ---31.1,378.1 -21.8,390.9 -35.5,403 -128,403 -139,392.2 -124.4,378.1
+  ---130.1,371.2 -143.9,383.7 -153,371.2 -136.1,275.6 -122.5,263.5 -113.1,274.8
+  ---120.2,250.2 -129.4,237.4 -112.4,140.9 -98.8,128.8 -89.5,140.9 -104.3,237
+  ---115.6,257 -101.1,243.8 -6.6,243.8 1.8,257 -11.6,269.9 -105.3,269.9
       segmentA = sevenSegmentDigitPolygon " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2" newForegroundAttribute
       segmentB = sevenSegmentDigitPolygon "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2" newForegroundAttribute
       segmentC = sevenSegmentDigitPolygon "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6" newForegroundAttribute
@@ -201,7 +211,6 @@ segmentedBarGraphBar (width', height') properties style index =
   in rect ([ transformAttribute ] ++ [ class (toString barValue) , fill barColor, width (toString (width' - 8)), height (toString (height' - 16)) ]) []
 
 -- analog meter (Volume Unit Metra)
-
 simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeter properties style' = 
   let containerWidth = 400
@@ -212,17 +221,18 @@ simulatedAnalogMeter properties style' =
           , simulatedAnalogMeterLabels properties style'
           , simulatedAnalogMeterPointer properties style' ]
 
+-- draws the meters for analog meter bars
 simulatedAnalogMeterBars : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeterBars properties style = 
   Svg.g [ ] [ simulatedAnalogMeterBar       0.0   114   -45 0     properties style
             , simulatedAnalogMeterSmallBar  25    97    -37 0.062 properties style
             , simulatedAnalogMeterSmallBar  50    79    -34 0.125 properties style
             , simulatedAnalogMeterSmallBar  75    67    -30 0.187 properties style
-            , simulatedAnalogMeterBar       100   54    -24 0.25  properties style
+            , simulatedAnalogMeterBar       100   54    -24 0.249  properties style
             , simulatedAnalogMeterSmallBar  125   50    -18 0.312 properties style
             , simulatedAnalogMeterSmallBar  150   45    -11 0.375 properties style
             , simulatedAnalogMeterSmallBar  175   42    -6  0.437 properties style
-            , simulatedAnalogMeterBar       200   38    -0  0.5   properties style
+            , simulatedAnalogMeterBar       200   38    -0  0.499 properties style
             , simulatedAnalogMeterSmallBar  225   42    6   0.562 properties style
             , simulatedAnalogMeterSmallBar  250   45    11  0.625 properties style
             , simulatedAnalogMeterSmallBar  275   50    18  0.687 properties style
@@ -230,20 +240,30 @@ simulatedAnalogMeterBars properties style =
             , simulatedAnalogMeterSmallBar  325   67    30  0.812 properties style
             , simulatedAnalogMeterSmallBar  350   79    34  0.875 properties style
             , simulatedAnalogMeterSmallBar  375   97    37  0.937 properties style
-            , simulatedAnalogMeterBar       400   114   45  1.0   properties style ]
+            , simulatedAnalogMeterBar       400   114   45  0.999 properties style ]
 
+-- draws labels for analog meter
 simulatedAnalogMeterLabels : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeterLabels properties style = 
-  Svg.g [ ] [ simulatedAnalogMeterLabel -10 110 -45 0     properties style
-            , simulatedAnalogMeterLabel 97   47 -24 0.25  properties style
-            , simulatedAnalogMeterLabel 202  30   0 0.5   properties style
-            , simulatedAnalogMeterLabel 312  51  24 0.75  properties style
-            , simulatedAnalogMeterLabel 416 114  45 1     properties style ]
+  Svg.g [ ] [ simulatedAnalogMeterLabel -10 110 -45 0     0     properties style
+            , simulatedAnalogMeterLabel 97   47 -24 0.244 0.25  properties style
+            , simulatedAnalogMeterLabel 202  30   0 0.49  0.50  properties style
+            , simulatedAnalogMeterLabel 312  51  24 0.749 0.75  properties style
+            , simulatedAnalogMeterLabel 416 114  45 0.99     1     properties style ]
 
-simulatedAnalogMeterLabel : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterLabel x' y' rotation percentage properties style = 
+-- draws label for analog meter
+-- x' - x of element
+-- y' - y of element
+-- rotation - number of degrees it would be rotated
+-- percentage - of value reached
+-- labelPercentage label of value
+-- properties - properties of simulated analog meter properties
+-- style - properties of simulated analog style
+simulatedAnalogMeterLabel : Float -> Float -> Float -> Float -> Float ->  SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+simulatedAnalogMeterLabel x' y' rotation percentage labelPercentage properties style = 
   let ranges = properties.ranges
       valueToCheck = percentage * (toFloat properties.maxValue)
+      labelPercentageValue  = labelPercentage * (toFloat properties.maxValue)
       getRange = List.filter (\r -> r.minValue <= valueToCheck && valueToCheck <= r.maxValue ) ranges
       rangeFound = List.take 1 getRange
       foreColor = case rangeFound of
@@ -252,12 +272,19 @@ simulatedAnalogMeterLabel x' y' rotation percentage properties style =
   in text'  [ x (toString x')
             , y (toString y')
             , fill foreColor
-            , class (toString valueToCheck)
+            , class (toString properties.currentValue)
             , textAnchor "middle"
             , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ] 
-            [ text (toString valueToCheck) ]
+            [ text (toString labelPercentageValue) ]
 
-
+-- draws bar for analog meter
+-- x' - x of element
+-- y' - y of element
+-- rotation - number of degrees it would be rotated
+-- percentage - of value reached
+-- labelPercentage label of value
+-- properties - properties of simulated analog meter properties
+-- style - properties of simulated analog style
 simulatedAnalogMeterBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeterBar x' y' rotation percentage properties style = 
   let height' = 20
@@ -276,6 +303,14 @@ simulatedAnalogMeterBar x' y' rotation percentage properties style =
           , height (toString height')
           , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString (x' + ((width' - 10) / 2))) ++ "," ++ (toString (y' + (height' / 2))) ++ ")") ] [ ]
 
+-- draws small bars for analog meter
+-- x' - x of element
+-- y' - y of element
+-- rotation - number of degrees it would be rotated
+-- percentage - of value reached
+-- labelPercentage label of value
+-- properties - properties of simulated analog meter properties
+-- style - properties of simulated analog style
 simulatedAnalogMeterSmallBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeterSmallBar x' y' rotation percentage properties style = 
   let height' = 10
@@ -294,8 +329,13 @@ simulatedAnalogMeterSmallBar x' y' rotation percentage properties style =
           , height (toString height')
           , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString (x' + ((width' - 10) / 2))) ++ "," ++ (toString (y' + (height' / 2))) ++ ")") ] [ ]
 
+-- draws pointer for analog meter
+-- properties - properties of simulated analog meter properties
+-- style - properties of simulated analog style
 simulatedAnalogMeterPointer : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
 simulatedAnalogMeterPointer properties style = 
   let percentage = clamp -50 50 ((((toFloat properties.currentValue) / (toFloat properties.maxValue) ) * 100) - 50)
-  in Svg.g  [ transform ("rotate(" ++ (toString percentage) ++ " 204,300)") ] 
-            [ polygon [ points "199,300 203,62 205,62 209,300", fill style.foreColor ] [ ]  ]
+  in Svg.g  [ transform ("rotate(" ++ (toString percentage) ++ " 204,300)") ]
+            [ polygon [ points "199,300 203,62 205,62 209,300", fill style.foreColor ] [ ] ]
+
+
