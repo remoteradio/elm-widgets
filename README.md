@@ -4,7 +4,7 @@ Analog control widgets in ELM (unpublished) written in elm-svg
 demo: https://obscure-sands-3870.herokuapp.com/
 
 ### Seven Segment
-sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Svg
+```sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Svg
 usage example:
 ```sh
 let sevenSegmentProperties = { defaultSevenSegmentProperties | digits <- "1020" }
@@ -14,7 +14,7 @@ in sevenSegment sevenSegmentProperties sevenSegmentStyle
 ```
 
 ### Segmented Bar Graph
-segmentedBarGraph : SegmentedBarGraphProperties -> SegmentedBarGraphStyle -> Svg
+```segmentedBarGraph : SegmentedBarGraphProperties -> SegmentedBarGraphStyle -> Svg
 usage example:
 ```sh
 let segmentedBarGraphProperties = { defaultSegmentedBarGraphProperties | digits <- "1020" }
@@ -24,7 +24,8 @@ in segmentedBarGraph segmentedBarGraphProperties segmentedBarGraphStyle
 ```
 
 ### Simulated Analog Meter
-simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+```simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
+
 usage example:
 ```sh
 let simulatedAnalogMeterProperties = 

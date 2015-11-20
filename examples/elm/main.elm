@@ -17,7 +17,8 @@ import String exposing (..)
 ------ TYPES
 type alias AppState = { sevenSegmentSample : SevenSegmentSample
                       , segmentedBarGraphSample : SegmentedBarGraphSample
-                      , simulatedAnalogMeterSample : SimulatedAnalogMeterSample }
+                      , simulatedAnalogMeterSample : SimulatedAnalogMeterSample
+                      , knobSample : KnobSample }
 
 type alias SevenSegmentSample = { properties : SevenSegmentProperties
                                 , style : SevenSegmentStyle
@@ -33,6 +34,10 @@ type alias SimulatedAnalogMeterSample = { isVisible : Bool
                                         , properties : SimulatedAnalogMeterProperties
                                         , style : SimulatedAnalogMeterStyle }
 
+type alias KnobSample = { isVisible : Bool 
+                        , properties : KnobProperties 
+                        , style : KnobStyle }
+
 
 ------ DEFAULT MODELS
 -- model for the whole app
@@ -40,25 +45,31 @@ defaultAppState : AppState
 defaultAppState = { sevenSegmentSample  = defaultSevenSegmentSample
                   , segmentedBarGraphSample = defaultSegmentedBarGraphSample
                   , simulatedAnalogMeterSample = defaultSimulatedAnalogMeterSample
+                  , knobSample = defaultKnobSample
                   }
 
 defaultSevenSegmentSample : SevenSegmentSample
 defaultSevenSegmentSample = { properties = defaultSevenSegmentProperties
                             , style = defaultSevenSegmentStyle
-                            , isVisible = True
+                            , isVisible = False
                             , pointIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.pointIndexes)
                             , colonIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.colonIndexes)
                             }
   
 defaultSegmentedBarGraphSample : SegmentedBarGraphSample
-defaultSegmentedBarGraphSample = { isVisible = True
+defaultSegmentedBarGraphSample = { isVisible = False
                                  , properties = defaultSegmentedBarGraphProperties
                                  , style = defaultSegmentBarGraphStyle }
 
 defaultSimulatedAnalogMeterSample : SimulatedAnalogMeterSample
-defaultSimulatedAnalogMeterSample = { isVisible = True
+defaultSimulatedAnalogMeterSample = { isVisible = False
                               , properties = defaultSimulatedAnalogMeterProperties
                               , style = defaultSimulatedAnalogMeterStyle }
+
+defaultKnobSample : KnobSample
+defaultKnobSample = { isVisible = True
+                    , properties = defaultKnobProperties
+                    , style = defaultKnobStyle }
 
 -- actions
 type Action 
@@ -125,7 +136,8 @@ mergedActions = Signal.mergeMany [ actions.signal ]
 appView :Address Action -> AppState -> (Int,Int) -> Element
 appView address appState (w,h) = div [] [ sevenSegmentSampleView address appState.sevenSegmentSample
                                         , segmentedBarGraphView address appState.segmentedBarGraphSample
-                                        , simulatedAnalogMeterView address appState.simulatedAnalogMeterSample ] |> toElement w h
+                                        , simulatedAnalogMeterView address appState.simulatedAnalogMeterSample
+                                        , knobView address appState.knobSample ] |> toElement w h
 
 sevenSegmentSampleView : Address Action -> SevenSegmentSample -> Html
 sevenSegmentSampleView address sevenSegmentSample' =
@@ -175,7 +187,17 @@ simulatedAnalogMeterView address sample =
                     , input [ type' "text" 
                             , value (toString properties.currentValue)
                             , on "input" targetValue (Signal.message address << SimulatedAnalogMeterValueChange) ] [ ] ] ]
-              
+ 
+
+knobView : Address Action -> KnobSample -> Html
+knobView address sample =
+  let properties = sample.properties
+  in  div [ style [if sample.isVisible then ("","") else ("display","none")] ] 
+          [ div [ ] [ text "KNOB VIEW"] 
+          , div [ Html.Attributes.style [("width","400px"),("height", "400px")] ]
+                [ knob sample.properties sample.style  ]]
+
+
 --helpers
 convertToInt : String -> Int
 convertToInt digit = (Maybe.withDefault 0 (Result.toMaybe (String.toInt digit )))

@@ -1,19 +1,8 @@
 -- author: virgilio dato
-module Html.Widgets (sevenSegment
-                    , defaultSevenSegmentProperties
-                    , defaultSevenSegmentStyle
-                    , SevenSegmentProperties
-                    , SevenSegmentStyle
-                    ,segmentedBarGraph
-                    ,defaultSegmentedBarGraphProperties
-                    ,defaultSegmentBarGraphStyle
-                    ,SegmentedBarGraphProperties
-                    ,SegmentedBarGraphStyle
-                    ,simulatedAnalogMeter
-                    ,defaultSimulatedAnalogMeterProperties
-                    ,defaultSimulatedAnalogMeterStyle
-                    ,SimulatedAnalogMeterProperties
-                    ,SimulatedAnalogMeterStyle) where
+module Html.Widgets (sevenSegment, defaultSevenSegmentProperties, defaultSevenSegmentStyle, SevenSegmentProperties, SevenSegmentStyle
+                    ,segmentedBarGraph,defaultSegmentedBarGraphProperties,defaultSegmentBarGraphStyle,SegmentedBarGraphProperties,SegmentedBarGraphStyle
+                    ,simulatedAnalogMeter,defaultSimulatedAnalogMeterProperties,defaultSimulatedAnalogMeterStyle,SimulatedAnalogMeterProperties,SimulatedAnalogMeterStyle
+                    ,knob,defaultKnobProperties,defaultKnobStyle,KnobProperties,KnobStyle) where
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -68,6 +57,12 @@ type alias MeterRange = { color : String
 type alias SimulatedAnalogMeterStyle =  { foreColor : String
                                         , backgroundColor : String }
 
+type alias KnobProperties = { segments : Int
+                            , smallSegments : Int
+                            , rangeAngleMin : Int
+                            , rangeAngleMax : Int }
+type alias KnobStyle = { }
+
 ---- ALIAS CONSTRUCTORS
 defaultSevenSegmentProperties = { digits = "1234 4567890"
                                 , pointIndexes = [ 7 ]
@@ -101,6 +96,12 @@ defaultSimulatedAnalogMeterProperties = { currentValue = 50
                                         , ranges  = [ defaultMeterRangeOk, defaultMeterRangeAlert ]}
 defaultSimulatedAnalogMeterStyle =  { foreColor = "#fff"
                                     , backgroundColor = "#000"  }
+
+defaultKnobProperties = { segments = 20 
+                        , smallSegments = 120
+                        , rangeAngleMin = 90
+                        , rangeAngleMax = 30 }
+defaultKnobStyle = { }
 
 ---- SEVEN SEGMENT WIDGET
 -- creates seven segments properties and sevent segment styles
@@ -338,4 +339,57 @@ simulatedAnalogMeterPointer properties style =
   in Svg.g  [ transform ("rotate(" ++ (toString percentage) ++ " 204,300)") ]
             [ polygon [ points "199,300 203,62 205,62 209,300", fill style.foreColor ] [ ] ]
 
+
+---- KNOBS
+knob : KnobProperties -> KnobStyle -> Svg
+knob properties style = 
+  let containerWidth = 340
+      containerHeight = 340
+  -- get number of small segments, segments, 
+      segments = properties.segments
+      smallSegments = properties.smallSegments
+  -- have center radius, bar width
+      radius = 120
+      barHeight = 10
+      smallBarHeight = 5
+      centerX = 340 / 2
+      centerY = 340 / 2
+  -- compute middle radius by adding small bar width
+  -- compute large radius by adding bar width
+      middleRadius = radius + smallBarHeight
+      largeRadius = radius + barHeight
+  -- deterine the angles to calculate store it on barAngle and smallBarAngle based on number of bars
+      barAngle = 360 / (toFloat segments)
+      smallBarAngle = 360 / (toFloat (segments + smallSegments))
+  -- for each angle
+  in Svg.svg  [ version "1.1"
+              , class (toString barAngle)
+              , height "100%"
+              , width "100%"
+              , x "0"
+              , y "0"
+              ,  viewBox ("0 0 " ++ (toString containerWidth) ++ " " ++ (toString containerHeight)) ] 
+              ( (List.map (knobSegment barAngle radius largeRadius (centerX, centerY)) [0..segments])
+                  ++
+                (List.map (knobSegment smallBarAngle radius middleRadius (centerX, centerY)) [0..(smallSegments + segments)])
+                      )
+
+knobSegment : Float -> Float -> Float -> (Float,Float) -> Int -> Svg
+knobSegment angle innerRadius outerRadius (x', y') index = 
+  -- using index determine angle
+  -- use that angle, radius 1 and center point to determine point position 2 xy
+  -- use that angle, radius 2 and center point to determine point position 3 xy
+  -- draw that line from position 1 and 2
+             --int x = (int)(150 + radius * System.Math.Cos(angle));
+             --int y = (int)(150 + radius * System.Math.Sin(angle));
+  let indexedAngle = ((angle * (toFloat index)) * (pi / 180))
+      (x1', y1') = (fromPolar (innerRadius, indexedAngle))
+      (x2', y2') = (fromPolar (outerRadius, indexedAngle))
+  in Svg.g [ ]  [ line  [ x1 (toString  (x1' + x'))
+                        , y1 (toString (y1' + y'))
+                        , x2 (toString (x2' + x'))
+                        , y2 (toString (y2' + y'))
+                        , class (toString (angle * (toFloat index)))
+                        , Svg.Attributes.style "stroke:rgb(255,0,0);stroke-width:2" ] [ ] ]
+    
 
