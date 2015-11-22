@@ -10,7 +10,7 @@ module Html.Widgets (sevenSegment, defaultSevenSegmentProperties, defaultSevenSe
 @docs sevenSegment,defaultSevenSegmentProperties,defaultSevenSegmentStyle, SevenSegmentProperties, SevenSegmentStyle
 
 # Segmented Bar Graph Widget
-@docs segmentedBarGraph, defaultSegmentedBarGraphProperties, defaultSegmentBarGraphStyle, SegmentedBarGraphProperties, SegmentedBarGraphRange, SegmentedBarGraphStyle
+@docs segmentedBarGraph, defaultSegmentedBarGraphProperties, defaultSegmentBarGraphStyle, SegmentedBarGraphProperties, SegmentedBarGraphStyle
 
 # Simulated Analog Meter Widget
 @docs simulatedAnalogMeter,defaultSimulatedAnalogMeterProperties,defaultSimulatedAnalogMeterStyle,SimulatedAnalogMeterProperties,SimulatedAnalogMeterStyle
