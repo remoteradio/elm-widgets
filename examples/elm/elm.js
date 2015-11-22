@@ -1814,15 +1814,458 @@ Elm.Example.Main.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Example.Main",
    $Basics = Elm.Basics.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Html$Widgets = Elm.Html.Widgets.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $Svg$Widgets = Elm.Svg.Widgets.make(_elm);
-   var main = $Html.text($Svg$Widgets.author);
+   $String = Elm.String.make(_elm),
+   $Window = Elm.Window.make(_elm);
+   var convertToInt = function (digit) {
+      return A2($Maybe.withDefault,
+      0,
+      $Result.toMaybe($String.toInt(digit)));
+   };
+   var knobView = F2(function (address,
+   sample) {
+      return function () {
+         var properties = sample.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([sample.isVisible ? {ctor: "_Tuple2"
+                                                                               ,_0: ""
+                                                                               ,_1: ""} : {ctor: "_Tuple2"
+                                                                                          ,_0: "display"
+                                                                                          ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("KNOB VIEW")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "400px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.knob,
+                      sample.properties,
+                      sample.style)]))]));
+      }();
+   });
+   var update = F2(function (action,
+   appState) {
+      return function () {
+         switch (action.ctor)
+         {case "NoOp": return appState;
+            case "SegmentedBarGraphValueChange":
+            return function () {
+                 var segmentedBarGraphSample$ = appState.segmentedBarGraphSample;
+                 var properties$ = segmentedBarGraphSample$.properties;
+                 return _U.replace([["segmentedBarGraphSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["currentValue"
+                                                              ,convertToInt(action._0)]],
+                                                 properties$)]],
+                                    segmentedBarGraphSample$)]],
+                 appState);
+              }();
+            case "SeventSegmentColonsChange":
+            return function () {
+                 var convert = function (digit) {
+                    return A2($Maybe.withDefault,
+                    -1,
+                    $Result.toMaybe($String.toInt(digit)));
+                 };
+                 var colonIndexes$ = A2($List.filter,
+                 function (y) {
+                    return !_U.eq(y,-1);
+                 },
+                 A2($List.map,
+                 function (x) {
+                    return convert(x);
+                 },
+                 A2($String.split,
+                 ",",
+                 action._0)));
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 var properties$ = sevenSegmentSample$.properties;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["colonIndexes"
+                                                              ,colonIndexes$]],
+                                                 properties$)]
+                                                ,["colonIndexesText"
+                                                 ,action._0]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();
+            case "SeventSegmentPointsChange":
+            return function () {
+                 var convert = function (digit) {
+                    return A2($Maybe.withDefault,
+                    -1,
+                    $Result.toMaybe($String.toInt(digit)));
+                 };
+                 var pointIndexes$ = A2($List.filter,
+                 function (y) {
+                    return !_U.eq(y,-1);
+                 },
+                 A2($List.map,
+                 function (x) {
+                    return convert(x);
+                 },
+                 A2($String.split,
+                 ",",
+                 action._0)));
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 var properties$ = sevenSegmentSample$.properties;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["pointIndexes"
+                                                              ,pointIndexes$]],
+                                                 properties$)]
+                                                ,["pointIndexesText"
+                                                 ,action._0]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();
+            case "SeventSegmentTextChange":
+            return function () {
+                 var sevenSegmentSample$ = appState.sevenSegmentSample;
+                 var properties$ = sevenSegmentSample$.properties;
+                 return _U.replace([["sevenSegmentSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["digits"
+                                                              ,action._0]],
+                                                 properties$)]],
+                                    sevenSegmentSample$)]],
+                 appState);
+              }();
+            case "SimulatedAnalogMeterValueChange":
+            return function () {
+                 var simulatedAnalogMeterSample$ = appState.simulatedAnalogMeterSample;
+                 var properties$ = simulatedAnalogMeterSample$.properties;
+                 return _U.replace([["simulatedAnalogMeterSample"
+                                    ,_U.replace([["properties"
+                                                 ,_U.replace([["currentValue"
+                                                              ,convertToInt(action._0)]],
+                                                 properties$)]],
+                                    simulatedAnalogMeterSample$)]],
+                 appState);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 87 and 114");
+      }();
+   });
+   var SimulatedAnalogMeterValueChange = function (a) {
+      return {ctor: "SimulatedAnalogMeterValueChange"
+             ,_0: a};
+   };
+   var simulatedAnalogMeterView = F2(function (address,
+   sample) {
+      return function () {
+         var properties = sample.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([sample.isVisible ? {ctor: "_Tuple2"
+                                                                               ,_0: ""
+                                                                               ,_1: ""} : {ctor: "_Tuple2"
+                                                                                          ,_0: "display"
+                                                                                          ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SIMULATED ANALOG METER VIEW")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "136px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.simulatedAnalogMeter,
+                      sample.properties,
+                      sample.style)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("VALUE")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value($Basics.toString(properties.currentValue))
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SimulatedAnalogMeterValueChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
+      }();
+   });
+   var SegmentedBarGraphValueChange = function (a) {
+      return {ctor: "SegmentedBarGraphValueChange"
+             ,_0: a};
+   };
+   var segmentedBarGraphView = F2(function (address,
+   segmentedBarGraphSample) {
+      return function () {
+         var properties = segmentedBarGraphSample.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([segmentedBarGraphSample.isVisible ? {ctor: "_Tuple2"
+                                                                                                ,_0: ""
+                                                                                                ,_1: ""} : {ctor: "_Tuple2"
+                                                                                                           ,_0: "display"
+                                                                                                           ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SEGMENTED BAR GRAPH SAMPLE")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "68px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.segmentedBarGraph,
+                      segmentedBarGraphSample.properties,
+                      segmentedBarGraphSample.style)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("VALUE")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value($Basics.toString(properties.currentValue))
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SegmentedBarGraphValueChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
+      }();
+   });
+   var SeventSegmentColonsChange = function (a) {
+      return {ctor: "SeventSegmentColonsChange"
+             ,_0: a};
+   };
+   var SeventSegmentPointsChange = function (a) {
+      return {ctor: "SeventSegmentPointsChange"
+             ,_0: a};
+   };
+   var SeventSegmentTextChange = function (a) {
+      return {ctor: "SeventSegmentTextChange"
+             ,_0: a};
+   };
+   var sevenSegmentSampleView = F2(function (address,
+   sevenSegmentSample$) {
+      return function () {
+         var properties = sevenSegmentSample$.properties;
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(_L.fromArray([sevenSegmentSample$.isVisible ? {ctor: "_Tuple2"
+                                                                                            ,_0: ""
+                                                                                            ,_1: ""} : {ctor: "_Tuple2"
+                                                                                                       ,_0: "display"
+                                                                                                       ,_1: "none"}]))]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("SEVENT SEGMENT EXAMPLE")]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: "400px"}
+                                                                        ,{ctor: "_Tuple2"
+                                                                         ,_0: "height"
+                                                                         ,_1: "68px"}]))]),
+                      _L.fromArray([A2($Html$Widgets.sevenSegment,
+                      sevenSegmentSample$.properties,
+                      sevenSegmentSample$.style)]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("TEXT")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(properties.digits)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentTextChange($));
+                                                })]),
+                                   _L.fromArray([]))]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("POINTS")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(sevenSegmentSample$.pointIndexesText)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentPointsChange($));
+                                                })]),
+                                   _L.fromArray([]))]))
+                      ,A2($Html.div,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("COLONS")
+                                   ,A2($Html.input,
+                                   _L.fromArray([$Html$Attributes.type$("text")
+                                                ,$Html$Attributes.value(sevenSegmentSample$.colonIndexesText)
+                                                ,A3($Html$Events.on,
+                                                "input",
+                                                $Html$Events.targetValue,
+                                                function ($) {
+                                                   return $Signal.message(address)(SeventSegmentColonsChange($));
+                                                })]),
+                                   _L.fromArray([]))]))]));
+      }();
+   });
+   var appView = F3(function (address,
+   appState,
+   _v6) {
+      return function () {
+         switch (_v6.ctor)
+         {case "_Tuple2":
+            return A2($Html.toElement,
+              _v6._0,
+              _v6._1)(A2($Html.div,
+              _L.fromArray([]),
+              _L.fromArray([A2(sevenSegmentSampleView,
+                           address,
+                           appState.sevenSegmentSample)
+                           ,A2(segmentedBarGraphView,
+                           address,
+                           appState.segmentedBarGraphSample)
+                           ,A2(simulatedAnalogMeterView,
+                           address,
+                           appState.simulatedAnalogMeterSample)
+                           ,A2(knobView,
+                           address,
+                           appState.knobSample)])));}
+         _U.badCase($moduleName,
+         "between lines 137 and 140");
+      }();
+   });
+   var NoOp = {ctor: "NoOp"};
+   var actions = $Signal.mailbox(NoOp);
+   var mergedActions = $Signal.mergeMany(_L.fromArray([actions.signal]));
+   var defaultKnobSample = {_: {}
+                           ,isVisible: true
+                           ,properties: $Html$Widgets.defaultKnobProperties
+                           ,style: $Html$Widgets.defaultKnobStyle};
+   var defaultSimulatedAnalogMeterSample = {_: {}
+                                           ,isVisible: false
+                                           ,properties: $Html$Widgets.defaultSimulatedAnalogMeterProperties
+                                           ,style: $Html$Widgets.defaultSimulatedAnalogMeterStyle};
+   var defaultSegmentedBarGraphSample = {_: {}
+                                        ,isVisible: false
+                                        ,properties: $Html$Widgets.defaultSegmentedBarGraphProperties
+                                        ,style: $Html$Widgets.defaultSegmentBarGraphStyle};
+   var defaultSevenSegmentSample = {_: {}
+                                   ,colonIndexesText: A2($String.join,
+                                   ",",
+                                   A2($List.map,
+                                   function (i) {
+                                      return $Basics.toString(i);
+                                   },
+                                   $Html$Widgets.defaultSevenSegmentProperties.colonIndexes))
+                                   ,isVisible: false
+                                   ,pointIndexesText: A2($String.join,
+                                   ",",
+                                   A2($List.map,
+                                   function (i) {
+                                      return $Basics.toString(i);
+                                   },
+                                   $Html$Widgets.defaultSevenSegmentProperties.pointIndexes))
+                                   ,properties: $Html$Widgets.defaultSevenSegmentProperties
+                                   ,style: $Html$Widgets.defaultSevenSegmentStyle};
+   var defaultAppState = {_: {}
+                         ,knobSample: defaultKnobSample
+                         ,segmentedBarGraphSample: defaultSegmentedBarGraphSample
+                         ,sevenSegmentSample: defaultSevenSegmentSample
+                         ,simulatedAnalogMeterSample: defaultSimulatedAnalogMeterSample};
+   var appState = A3($Signal.foldp,
+   update,
+   defaultAppState,
+   mergedActions);
+   var main = A3($Signal.map2,
+   appView(actions.address),
+   appState,
+   $Window.dimensions);
+   var KnobSample = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,isVisible: a
+             ,properties: b
+             ,style: c};
+   });
+   var SimulatedAnalogMeterSample = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,isVisible: a
+             ,properties: b
+             ,style: c};
+   });
+   var SegmentedBarGraphSample = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,isVisible: a
+             ,properties: b
+             ,style: c};
+   });
+   var SevenSegmentSample = F5(function (a,
+   b,
+   c,
+   d,
+   e) {
+      return {_: {}
+             ,colonIndexesText: e
+             ,isVisible: c
+             ,pointIndexesText: d
+             ,properties: a
+             ,style: b};
+   });
+   var AppState = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,knobSample: d
+             ,segmentedBarGraphSample: b
+             ,sevenSegmentSample: a
+             ,simulatedAnalogMeterSample: c};
+   });
    _elm.Example.Main.values = {_op: _op
-                              ,main: main};
+                              ,AppState: AppState
+                              ,SevenSegmentSample: SevenSegmentSample
+                              ,SegmentedBarGraphSample: SegmentedBarGraphSample
+                              ,SimulatedAnalogMeterSample: SimulatedAnalogMeterSample
+                              ,KnobSample: KnobSample
+                              ,defaultAppState: defaultAppState
+                              ,defaultSevenSegmentSample: defaultSevenSegmentSample
+                              ,defaultSegmentedBarGraphSample: defaultSegmentedBarGraphSample
+                              ,defaultSimulatedAnalogMeterSample: defaultSimulatedAnalogMeterSample
+                              ,defaultKnobSample: defaultKnobSample
+                              ,NoOp: NoOp
+                              ,SeventSegmentTextChange: SeventSegmentTextChange
+                              ,SeventSegmentPointsChange: SeventSegmentPointsChange
+                              ,SeventSegmentColonsChange: SeventSegmentColonsChange
+                              ,SegmentedBarGraphValueChange: SegmentedBarGraphValueChange
+                              ,SimulatedAnalogMeterValueChange: SimulatedAnalogMeterValueChange
+                              ,update: update
+                              ,main: main
+                              ,appState: appState
+                              ,actions: actions
+                              ,mergedActions: mergedActions
+                              ,appView: appView
+                              ,sevenSegmentSampleView: sevenSegmentSampleView
+                              ,segmentedBarGraphView: segmentedBarGraphView
+                              ,simulatedAnalogMeterView: simulatedAnalogMeterView
+                              ,knobView: knobView
+                              ,convertToInt: convertToInt};
    return _elm.Example.Main.values;
 };
 Elm.Graphics = Elm.Graphics || {};
@@ -2713,6 +3156,37 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
 };
+Elm.Graphics = Elm.Graphics || {};
+Elm.Graphics.Input = Elm.Graphics.Input || {};
+Elm.Graphics.Input.make = function (_elm) {
+   "use strict";
+   _elm.Graphics = _elm.Graphics || {};
+   _elm.Graphics.Input = _elm.Graphics.Input || {};
+   if (_elm.Graphics.Input.values)
+   return _elm.Graphics.Input.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Graphics.Input",
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Native$Graphics$Input = Elm.Native.Graphics.Input.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var clickable = $Native$Graphics$Input.clickable;
+   var hoverable = $Native$Graphics$Input.hoverable;
+   var dropDown = $Native$Graphics$Input.dropDown;
+   var checkbox = $Native$Graphics$Input.checkbox;
+   var customButton = $Native$Graphics$Input.customButton;
+   var button = $Native$Graphics$Input.button;
+   _elm.Graphics.Input.values = {_op: _op
+                                ,button: button
+                                ,customButton: customButton
+                                ,checkbox: checkbox
+                                ,dropDown: dropDown
+                                ,hoverable: hoverable
+                                ,clickable: clickable};
+   return _elm.Graphics.Input.values;
+};
 Elm.Html = Elm.Html || {};
 Elm.Html.make = function (_elm) {
    "use strict";
@@ -2939,6 +3413,1679 @@ Elm.Html.make = function (_elm) {
                       ,menuitem: menuitem
                       ,menu: menu};
    return _elm.Html.values;
+};
+Elm.Html = Elm.Html || {};
+Elm.Html.Attributes = Elm.Html.Attributes || {};
+Elm.Html.Attributes.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Attributes = _elm.Html.Attributes || {};
+   if (_elm.Html.Attributes.values)
+   return _elm.Html.Attributes.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Attributes",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var attribute = $VirtualDom.attribute;
+   var contextmenu = function (value) {
+      return A2(attribute,
+      "contextmenu",
+      value);
+   };
+   var property = $VirtualDom.property;
+   var stringProperty = F2(function (name,
+   string) {
+      return A2(property,
+      name,
+      $Json$Encode.string(string));
+   });
+   var $class = function (name) {
+      return A2(stringProperty,
+      "className",
+      name);
+   };
+   var id = function (name) {
+      return A2(stringProperty,
+      "id",
+      name);
+   };
+   var title = function (name) {
+      return A2(stringProperty,
+      "title",
+      name);
+   };
+   var accesskey = function ($char) {
+      return A2(stringProperty,
+      "accessKey",
+      $String.fromChar($char));
+   };
+   var dir = function (value) {
+      return A2(stringProperty,
+      "dir",
+      value);
+   };
+   var draggable = function (value) {
+      return A2(stringProperty,
+      "draggable",
+      value);
+   };
+   var dropzone = function (value) {
+      return A2(stringProperty,
+      "dropzone",
+      value);
+   };
+   var itemprop = function (value) {
+      return A2(stringProperty,
+      "itemprop",
+      value);
+   };
+   var lang = function (value) {
+      return A2(stringProperty,
+      "lang",
+      value);
+   };
+   var tabindex = function (n) {
+      return A2(stringProperty,
+      "tabIndex",
+      $Basics.toString(n));
+   };
+   var charset = function (value) {
+      return A2(stringProperty,
+      "charset",
+      value);
+   };
+   var content = function (value) {
+      return A2(stringProperty,
+      "content",
+      value);
+   };
+   var httpEquiv = function (value) {
+      return A2(stringProperty,
+      "httpEquiv",
+      value);
+   };
+   var language = function (value) {
+      return A2(stringProperty,
+      "language",
+      value);
+   };
+   var src = function (value) {
+      return A2(stringProperty,
+      "src",
+      value);
+   };
+   var height = function (value) {
+      return A2(stringProperty,
+      "height",
+      $Basics.toString(value));
+   };
+   var width = function (value) {
+      return A2(stringProperty,
+      "width",
+      $Basics.toString(value));
+   };
+   var alt = function (value) {
+      return A2(stringProperty,
+      "alt",
+      value);
+   };
+   var preload = function (value) {
+      return A2(stringProperty,
+      "preload",
+      value);
+   };
+   var poster = function (value) {
+      return A2(stringProperty,
+      "poster",
+      value);
+   };
+   var kind = function (value) {
+      return A2(stringProperty,
+      "kind",
+      value);
+   };
+   var srclang = function (value) {
+      return A2(stringProperty,
+      "srclang",
+      value);
+   };
+   var sandbox = function (value) {
+      return A2(stringProperty,
+      "sandbox",
+      value);
+   };
+   var srcdoc = function (value) {
+      return A2(stringProperty,
+      "srcdoc",
+      value);
+   };
+   var type$ = function (value) {
+      return A2(stringProperty,
+      "type",
+      value);
+   };
+   var value = function (value) {
+      return A2(stringProperty,
+      "value",
+      value);
+   };
+   var placeholder = function (value) {
+      return A2(stringProperty,
+      "placeholder",
+      value);
+   };
+   var accept = function (value) {
+      return A2(stringProperty,
+      "accept",
+      value);
+   };
+   var acceptCharset = function (value) {
+      return A2(stringProperty,
+      "acceptCharset",
+      value);
+   };
+   var action = function (value) {
+      return A2(stringProperty,
+      "action",
+      value);
+   };
+   var autocomplete = function (bool) {
+      return A2(stringProperty,
+      "autocomplete",
+      bool ? "on" : "off");
+   };
+   var autosave = function (value) {
+      return A2(stringProperty,
+      "autosave",
+      value);
+   };
+   var enctype = function (value) {
+      return A2(stringProperty,
+      "enctype",
+      value);
+   };
+   var formaction = function (value) {
+      return A2(stringProperty,
+      "formAction",
+      value);
+   };
+   var list = function (value) {
+      return A2(stringProperty,
+      "list",
+      value);
+   };
+   var minlength = function (n) {
+      return A2(stringProperty,
+      "minLength",
+      $Basics.toString(n));
+   };
+   var maxlength = function (n) {
+      return A2(stringProperty,
+      "maxLength",
+      $Basics.toString(n));
+   };
+   var method = function (value) {
+      return A2(stringProperty,
+      "method",
+      value);
+   };
+   var name = function (value) {
+      return A2(stringProperty,
+      "name",
+      value);
+   };
+   var pattern = function (value) {
+      return A2(stringProperty,
+      "pattern",
+      value);
+   };
+   var size = function (n) {
+      return A2(stringProperty,
+      "size",
+      $Basics.toString(n));
+   };
+   var $for = function (value) {
+      return A2(stringProperty,
+      "htmlFor",
+      value);
+   };
+   var form = function (value) {
+      return A2(stringProperty,
+      "form",
+      value);
+   };
+   var max = function (value) {
+      return A2(stringProperty,
+      "max",
+      value);
+   };
+   var min = function (value) {
+      return A2(stringProperty,
+      "min",
+      value);
+   };
+   var step = function (n) {
+      return A2(stringProperty,
+      "step",
+      n);
+   };
+   var cols = function (n) {
+      return A2(stringProperty,
+      "cols",
+      $Basics.toString(n));
+   };
+   var rows = function (n) {
+      return A2(stringProperty,
+      "rows",
+      $Basics.toString(n));
+   };
+   var wrap = function (value) {
+      return A2(stringProperty,
+      "wrap",
+      value);
+   };
+   var usemap = function (value) {
+      return A2(stringProperty,
+      "useMap",
+      value);
+   };
+   var shape = function (value) {
+      return A2(stringProperty,
+      "shape",
+      value);
+   };
+   var coords = function (value) {
+      return A2(stringProperty,
+      "coords",
+      value);
+   };
+   var challenge = function (value) {
+      return A2(stringProperty,
+      "challenge",
+      value);
+   };
+   var keytype = function (value) {
+      return A2(stringProperty,
+      "keytype",
+      value);
+   };
+   var align = function (value) {
+      return A2(stringProperty,
+      "align",
+      value);
+   };
+   var cite = function (value) {
+      return A2(stringProperty,
+      "cite",
+      value);
+   };
+   var href = function (value) {
+      return A2(stringProperty,
+      "href",
+      value);
+   };
+   var target = function (value) {
+      return A2(stringProperty,
+      "target",
+      value);
+   };
+   var downloadAs = function (value) {
+      return A2(stringProperty,
+      "download",
+      value);
+   };
+   var hreflang = function (value) {
+      return A2(stringProperty,
+      "hreflang",
+      value);
+   };
+   var media = function (value) {
+      return A2(stringProperty,
+      "media",
+      value);
+   };
+   var ping = function (value) {
+      return A2(stringProperty,
+      "ping",
+      value);
+   };
+   var rel = function (value) {
+      return A2(stringProperty,
+      "rel",
+      value);
+   };
+   var datetime = function (value) {
+      return A2(stringProperty,
+      "datetime",
+      value);
+   };
+   var pubdate = function (value) {
+      return A2(stringProperty,
+      "pubdate",
+      value);
+   };
+   var start = function (n) {
+      return A2(stringProperty,
+      "start",
+      $Basics.toString(n));
+   };
+   var colspan = function (n) {
+      return A2(stringProperty,
+      "colSpan",
+      $Basics.toString(n));
+   };
+   var headers = function (value) {
+      return A2(stringProperty,
+      "headers",
+      value);
+   };
+   var rowspan = function (n) {
+      return A2(stringProperty,
+      "rowSpan",
+      $Basics.toString(n));
+   };
+   var scope = function (value) {
+      return A2(stringProperty,
+      "scope",
+      value);
+   };
+   var manifest = function (value) {
+      return A2(stringProperty,
+      "manifest",
+      value);
+   };
+   var boolProperty = F2(function (name,
+   bool) {
+      return A2(property,
+      name,
+      $Json$Encode.bool(bool));
+   });
+   var hidden = function (bool) {
+      return A2(boolProperty,
+      "hidden",
+      bool);
+   };
+   var contenteditable = function (bool) {
+      return A2(boolProperty,
+      "contentEditable",
+      bool);
+   };
+   var spellcheck = function (bool) {
+      return A2(boolProperty,
+      "spellcheck",
+      bool);
+   };
+   var async = function (bool) {
+      return A2(boolProperty,
+      "async",
+      bool);
+   };
+   var defer = function (bool) {
+      return A2(boolProperty,
+      "defer",
+      bool);
+   };
+   var scoped = function (bool) {
+      return A2(boolProperty,
+      "scoped",
+      bool);
+   };
+   var autoplay = function (bool) {
+      return A2(boolProperty,
+      "autoplay",
+      bool);
+   };
+   var controls = function (bool) {
+      return A2(boolProperty,
+      "controls",
+      bool);
+   };
+   var loop = function (bool) {
+      return A2(boolProperty,
+      "loop",
+      bool);
+   };
+   var $default = function (bool) {
+      return A2(boolProperty,
+      "default",
+      bool);
+   };
+   var seamless = function (bool) {
+      return A2(boolProperty,
+      "seamless",
+      bool);
+   };
+   var checked = function (bool) {
+      return A2(boolProperty,
+      "checked",
+      bool);
+   };
+   var selected = function (bool) {
+      return A2(boolProperty,
+      "selected",
+      bool);
+   };
+   var autofocus = function (bool) {
+      return A2(boolProperty,
+      "autofocus",
+      bool);
+   };
+   var disabled = function (bool) {
+      return A2(boolProperty,
+      "disabled",
+      bool);
+   };
+   var multiple = function (bool) {
+      return A2(boolProperty,
+      "multiple",
+      bool);
+   };
+   var novalidate = function (bool) {
+      return A2(boolProperty,
+      "noValidate",
+      bool);
+   };
+   var readonly = function (bool) {
+      return A2(boolProperty,
+      "readOnly",
+      bool);
+   };
+   var required = function (bool) {
+      return A2(boolProperty,
+      "required",
+      bool);
+   };
+   var ismap = function (value) {
+      return A2(boolProperty,
+      "isMap",
+      value);
+   };
+   var download = function (bool) {
+      return A2(boolProperty,
+      "download",
+      bool);
+   };
+   var reversed = function (bool) {
+      return A2(boolProperty,
+      "reversed",
+      bool);
+   };
+   var classList = function (list) {
+      return $class($String.join(" ")($List.map($Basics.fst)($List.filter($Basics.snd)(list))));
+   };
+   var style = function (props) {
+      return property("style")($Json$Encode.object($List.map(function (_v0) {
+         return function () {
+            switch (_v0.ctor)
+            {case "_Tuple2":
+               return {ctor: "_Tuple2"
+                      ,_0: _v0._0
+                      ,_1: $Json$Encode.string(_v0._1)};}
+            _U.badCase($moduleName,
+            "on line 156, column 35 to 57");
+         }();
+      })(props)));
+   };
+   var key = function (k) {
+      return A2(stringProperty,
+      "key",
+      k);
+   };
+   _elm.Html.Attributes.values = {_op: _op
+                                 ,key: key
+                                 ,style: style
+                                 ,$class: $class
+                                 ,classList: classList
+                                 ,id: id
+                                 ,title: title
+                                 ,hidden: hidden
+                                 ,type$: type$
+                                 ,value: value
+                                 ,checked: checked
+                                 ,placeholder: placeholder
+                                 ,selected: selected
+                                 ,accept: accept
+                                 ,acceptCharset: acceptCharset
+                                 ,action: action
+                                 ,autocomplete: autocomplete
+                                 ,autofocus: autofocus
+                                 ,autosave: autosave
+                                 ,disabled: disabled
+                                 ,enctype: enctype
+                                 ,formaction: formaction
+                                 ,list: list
+                                 ,maxlength: maxlength
+                                 ,minlength: minlength
+                                 ,method: method
+                                 ,multiple: multiple
+                                 ,name: name
+                                 ,novalidate: novalidate
+                                 ,pattern: pattern
+                                 ,readonly: readonly
+                                 ,required: required
+                                 ,size: size
+                                 ,$for: $for
+                                 ,form: form
+                                 ,max: max
+                                 ,min: min
+                                 ,step: step
+                                 ,cols: cols
+                                 ,rows: rows
+                                 ,wrap: wrap
+                                 ,href: href
+                                 ,target: target
+                                 ,download: download
+                                 ,downloadAs: downloadAs
+                                 ,hreflang: hreflang
+                                 ,media: media
+                                 ,ping: ping
+                                 ,rel: rel
+                                 ,ismap: ismap
+                                 ,usemap: usemap
+                                 ,shape: shape
+                                 ,coords: coords
+                                 ,src: src
+                                 ,height: height
+                                 ,width: width
+                                 ,alt: alt
+                                 ,autoplay: autoplay
+                                 ,controls: controls
+                                 ,loop: loop
+                                 ,preload: preload
+                                 ,poster: poster
+                                 ,$default: $default
+                                 ,kind: kind
+                                 ,srclang: srclang
+                                 ,sandbox: sandbox
+                                 ,seamless: seamless
+                                 ,srcdoc: srcdoc
+                                 ,reversed: reversed
+                                 ,start: start
+                                 ,align: align
+                                 ,colspan: colspan
+                                 ,rowspan: rowspan
+                                 ,headers: headers
+                                 ,scope: scope
+                                 ,async: async
+                                 ,charset: charset
+                                 ,content: content
+                                 ,defer: defer
+                                 ,httpEquiv: httpEquiv
+                                 ,language: language
+                                 ,scoped: scoped
+                                 ,accesskey: accesskey
+                                 ,contenteditable: contenteditable
+                                 ,contextmenu: contextmenu
+                                 ,dir: dir
+                                 ,draggable: draggable
+                                 ,dropzone: dropzone
+                                 ,itemprop: itemprop
+                                 ,lang: lang
+                                 ,spellcheck: spellcheck
+                                 ,tabindex: tabindex
+                                 ,challenge: challenge
+                                 ,keytype: keytype
+                                 ,cite: cite
+                                 ,datetime: datetime
+                                 ,pubdate: pubdate
+                                 ,manifest: manifest
+                                 ,property: property
+                                 ,attribute: attribute};
+   return _elm.Html.Attributes.values;
+};
+Elm.Html = Elm.Html || {};
+Elm.Html.Events = Elm.Html.Events || {};
+Elm.Html.Events.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Events = _elm.Html.Events || {};
+   if (_elm.Html.Events.values)
+   return _elm.Html.Events.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Events",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var keyCode = A2($Json$Decode._op[":="],
+   "keyCode",
+   $Json$Decode.$int);
+   var targetChecked = A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"checked"]),
+   $Json$Decode.bool);
+   var targetValue = A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"value"]),
+   $Json$Decode.string);
+   var defaultOptions = $VirtualDom.defaultOptions;
+   var Options = F2(function (a,
+   b) {
+      return {_: {}
+             ,preventDefault: b
+             ,stopPropagation: a};
+   });
+   var onWithOptions = $VirtualDom.onWithOptions;
+   var on = $VirtualDom.on;
+   var messageOn = F3(function (name,
+   addr,
+   msg) {
+      return A3(on,
+      name,
+      $Json$Decode.value,
+      function (_v0) {
+         return function () {
+            return A2($Signal.message,
+            addr,
+            msg);
+         }();
+      });
+   });
+   var onClick = messageOn("click");
+   var onDoubleClick = messageOn("dblclick");
+   var onMouseMove = messageOn("mousemove");
+   var onMouseDown = messageOn("mousedown");
+   var onMouseUp = messageOn("mouseup");
+   var onMouseEnter = messageOn("mouseenter");
+   var onMouseLeave = messageOn("mouseleave");
+   var onMouseOver = messageOn("mouseover");
+   var onMouseOut = messageOn("mouseout");
+   var onBlur = messageOn("blur");
+   var onFocus = messageOn("focus");
+   var onSubmit = messageOn("submit");
+   var onKey = F3(function (name,
+   addr,
+   handler) {
+      return A3(on,
+      name,
+      keyCode,
+      function (code) {
+         return A2($Signal.message,
+         addr,
+         handler(code));
+      });
+   });
+   var onKeyUp = onKey("keyup");
+   var onKeyDown = onKey("keydown");
+   var onKeyPress = onKey("keypress");
+   _elm.Html.Events.values = {_op: _op
+                             ,onBlur: onBlur
+                             ,onFocus: onFocus
+                             ,onSubmit: onSubmit
+                             ,onKeyUp: onKeyUp
+                             ,onKeyDown: onKeyDown
+                             ,onKeyPress: onKeyPress
+                             ,onClick: onClick
+                             ,onDoubleClick: onDoubleClick
+                             ,onMouseMove: onMouseMove
+                             ,onMouseDown: onMouseDown
+                             ,onMouseUp: onMouseUp
+                             ,onMouseEnter: onMouseEnter
+                             ,onMouseLeave: onMouseLeave
+                             ,onMouseOver: onMouseOver
+                             ,onMouseOut: onMouseOut
+                             ,on: on
+                             ,onWithOptions: onWithOptions
+                             ,defaultOptions: defaultOptions
+                             ,targetValue: targetValue
+                             ,targetChecked: targetChecked
+                             ,keyCode: keyCode
+                             ,Options: Options};
+   return _elm.Html.Events.values;
+};
+Elm.Html = Elm.Html || {};
+Elm.Html.Widgets = Elm.Html.Widgets || {};
+Elm.Html.Widgets.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Widgets = _elm.Html.Widgets || {};
+   if (_elm.Html.Widgets.values)
+   return _elm.Html.Widgets.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Html.Widgets",
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Svg = Elm.Svg.make(_elm),
+   $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
+   var knobSegment = F5(function (angle,
+   innerRadius,
+   outerRadius,
+   _v0,
+   index) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var indexedAngle = angle * $Basics.toFloat(index) * ($Basics.pi / 180);
+                 var $ = $Basics.fromPolar({ctor: "_Tuple2"
+                                           ,_0: innerRadius
+                                           ,_1: indexedAngle}),
+                 x1$ = $._0,
+                 y1$ = $._1;
+                 var $ = $Basics.fromPolar({ctor: "_Tuple2"
+                                           ,_0: outerRadius
+                                           ,_1: indexedAngle}),
+                 x2$ = $._0,
+                 y2$ = $._1;
+                 return A2($Svg.g,
+                 _L.fromArray([]),
+                 _L.fromArray([A2($Svg.line,
+                 _L.fromArray([$Svg$Attributes.x1($Basics.toString(x1$ + _v0._0))
+                              ,$Svg$Attributes.y1($Basics.toString(y1$ + _v0._1))
+                              ,$Svg$Attributes.x2($Basics.toString(x2$ + _v0._0))
+                              ,$Svg$Attributes.y2($Basics.toString(y2$ + _v0._1))
+                              ,$Svg$Attributes.$class($Basics.toString(angle * $Basics.toFloat(index)))
+                              ,$Svg$Attributes.style("stroke:rgb(255,0,0);stroke-width:2")]),
+                 _L.fromArray([]))]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 385 and 393");
+      }();
+   });
+   var knob = F2(function (properties,
+   style) {
+      return function () {
+         var centerY = 340 / 2;
+         var centerX = 340 / 2;
+         var smallBarHeight = 5;
+         var barHeight = 10;
+         var radius = 120;
+         var middleRadius = radius + smallBarHeight;
+         var largeRadius = radius + barHeight;
+         var smallSegments = properties.smallSegments;
+         var segments = properties.segments;
+         var barAngle = 360 / $Basics.toFloat(segments);
+         var smallBarAngle = 360 / $Basics.toFloat(segments + smallSegments);
+         var containerHeight = 340;
+         var containerWidth = 340;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.$class($Basics.toString(barAngle))
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         A2($Basics._op["++"],
+         A2($List.map,
+         A4(knobSegment,
+         barAngle,
+         radius,
+         largeRadius,
+         {ctor: "_Tuple2"
+         ,_0: centerX
+         ,_1: centerY}),
+         _L.range(0,segments)),
+         A2($List.map,
+         A4(knobSegment,
+         smallBarAngle,
+         radius,
+         middleRadius,
+         {ctor: "_Tuple2"
+         ,_0: centerX
+         ,_1: centerY}),
+         _L.range(0,
+         smallSegments + segments))));
+      }();
+   });
+   var simulatedAnalogMeterPointer = F2(function (properties,
+   style) {
+      return function () {
+         var percentage = A3($Basics.clamp,
+         -50,
+         50,
+         $Basics.toFloat(properties.currentValue) / $Basics.toFloat(properties.maxValue) * 100 - 50);
+         return A2($Svg.g,
+         _L.fromArray([$Svg$Attributes.transform(A2($Basics._op["++"],
+         "rotate(",
+         A2($Basics._op["++"],
+         $Basics.toString(percentage),
+         " 204,300)")))]),
+         _L.fromArray([A2($Svg.polygon,
+         _L.fromArray([$Svg$Attributes.points("199,300 203,62 205,62 209,300")
+                      ,$Svg$Attributes.fill(style.foreColor)]),
+         _L.fromArray([]))]));
+      }();
+   });
+   var simulatedAnalogMeterSmallBar = F6(function (x$,
+   y$,
+   rotation,
+   percentage,
+   properties,
+   style) {
+      return function () {
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         var width$ = 6;
+         var height$ = 10;
+         return A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.width($Basics.toString(width$))
+                      ,$Svg$Attributes.height($Basics.toString(height$))
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$ + (width$ - 10) / 2),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$ + height$ / 2),
+                      ")")))))))]),
+         _L.fromArray([]));
+      }();
+   });
+   var simulatedAnalogMeterBar = F6(function (x$,
+   y$,
+   rotation,
+   percentage,
+   properties,
+   style) {
+      return function () {
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         var width$ = 8;
+         var height$ = 20;
+         return A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.width($Basics.toString(width$))
+                      ,$Svg$Attributes.height($Basics.toString(height$))
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$ + (width$ - 10) / 2),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$ + height$ / 2),
+                      ")")))))))]),
+         _L.fromArray([]));
+      }();
+   });
+   var simulatedAnalogMeterLabel = F7(function (x$,
+   y$,
+   rotation,
+   percentage,
+   labelPercentage,
+   properties,
+   style) {
+      return function () {
+         var labelPercentageValue = labelPercentage * $Basics.toFloat(properties.maxValue);
+         var valueToCheck = percentage * $Basics.toFloat(properties.maxValue);
+         var ranges = properties.ranges;
+         var getRange = A2($List.filter,
+         function (r) {
+            return _U.cmp(r.minValue,
+            valueToCheck) < 1 && _U.cmp(valueToCheck,
+            r.maxValue) < 1;
+         },
+         ranges);
+         var rangeFound = A2($List.take,
+         1,
+         getRange);
+         var foreColor = function () {
+            switch (rangeFound.ctor)
+            {case "::":
+               switch (rangeFound._1.ctor)
+                 {case "[]":
+                    return _U.cmp($Basics.toFloat(properties.currentValue),
+                      valueToCheck) < 1 ? style.foreColor : rangeFound._0.color;}
+                 break;}
+            return style.foreColor;
+         }();
+         return A2($Svg.text$,
+         _L.fromArray([$Svg$Attributes.x($Basics.toString(x$))
+                      ,$Svg$Attributes.y($Basics.toString(y$))
+                      ,$Svg$Attributes.fill(foreColor)
+                      ,$Svg$Attributes.$class($Basics.toString(properties.currentValue))
+                      ,$Svg$Attributes.textAnchor("middle")
+                      ,$Svg$Attributes.transform(A2($Basics._op["++"],
+                      "rotate(",
+                      A2($Basics._op["++"],
+                      $Basics.toString(rotation),
+                      A2($Basics._op["++"],
+                      " ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(x$),
+                      A2($Basics._op["++"],
+                      ",",
+                      A2($Basics._op["++"],
+                      $Basics.toString(y$),
+                      ")")))))))]),
+         _L.fromArray([$Svg.text($Basics.toString(labelPercentageValue))]));
+      }();
+   });
+   var simulatedAnalogMeterLabels = F2(function (properties,
+   style) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A7(simulatedAnalogMeterLabel,
+                   -10,
+                   110,
+                   -45,
+                   0,
+                   0,
+                   properties,
+                   style)
+                   ,A7(simulatedAnalogMeterLabel,
+                   97,
+                   47,
+                   -24,
+                   0.244,
+                   0.25,
+                   properties,
+                   style)
+                   ,A7(simulatedAnalogMeterLabel,
+                   202,
+                   30,
+                   0,
+                   0.49,
+                   0.5,
+                   properties,
+                   style)
+                   ,A7(simulatedAnalogMeterLabel,
+                   312,
+                   51,
+                   24,
+                   0.749,
+                   0.75,
+                   properties,
+                   style)
+                   ,A7(simulatedAnalogMeterLabel,
+                   416,
+                   114,
+                   45,
+                   0.99,
+                   1,
+                   properties,
+                   style)]));
+   });
+   var simulatedAnalogMeterBars = F2(function (properties,
+   style) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A6(simulatedAnalogMeterBar,
+                   0.0,
+                   114,
+                   -45,
+                   0,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   25,
+                   97,
+                   -37,
+                   6.2e-2,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   50,
+                   79,
+                   -34,
+                   0.125,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   75,
+                   67,
+                   -30,
+                   0.187,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   100,
+                   54,
+                   -24,
+                   0.249,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   125,
+                   50,
+                   -18,
+                   0.312,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   150,
+                   45,
+                   -11,
+                   0.375,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   175,
+                   42,
+                   -6,
+                   0.437,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   200,
+                   38,
+                   0,
+                   0.499,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   225,
+                   42,
+                   6,
+                   0.562,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   250,
+                   45,
+                   11,
+                   0.625,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   275,
+                   50,
+                   18,
+                   0.687,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   300,
+                   54,
+                   24,
+                   0.75,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   325,
+                   67,
+                   30,
+                   0.812,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   350,
+                   79,
+                   34,
+                   0.875,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterSmallBar,
+                   375,
+                   97,
+                   37,
+                   0.937,
+                   properties,
+                   style)
+                   ,A6(simulatedAnalogMeterBar,
+                   400,
+                   114,
+                   45,
+                   0.999,
+                   properties,
+                   style)]));
+   });
+   var simulatedAnalogMeter = F2(function (properties,
+   style$) {
+      return function () {
+         var containerHeight = 200;
+         var containerWidth = 400;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.style("background:#000")
+                      ,$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         _L.fromArray([A2($Svg.rect,
+                      _L.fromArray([$Svg$Attributes.fill(style$.backgroundColor)
+                                   ,$Svg$Attributes.x("2")
+                                   ,$Svg$Attributes.width($Basics.toString(containerWidth))
+                                   ,$Svg$Attributes.height($Basics.toString(containerHeight))]),
+                      _L.fromArray([]))
+                      ,A2(simulatedAnalogMeterBars,
+                      properties,
+                      style$)
+                      ,A2(simulatedAnalogMeterLabels,
+                      properties,
+                      style$)
+                      ,A2(simulatedAnalogMeterPointer,
+                      properties,
+                      style$)]));
+      }();
+   });
+   var segmentedBarGraphBar = F4(function (_v13,
+   properties,
+   style,
+   index) {
+      return function () {
+         switch (_v13.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var ranges = properties.ranges;
+                 var barValue = $Basics.toFloat(index) / $Basics.toFloat(properties.segments) * $Basics.toFloat(properties.maxValue);
+                 var getRange = A2($List.filter,
+                 function (r) {
+                    return _U.cmp(r.minValue,
+                    barValue) < 1 && _U.cmp(barValue,
+                    r.maxValue) < 1;
+                 },
+                 ranges);
+                 var rangeFound = A2($List.take,
+                 1,
+                 getRange);
+                 var barColor = function () {
+                    switch (rangeFound.ctor)
+                    {case "::":
+                       switch (rangeFound._1.ctor)
+                         {case "[]":
+                            return _U.cmp($Basics.toFloat(properties.currentValue),
+                              barValue) < 1 ? style.emptyColor : rangeFound._0.color;}
+                         break;}
+                    return style.emptyColor;
+                 }();
+                 var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
+                 "translate(",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v13._0 * index + 4),
+                 " 8)")));
+                 return A2($Svg.rect,
+                 A2($Basics._op["++"],
+                 _L.fromArray([transformAttribute]),
+                 _L.fromArray([$Svg$Attributes.$class($Basics.toString(barValue))
+                              ,$Svg$Attributes.fill(barColor)
+                              ,$Svg$Attributes.width($Basics.toString(_v13._0 - 8))
+                              ,$Svg$Attributes.height($Basics.toString(_v13._1 - 16))])),
+                 _L.fromArray([]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 204 and 212");
+      }();
+   });
+   var segmentedBarGraph = F2(function (properties,
+   style) {
+      return function () {
+         var containerHeight = 340;
+         var barWidth = 100;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(barWidth * properties.segments),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         A2($Basics._op["++"],
+         _L.fromArray([A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.fill(style.backgroundColor)
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.height("340")]),
+         _L.fromArray([]))]),
+         A2($List.map,
+         A3(segmentedBarGraphBar,
+         {ctor: "_Tuple2"
+         ,_0: barWidth
+         ,_1: containerHeight},
+         properties,
+         style),
+         _L.range(0,
+         properties.segments - 1))));
+      }();
+   });
+   var seventSegmentColon = F3(function (style,
+   containerWidth,
+   index) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A2($Svg.circle,
+                   _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                                ,$Svg$Attributes.cy("110")
+                                ,$Svg$Attributes.r("16")
+                                ,$Svg$Attributes.fill(style.textColor)]),
+                   _L.fromArray([]))
+                   ,A2($Svg.circle,
+                   _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                                ,$Svg$Attributes.cy("230")
+                                ,$Svg$Attributes.r("16")
+                                ,$Svg$Attributes.fill(style.textColor)]),
+                   _L.fromArray([]))]));
+   });
+   var seventSegmentColons = F3(function (_v20,
+   indexes,
+   style) {
+      return function () {
+         switch (_v20.ctor)
+         {case "_Tuple2":
+            return A2($List.map,
+              A2(seventSegmentColon,
+              style,
+              _v20._0),
+              indexes);}
+         _U.badCase($moduleName,
+         "on line 177, column 3 to 52");
+      }();
+   });
+   var sevenSegmentPoint = F3(function (style,
+   containerWidth,
+   index) {
+      return A2($Svg.g,
+      _L.fromArray([]),
+      _L.fromArray([A2($Svg.circle,
+      _L.fromArray([$Svg$Attributes.cx($Basics.toString((index + 1) * containerWidth))
+                   ,$Svg$Attributes.cy("300")
+                   ,$Svg$Attributes.r("16")
+                   ,$Svg$Attributes.fill(style.textColor)]),
+      _L.fromArray([]))]));
+   });
+   var sevenSegmentPoints = F3(function (_v24,
+   indexes,
+   style) {
+      return function () {
+         switch (_v24.ctor)
+         {case "_Tuple2":
+            return A2($List.map,
+              A2(sevenSegmentPoint,
+              style,
+              _v24._0),
+              indexes);}
+         _U.badCase($moduleName,
+         "on line 166, column 3 to 51");
+      }();
+   });
+   var sevenSegmentDigitPolygon = F2(function (points$,
+   attributes) {
+      return A2($Svg.polygon,
+      A2($Basics._op["++"],
+      _L.fromArray([$Svg$Attributes.points(points$)]),
+      attributes),
+      _L.fromArray([]));
+   });
+   var sevenSegmentDigit = F4(function (_v28,
+   style,
+   index,
+   digit) {
+      return function () {
+         switch (_v28.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
+                 "translate(",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v28._0 * index),
+                 " 0)")));
+                 var newForegroundAttribute = _L.fromArray([transformAttribute
+                                                           ,$Svg$Attributes.fill(style.textColor)]);
+                 var segmentA = A2(sevenSegmentDigitPolygon,
+                 " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2",
+                 newForegroundAttribute);
+                 var segmentB = A2(sevenSegmentDigitPolygon,
+                 "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2",
+                 newForegroundAttribute);
+                 var segmentC = A2(sevenSegmentDigitPolygon,
+                 "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6",
+                 newForegroundAttribute);
+                 var segmentD = A2(sevenSegmentDigitPolygon,
+                 "145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1",
+                 newForegroundAttribute);
+                 var segmentE = A2(sevenSegmentDigitPolygon,
+                 " 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8",
+                 newForegroundAttribute);
+                 var segmentF = A2(sevenSegmentDigitPolygon,
+                 " 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ",
+                 newForegroundAttribute);
+                 var segmentG = A2(sevenSegmentDigitPolygon,
+                 " 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9",
+                 newForegroundAttribute);
+                 var polygons = function () {
+                    switch (digit + "")
+                    {case " ":
+                       return _L.fromArray([]);
+                       case "0":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF]);
+                       case "1":
+                       return _L.fromArray([segmentB
+                                           ,segmentC]);
+                       case "2":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentG]);
+                       case "3":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentG]);
+                       case "4":
+                       return _L.fromArray([segmentB
+                                           ,segmentC
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "5":
+                       return _L.fromArray([segmentA
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "6":
+                       return _L.fromArray([segmentA
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "7":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC]);
+                       case "8":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentE
+                                           ,segmentF
+                                           ,segmentG]);
+                       case "9":
+                       return _L.fromArray([segmentA
+                                           ,segmentB
+                                           ,segmentC
+                                           ,segmentD
+                                           ,segmentF
+                                           ,segmentG]);}
+                    _U.badCase($moduleName,
+                    "between lines 143 and 155");
+                 }();
+                 return A2($Svg.g,
+                 _L.fromArray([]),
+                 polygons);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 127 and 155");
+      }();
+   });
+   var sevenSegment = F2(function (properties,
+   style) {
+      return function () {
+         var digitLength = $String.length(properties.digits);
+         var containerHeight = 340;
+         var containerWidth = 200;
+         return A2($Svg.svg,
+         _L.fromArray([$Svg$Attributes.version("1.1")
+                      ,$Svg$Attributes.height("100%")
+                      ,$Svg$Attributes.width("100%")
+                      ,$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.viewBox(A2($Basics._op["++"],
+                      "0 0 ",
+                      A2($Basics._op["++"],
+                      $Basics.toString(containerWidth * digitLength),
+                      A2($Basics._op["++"],
+                      " ",
+                      $Basics.toString(containerHeight)))))]),
+         A2($Basics._op["++"],
+         _L.fromArray([A2($Svg.rect,
+         _L.fromArray([$Svg$Attributes.x("0")
+                      ,$Svg$Attributes.y("0")
+                      ,$Svg$Attributes.width($Basics.toString(containerWidth * digitLength))
+                      ,$Svg$Attributes.height($Basics.toString(containerHeight))
+                      ,$Svg$Attributes.fill(style.backgroundColor)]),
+         _L.fromArray([]))]),
+         A2($Basics._op["++"],
+         A2($List.indexedMap,
+         A2(sevenSegmentDigit,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         style),
+         $String.toList(properties.digits)),
+         A2($Basics._op["++"],
+         A3(sevenSegmentPoints,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         properties.pointIndexes,
+         style),
+         A3(seventSegmentColons,
+         {ctor: "_Tuple2"
+         ,_0: containerWidth
+         ,_1: containerHeight},
+         properties.colonIndexes,
+         style)))));
+      }();
+   });
+   var defaultKnobStyle = {_: {}};
+   var defaultKnobProperties = {_: {}
+                               ,rangeAngleMax: 30
+                               ,rangeAngleMin: 90
+                               ,segments: 20
+                               ,smallSegments: 120};
+   var defaultSimulatedAnalogMeterStyle = {_: {}
+                                          ,backgroundColor: "#000"
+                                          ,foreColor: "#fff"};
+   var defaultSegmentBarGraphStyle = {_: {}
+                                     ,backgroundColor: "#000"
+                                     ,emptyColor: "#444"};
+   var defaultMeterRangeAlert = {_: {}
+                                ,color: "#F00"
+                                ,maxValue: 100
+                                ,minValue: 50.0};
+   var defaultMeterRangeOk = {_: {}
+                             ,color: "#0F0"
+                             ,maxValue: 50
+                             ,minValue: 0};
+   var defaultSimulatedAnalogMeterProperties = {_: {}
+                                               ,currentValue: 50
+                                               ,maxValue: 100
+                                               ,ranges: _L.fromArray([defaultMeterRangeOk
+                                                                     ,defaultMeterRangeAlert])};
+   var defaultSegmentedBarGraphProperties = {_: {}
+                                            ,currentValue: 70
+                                            ,maxValue: 100
+                                            ,ranges: _L.fromArray([defaultMeterRangeOk
+                                                                  ,defaultMeterRangeAlert])
+                                            ,segments: 50};
+   var defaultSevenSegmentStyle = {_: {}
+                                  ,backgroundColor: "#000"
+                                  ,textColor: "#0F0"};
+   var defaultSevenSegmentProperties = {_: {}
+                                       ,colonIndexes: _L.fromArray([1])
+                                       ,digits: "1234 4567890"
+                                       ,isSlant: false
+                                       ,pointIndexes: _L.fromArray([7])};
+   var KnobStyle = {_: {}};
+   var KnobProperties = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,rangeAngleMax: d
+             ,rangeAngleMin: c
+             ,segments: a
+             ,smallSegments: b};
+   });
+   var SimulatedAnalogMeterStyle = F2(function (a,
+   b) {
+      return {_: {}
+             ,backgroundColor: b
+             ,foreColor: a};
+   });
+   var MeterRange = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,color: a
+             ,maxValue: c
+             ,minValue: b};
+   });
+   var SimulatedAnalogMeterProperties = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,currentValue: a
+             ,maxValue: b
+             ,ranges: c};
+   });
+   var SegmentedBarGraphStyle = F2(function (a,
+   b) {
+      return {_: {}
+             ,backgroundColor: b
+             ,emptyColor: a};
+   });
+   var SegmentedBarGraphRange = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,color: a
+             ,maxValue: c
+             ,minValue: b};
+   });
+   var SegmentedBarGraphProperties = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,currentValue: a
+             ,maxValue: b
+             ,ranges: d
+             ,segments: c};
+   });
+   var SevenSegmentStyle = F2(function (a,
+   b) {
+      return {_: {}
+             ,backgroundColor: a
+             ,textColor: b};
+   });
+   var SevenSegmentProperties = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,colonIndexes: c
+             ,digits: a
+             ,isSlant: d
+             ,pointIndexes: b};
+   });
+   _elm.Html.Widgets.values = {_op: _op
+                              ,sevenSegment: sevenSegment
+                              ,defaultSevenSegmentProperties: defaultSevenSegmentProperties
+                              ,defaultSevenSegmentStyle: defaultSevenSegmentStyle
+                              ,segmentedBarGraph: segmentedBarGraph
+                              ,defaultSegmentedBarGraphProperties: defaultSegmentedBarGraphProperties
+                              ,defaultSegmentBarGraphStyle: defaultSegmentBarGraphStyle
+                              ,simulatedAnalogMeter: simulatedAnalogMeter
+                              ,defaultSimulatedAnalogMeterProperties: defaultSimulatedAnalogMeterProperties
+                              ,defaultSimulatedAnalogMeterStyle: defaultSimulatedAnalogMeterStyle
+                              ,knob: knob
+                              ,defaultKnobProperties: defaultKnobProperties
+                              ,defaultKnobStyle: defaultKnobStyle
+                              ,SevenSegmentProperties: SevenSegmentProperties
+                              ,SevenSegmentStyle: SevenSegmentStyle
+                              ,SegmentedBarGraphProperties: SegmentedBarGraphProperties
+                              ,SegmentedBarGraphStyle: SegmentedBarGraphStyle
+                              ,SimulatedAnalogMeterProperties: SimulatedAnalogMeterProperties
+                              ,SimulatedAnalogMeterStyle: SimulatedAnalogMeterStyle
+                              ,KnobProperties: KnobProperties
+                              ,KnobStyle: KnobStyle};
+   return _elm.Html.Widgets.values;
 };
 Elm.Json = Elm.Json || {};
 Elm.Json.Decode = Elm.Json.Decode || {};
@@ -6138,6 +8285,479 @@ Elm.Native.Graphics.Element.make = function(localRuntime) {
 
 		block: block,
 		markdown: markdown
+	};
+
+};
+
+// setup
+Elm.Native = Elm.Native || {};
+Elm.Native.Graphics = Elm.Native.Graphics || {};
+Elm.Native.Graphics.Input = Elm.Native.Graphics.Input || {};
+
+// definition
+Elm.Native.Graphics.Input.make = function(localRuntime) {
+	'use strict';
+
+	// attempt to short-circuit
+	if ('values' in Elm.Native.Graphics.Input) {
+		return Elm.Native.Graphics.Input.values;
+	}
+
+	var Color = Elm.Native.Color.make(localRuntime);
+	var List = Elm.Native.List.make(localRuntime);
+	var Signal = Elm.Native.Signal.make(localRuntime);
+	var Text = Elm.Native.Text.make(localRuntime);
+	var Utils = Elm.Native.Utils.make(localRuntime);
+
+	var Element = Elm.Native.Graphics.Element.make(localRuntime);
+
+
+	function renderDropDown(model)
+	{
+		var drop = Element.createNode('select');
+		drop.style.border = '0 solid';
+		drop.style.pointerEvents = 'auto';
+		drop.style.display = 'block';
+
+		drop.elm_values = List.toArray(model.values);
+		drop.elm_handler = model.handler;
+		var values = drop.elm_values;
+
+		for (var i = 0; i < values.length; ++i)
+		{
+			var option = Element.createNode('option');
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+			drop.appendChild(option);
+		}
+		drop.addEventListener('change', function() {
+			Signal.sendMessage(drop.elm_handler(drop.elm_values[drop.selectedIndex]._1));
+		});
+
+		return drop;
+	}
+
+	function updateDropDown(node, oldModel, newModel)
+	{
+		node.elm_values = List.toArray(newModel.values);
+		node.elm_handler = newModel.handler;
+
+		var values = node.elm_values;
+		var kids = node.childNodes;
+		var kidsLength = kids.length;
+
+		var i = 0;
+		for (; i < kidsLength && i < values.length; ++i)
+		{
+			var option = kids[i];
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+		}
+		for (; i < kidsLength; ++i)
+		{
+			node.removeChild(node.lastChild);
+		}
+		for (; i < values.length; ++i)
+		{
+			var option = Element.createNode('option');
+			var name = values[i]._0;
+			option.value = name;
+			option.innerHTML = name;
+			node.appendChild(option);
+		}
+		return node;
+	}
+
+	function dropDown(handler, values)
+	{
+		return A3(Element.newElement, 100, 24, {
+			ctor: 'Custom',
+			type: 'DropDown',
+			render: renderDropDown,
+			update: updateDropDown,
+			model: {
+				values: values,
+				handler: handler
+			}
+		});
+	}
+
+	function renderButton(model)
+	{
+		var node = Element.createNode('button');
+		node.style.display = 'block';
+		node.style.pointerEvents = 'auto';
+		node.elm_message = model.message;
+		function click()
+		{
+			Signal.sendMessage(node.elm_message);
+		}
+		node.addEventListener('click', click);
+		node.innerHTML = model.text;
+		return node;
+	}
+
+	function updateButton(node, oldModel, newModel)
+	{
+		node.elm_message = newModel.message;
+		var txt = newModel.text;
+		if (oldModel.text !== txt)
+		{
+			node.innerHTML = txt;
+		}
+		return node;
+	}
+
+	function button(message, text)
+	{
+		return A3(Element.newElement, 100, 40, {
+			ctor: 'Custom',
+			type: 'Button',
+			render: renderButton,
+			update: updateButton,
+			model: {
+				message: message,
+				text:text
+			}
+		});
+	}
+
+	function renderCustomButton(model)
+	{
+		var btn = Element.createNode('div');
+		btn.style.pointerEvents = 'auto';
+		btn.elm_message = model.message;
+
+		btn.elm_up    = Element.render(model.up);
+		btn.elm_hover = Element.render(model.hover);
+		btn.elm_down  = Element.render(model.down);
+
+		btn.elm_up.style.display = 'block';
+		btn.elm_hover.style.display = 'none';
+		btn.elm_down.style.display = 'none';
+
+		btn.appendChild(btn.elm_up);
+		btn.appendChild(btn.elm_hover);
+		btn.appendChild(btn.elm_down);
+
+		function swap(visibleNode, hiddenNode1, hiddenNode2)
+		{
+			visibleNode.style.display = 'block';
+			hiddenNode1.style.display = 'none';
+			hiddenNode2.style.display = 'none';
+		}
+
+		var overCount = 0;
+		function over(e)
+		{
+			if (overCount++ > 0) return;
+			swap(btn.elm_hover, btn.elm_down, btn.elm_up);
+		}
+		function out(e)
+		{
+			if (btn.contains(e.toElement || e.relatedTarget)) return;
+			overCount = 0;
+			swap(btn.elm_up, btn.elm_down, btn.elm_hover);
+		}
+		function up()
+		{
+			swap(btn.elm_hover, btn.elm_down, btn.elm_up);
+			Signal.sendMessage(btn.elm_message);
+		}
+		function down()
+		{
+			swap(btn.elm_down, btn.elm_hover, btn.elm_up);
+		}
+
+		btn.addEventListener('mouseover', over);
+		btn.addEventListener('mouseout' , out);
+		btn.addEventListener('mousedown', down);
+		btn.addEventListener('mouseup'  , up);
+
+		return btn;
+	}
+
+	function updateCustomButton(node, oldModel, newModel)
+	{
+		node.elm_message = newModel.message;
+
+		var kids = node.childNodes;
+		var styleUp    = kids[0].style.display;
+		var styleHover = kids[1].style.display;
+		var styleDown  = kids[2].style.display;
+
+		Element.updateAndReplace(kids[0], oldModel.up, newModel.up);
+		Element.updateAndReplace(kids[1], oldModel.hover, newModel.hover);
+		Element.updateAndReplace(kids[2], oldModel.down, newModel.down);
+
+		var kids = node.childNodes;
+		kids[0].style.display = styleUp;
+		kids[1].style.display = styleHover;
+		kids[2].style.display = styleDown;
+
+		return node;
+	}
+
+	function max3(a,b,c)
+	{
+		var ab = a > b ? a : b;
+		return ab > c ? ab : c;
+	}
+
+	function customButton(message, up, hover, down)
+	{
+		return A3(Element.newElement,
+				  max3(up.props.width, hover.props.width, down.props.width),
+				  max3(up.props.height, hover.props.height, down.props.height),
+				  { ctor: 'Custom',
+					type: 'CustomButton',
+					render: renderCustomButton,
+					update: updateCustomButton,
+					model: {
+						message: message,
+						up: up,
+						hover: hover,
+						down: down
+					}
+				  });
+	}
+
+	function renderCheckbox(model)
+	{
+		var node = Element.createNode('input');
+		node.type = 'checkbox';
+		node.checked = model.checked;
+		node.style.display = 'block';
+		node.style.pointerEvents = 'auto';
+		node.elm_handler = model.handler;
+		function change()
+		{
+			Signal.sendMessage(node.elm_handler(node.checked));
+		}
+		node.addEventListener('change', change);
+		return node;
+	}
+
+	function updateCheckbox(node, oldModel, newModel)
+	{
+		node.elm_handler = newModel.handler;
+		node.checked = newModel.checked;
+		return node;
+	}
+
+	function checkbox(handler, checked)
+	{
+		return A3(Element.newElement, 13, 13, {
+			ctor: 'Custom',
+			type: 'CheckBox',
+			render: renderCheckbox,
+			update: updateCheckbox,
+			model: { handler:handler, checked:checked }
+		});
+	}
+
+	function setRange(node, start, end, dir)
+	{
+		if (node.parentNode)
+		{
+			node.setSelectionRange(start, end, dir);
+		}
+		else
+		{
+			setTimeout(function(){node.setSelectionRange(start, end, dir);}, 0);
+		}
+	}
+
+	function updateIfNeeded(css, attribute, latestAttribute)
+	{
+		if (css[attribute] !== latestAttribute)
+		{
+			css[attribute] = latestAttribute;
+		}
+	}
+	function cssDimensions(dimensions)
+	{
+		return dimensions.top    + 'px ' +
+			   dimensions.right  + 'px ' +
+			   dimensions.bottom + 'px ' +
+			   dimensions.left   + 'px';
+	}
+	function updateFieldStyle(css, style)
+	{
+		updateIfNeeded(css, 'padding', cssDimensions(style.padding));
+
+		var outline = style.outline;
+		updateIfNeeded(css, 'border-width', cssDimensions(outline.width));
+		updateIfNeeded(css, 'border-color', Color.toCss(outline.color));
+		updateIfNeeded(css, 'border-radius', outline.radius + 'px');
+
+		var highlight = style.highlight;
+		if (highlight.width === 0)
+		{
+			css.outline = 'none';
+		}
+		else
+		{
+			updateIfNeeded(css, 'outline-width', highlight.width + 'px');
+			updateIfNeeded(css, 'outline-color', Color.toCss(highlight.color));
+		}
+
+		var textStyle = style.style;
+		updateIfNeeded(css, 'color', Color.toCss(textStyle.color));
+		if (textStyle.typeface.ctor !== '[]')
+		{
+			updateIfNeeded(css, 'font-family', Text.toTypefaces(textStyle.typeface));
+		}
+		if (textStyle.height.ctor !== "Nothing")
+		{
+			updateIfNeeded(css, 'font-size', textStyle.height._0 + 'px');
+		}
+		updateIfNeeded(css, 'font-weight', textStyle.bold ? 'bold' : 'normal');
+		updateIfNeeded(css, 'font-style', textStyle.italic ? 'italic' : 'normal');
+		if (textStyle.line.ctor !== 'Nothing')
+		{
+			updateIfNeeded(css, 'text-decoration', Text.toLine(textStyle.line._0));
+		}
+	}
+
+	function renderField(model)
+	{
+		var field = Element.createNode('input');
+		updateFieldStyle(field.style, model.style);
+		field.style.borderStyle = 'solid';
+		field.style.pointerEvents = 'auto';
+
+		field.type = model.type;
+		field.placeholder = model.placeHolder;
+		field.value = model.content.string;
+
+		field.elm_handler = model.handler;
+		field.elm_old_value = field.value;
+
+		function inputUpdate(event)
+		{
+			var curr = field.elm_old_value;
+			var next = field.value;
+			if (curr === next)
+			{
+				return;
+			}
+
+			var direction = field.selectionDirection === 'forward' ? 'Forward' : 'Backward';
+			var start = field.selectionStart;
+			var end = field.selectionEnd;
+			field.value = field.elm_old_value;
+
+			Signal.sendMessage(field.elm_handler({
+				_:{},
+				string: next,
+				selection: {
+					_:{},
+					start: start,
+					end: end,
+					direction: { ctor: direction }
+				}
+			}));
+		}
+
+		field.addEventListener('input', inputUpdate);
+		field.addEventListener('focus', function() {
+			field.elm_hasFocus = true;
+		});
+		field.addEventListener('blur', function() {
+			field.elm_hasFocus = false;
+		});
+
+		return field;
+	}
+
+	function updateField(field, oldModel, newModel)
+	{
+		if (oldModel.style !== newModel.style)
+		{
+			updateFieldStyle(field.style, newModel.style);
+		}
+		field.elm_handler = newModel.handler;
+
+		field.type = newModel.type;
+		field.placeholder = newModel.placeHolder;
+		var value = newModel.content.string;
+		field.value = value;
+		field.elm_old_value = value;
+		if (field.elm_hasFocus)
+		{
+			var selection = newModel.content.selection;
+			var direction = selection.direction.ctor === 'Forward' ? 'forward' : 'backward';
+			setRange(field, selection.start, selection.end, direction);
+		}
+		return field;
+	}
+
+	function mkField(type)
+	{
+		function field(style, handler, placeHolder, content)
+		{
+			var padding = style.padding;
+			var outline = style.outline.width;
+			var adjustWidth = padding.left + padding.right + outline.left + outline.right;
+			var adjustHeight = padding.top + padding.bottom + outline.top + outline.bottom;
+			return A3(Element.newElement, 200, 30, {
+				ctor: 'Custom',
+				type: type + 'Field',
+				adjustWidth: adjustWidth,
+				adjustHeight: adjustHeight,
+				render: renderField,
+				update: updateField,
+				model: {
+					handler:handler,
+					placeHolder:placeHolder,
+					content:content,
+					style:style,
+					type:type
+				}
+			});
+		}
+		return F4(field);
+	}
+
+	function hoverable(handler, elem)
+	{
+		function onHover(bool)
+		{
+			Signal.sendMessage(handler(bool));
+		}
+		var props = Utils.replace([['hover',onHover]], elem.props);
+		return {
+			props: props,
+			element: elem.element
+		};
+	}
+
+	function clickable(message, elem)
+	{
+		function onClick()
+		{
+			Signal.sendMessage(message);
+		}
+		var props = Utils.replace([['click',onClick]], elem.props);
+		return {
+			props: props,
+			element: elem.element
+		};
+	}
+
+	return Elm.Native.Graphics.Input.values = {
+		button: F2(button),
+		customButton: F4(customButton),
+		checkbox: F2(checkbox),
+		dropDown: F2(dropDown),
+		field: mkField('text'),
+		email: mkField('email'),
+		password: mkField('password'),
+		hoverable: F2(hoverable),
+		clickable: F2(clickable)
 	};
 
 };
@@ -11778,27 +14398,751 @@ Elm.String.make = function (_elm) {
    return _elm.String.values;
 };
 Elm.Svg = Elm.Svg || {};
-Elm.Svg.Widgets = Elm.Svg.Widgets || {};
-Elm.Svg.Widgets.make = function (_elm) {
+Elm.Svg.make = function (_elm) {
    "use strict";
    _elm.Svg = _elm.Svg || {};
-   _elm.Svg.Widgets = _elm.Svg.Widgets || {};
-   if (_elm.Svg.Widgets.values)
-   return _elm.Svg.Widgets.values;
+   if (_elm.Svg.values)
+   return _elm.Svg.values;
    var _op = {},
    _N = Elm.Native,
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
-   $moduleName = "Svg.Widgets",
+   $moduleName = "Svg",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var text = $VirtualDom.text;
+   var svgNamespace = A2($VirtualDom.property,
+   "namespace",
+   $Json$Encode.string("http://www.w3.org/2000/svg"));
+   var node = F3(function (name,
+   attributes,
+   children) {
+      return A3($VirtualDom.node,
+      name,
+      A2($List._op["::"],
+      svgNamespace,
+      attributes),
+      children);
+   });
+   var svg = node("svg");
+   var foreignObject = node("foreignObject");
+   var animate = node("animate");
+   var animateColor = node("animateColor");
+   var animateMotion = node("animateMotion");
+   var animateTransform = node("animateTransform");
+   var mpath = node("mpath");
+   var set = node("set");
+   var a = node("a");
+   var defs = node("defs");
+   var g = node("g");
+   var marker = node("marker");
+   var mask = node("mask");
+   var missingGlyph = node("missingGlyph");
+   var pattern = node("pattern");
+   var $switch = node("switch");
+   var symbol = node("symbol");
+   var desc = node("desc");
+   var metadata = node("metadata");
+   var title = node("title");
+   var feBlend = node("feBlend");
+   var feColorMatrix = node("feColorMatrix");
+   var feComponentTransfer = node("feComponentTransfer");
+   var feComposite = node("feComposite");
+   var feConvolveMatrix = node("feConvolveMatrix");
+   var feDiffuseLighting = node("feDiffuseLighting");
+   var feDisplacementMap = node("feDisplacementMap");
+   var feFlood = node("feFlood");
+   var feFuncA = node("feFuncA");
+   var feFuncB = node("feFuncB");
+   var feFuncG = node("feFuncG");
+   var feFuncR = node("feFuncR");
+   var feGaussianBlur = node("feGaussianBlur");
+   var feImage = node("feImage");
+   var feMerge = node("feMerge");
+   var feMergeNode = node("feMergeNode");
+   var feMorphology = node("feMorphology");
+   var feOffset = node("feOffset");
+   var feSpecularLighting = node("feSpecularLighting");
+   var feTile = node("feTile");
+   var feTurbulence = node("feTurbulence");
+   var font = node("font");
+   var fontFace = node("fontFace");
+   var fontFaceFormat = node("fontFaceFormat");
+   var fontFaceName = node("fontFaceName");
+   var fontFaceSrc = node("fontFaceSrc");
+   var fontFaceUri = node("fontFaceUri");
+   var hkern = node("hkern");
+   var vkern = node("vkern");
+   var linearGradient = node("linearGradient");
+   var radialGradient = node("radialGradient");
+   var stop = node("stop");
+   var circle = node("circle");
+   var ellipse = node("ellipse");
+   var image = node("image");
+   var line = node("line");
+   var path = node("path");
+   var polygon = node("polygon");
+   var polyline = node("polyline");
+   var rect = node("rect");
+   var use = node("use");
+   var feDistantLight = node("feDistantLight");
+   var fePointLight = node("fePointLight");
+   var feSpotLight = node("feSpotLight");
+   var altGlyph = node("altGlyph");
+   var altGlyphDef = node("altGlyphDef");
+   var altGlyphItem = node("altGlyphItem");
+   var glyph = node("glyph");
+   var glyphRef = node("glyphRef");
+   var textPath = node("textPath");
+   var text$ = node("text");
+   var tref = node("tref");
+   var tspan = node("tspan");
+   var clipPath = node("clipPath");
+   var colorProfile = node("colorProfile");
+   var cursor = node("cursor");
+   var filter = node("filter");
+   var script = node("script");
+   var style = node("style");
+   var view = node("view");
+   _elm.Svg.values = {_op: _op
+                     ,text: text
+                     ,node: node
+                     ,svg: svg
+                     ,foreignObject: foreignObject
+                     ,circle: circle
+                     ,ellipse: ellipse
+                     ,image: image
+                     ,line: line
+                     ,path: path
+                     ,polygon: polygon
+                     ,polyline: polyline
+                     ,rect: rect
+                     ,use: use
+                     ,animate: animate
+                     ,animateColor: animateColor
+                     ,animateMotion: animateMotion
+                     ,animateTransform: animateTransform
+                     ,mpath: mpath
+                     ,set: set
+                     ,desc: desc
+                     ,metadata: metadata
+                     ,title: title
+                     ,a: a
+                     ,defs: defs
+                     ,g: g
+                     ,marker: marker
+                     ,mask: mask
+                     ,missingGlyph: missingGlyph
+                     ,pattern: pattern
+                     ,$switch: $switch
+                     ,symbol: symbol
+                     ,altGlyph: altGlyph
+                     ,altGlyphDef: altGlyphDef
+                     ,altGlyphItem: altGlyphItem
+                     ,glyph: glyph
+                     ,glyphRef: glyphRef
+                     ,textPath: textPath
+                     ,text$: text$
+                     ,tref: tref
+                     ,tspan: tspan
+                     ,font: font
+                     ,fontFace: fontFace
+                     ,fontFaceFormat: fontFaceFormat
+                     ,fontFaceName: fontFaceName
+                     ,fontFaceSrc: fontFaceSrc
+                     ,fontFaceUri: fontFaceUri
+                     ,hkern: hkern
+                     ,vkern: vkern
+                     ,linearGradient: linearGradient
+                     ,radialGradient: radialGradient
+                     ,stop: stop
+                     ,feBlend: feBlend
+                     ,feColorMatrix: feColorMatrix
+                     ,feComponentTransfer: feComponentTransfer
+                     ,feComposite: feComposite
+                     ,feConvolveMatrix: feConvolveMatrix
+                     ,feDiffuseLighting: feDiffuseLighting
+                     ,feDisplacementMap: feDisplacementMap
+                     ,feFlood: feFlood
+                     ,feFuncA: feFuncA
+                     ,feFuncB: feFuncB
+                     ,feFuncG: feFuncG
+                     ,feFuncR: feFuncR
+                     ,feGaussianBlur: feGaussianBlur
+                     ,feImage: feImage
+                     ,feMerge: feMerge
+                     ,feMergeNode: feMergeNode
+                     ,feMorphology: feMorphology
+                     ,feOffset: feOffset
+                     ,feSpecularLighting: feSpecularLighting
+                     ,feTile: feTile
+                     ,feTurbulence: feTurbulence
+                     ,feDistantLight: feDistantLight
+                     ,fePointLight: fePointLight
+                     ,feSpotLight: feSpotLight
+                     ,clipPath: clipPath
+                     ,colorProfile: colorProfile
+                     ,cursor: cursor
+                     ,filter: filter
+                     ,script: script
+                     ,style: style
+                     ,view: view};
+   return _elm.Svg.values;
+};
+Elm.Svg = Elm.Svg || {};
+Elm.Svg.Attributes = Elm.Svg.Attributes || {};
+Elm.Svg.Attributes.make = function (_elm) {
+   "use strict";
+   _elm.Svg = _elm.Svg || {};
+   _elm.Svg.Attributes = _elm.Svg.Attributes || {};
+   if (_elm.Svg.Attributes.values)
+   return _elm.Svg.Attributes.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Svg.Attributes",
    $Basics = Elm.Basics.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var author = "JunDato";
-   _elm.Svg.Widgets.values = {_op: _op
-                             ,author: author};
-   return _elm.Svg.Widgets.values;
+   $Signal = Elm.Signal.make(_elm),
+   $Svg = Elm.Svg.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var writingMode = $VirtualDom.attribute("writing-mode");
+   var wordSpacing = $VirtualDom.attribute("word-spacing");
+   var visibility = $VirtualDom.attribute("visibility");
+   var unicodeBidi = $VirtualDom.attribute("unicode-bidi");
+   var textRendering = $VirtualDom.attribute("text-rendering");
+   var textDecoration = $VirtualDom.attribute("text-decoration");
+   var textAnchor = $VirtualDom.attribute("text-anchor");
+   var stroke = $VirtualDom.attribute("stroke");
+   var strokeWidth = $VirtualDom.attribute("stroke-width");
+   var strokeOpacity = $VirtualDom.attribute("stroke-opacity");
+   var strokeMiterlimit = $VirtualDom.attribute("stroke-miterlimit");
+   var strokeLinejoin = $VirtualDom.attribute("stroke-linejoin");
+   var strokeLinecap = $VirtualDom.attribute("stroke-linecap");
+   var strokeDashoffset = $VirtualDom.attribute("stroke-dashoffset");
+   var strokeDasharray = $VirtualDom.attribute("stroke-dasharray");
+   var stopOpacity = $VirtualDom.attribute("stop-opacity");
+   var stopColor = $VirtualDom.attribute("stop-color");
+   var shapeRendering = $VirtualDom.attribute("shape-rendering");
+   var pointerEvents = $VirtualDom.attribute("pointer-events");
+   var overflow = $VirtualDom.attribute("overflow");
+   var opacity = $VirtualDom.attribute("opacity");
+   var mask = $VirtualDom.attribute("mask");
+   var markerStart = $VirtualDom.attribute("marker-start");
+   var markerMid = $VirtualDom.attribute("marker-mid");
+   var markerEnd = $VirtualDom.attribute("marker-end");
+   var lightingColor = $VirtualDom.attribute("lighting-color");
+   var letterSpacing = $VirtualDom.attribute("letter-spacing");
+   var kerning = $VirtualDom.attribute("kerning");
+   var imageRendering = $VirtualDom.attribute("image-rendering");
+   var glyphOrientationVertical = $VirtualDom.attribute("glyph-orientation-vertical");
+   var glyphOrientationHorizontal = $VirtualDom.attribute("glyph-orientation-horizontal");
+   var fontWeight = $VirtualDom.attribute("font-weight");
+   var fontVariant = $VirtualDom.attribute("font-variant");
+   var fontStyle = $VirtualDom.attribute("font-style");
+   var fontStretch = $VirtualDom.attribute("font-stretch");
+   var fontSize = $VirtualDom.attribute("font-size");
+   var fontSizeAdjust = $VirtualDom.attribute("font-size-adjust");
+   var fontFamily = $VirtualDom.attribute("font-family");
+   var floodOpacity = $VirtualDom.attribute("flood-opacity");
+   var floodColor = $VirtualDom.attribute("flood-color");
+   var filter = $VirtualDom.attribute("filter");
+   var fill = $VirtualDom.attribute("fill");
+   var fillRule = $VirtualDom.attribute("fill-rule");
+   var fillOpacity = $VirtualDom.attribute("fill-opacity");
+   var enableBackground = $VirtualDom.attribute("enable-background");
+   var dominantBaseline = $VirtualDom.attribute("dominant-baseline");
+   var display = $VirtualDom.attribute("display");
+   var direction = $VirtualDom.attribute("direction");
+   var cursor = $VirtualDom.attribute("cursor");
+   var color = $VirtualDom.attribute("color");
+   var colorRendering = $VirtualDom.attribute("color-rendering");
+   var colorProfile = $VirtualDom.attribute("color-profile");
+   var colorInterpolation = $VirtualDom.attribute("color-interpolation");
+   var colorInterpolationFilters = $VirtualDom.attribute("color-interpolation-filters");
+   var clip = $VirtualDom.attribute("clip");
+   var clipRule = $VirtualDom.attribute("clip-rule");
+   var clipPath = $VirtualDom.attribute("clip-path");
+   var baselineShift = $VirtualDom.attribute("baseline-shift");
+   var alignmentBaseline = $VirtualDom.attribute("alignment-baseline");
+   var zoomAndPan = $VirtualDom.attribute("zoomAndPan");
+   var z = $VirtualDom.attribute("z");
+   var yChannelSelector = $VirtualDom.attribute("yChannelSelector");
+   var y2 = $VirtualDom.attribute("y2");
+   var y1 = $VirtualDom.attribute("y1");
+   var y = $VirtualDom.attribute("y");
+   var xmlSpace = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:space");
+   var xmlLang = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:lang");
+   var xmlBase = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:base");
+   var xlinkType = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:type");
+   var xlinkTitle = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:title");
+   var xlinkShow = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:show");
+   var xlinkRole = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:role");
+   var xlinkHref = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:href");
+   var xlinkArcrole = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:arcrole");
+   var xlinkActuate = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:actuate");
+   var xChannelSelector = $VirtualDom.attribute("xChannelSelector");
+   var x2 = $VirtualDom.attribute("x2");
+   var x1 = $VirtualDom.attribute("x1");
+   var xHeight = $VirtualDom.attribute("x-height");
+   var x = $VirtualDom.attribute("x");
+   var widths = $VirtualDom.attribute("widths");
+   var width = $VirtualDom.attribute("width");
+   var viewTarget = $VirtualDom.attribute("viewTarget");
+   var viewBox = $VirtualDom.attribute("viewBox");
+   var vertOriginY = $VirtualDom.attribute("vert-origin-y");
+   var vertOriginX = $VirtualDom.attribute("vert-origin-x");
+   var vertAdvY = $VirtualDom.attribute("vert-adv-y");
+   var version = $VirtualDom.attribute("version");
+   var values = $VirtualDom.attribute("values");
+   var vMathematical = $VirtualDom.attribute("v-mathematical");
+   var vIdeographic = $VirtualDom.attribute("v-ideographic");
+   var vHanging = $VirtualDom.attribute("v-hanging");
+   var vAlphabetic = $VirtualDom.attribute("v-alphabetic");
+   var unitsPerEm = $VirtualDom.attribute("units-per-em");
+   var unicodeRange = $VirtualDom.attribute("unicode-range");
+   var unicode = $VirtualDom.attribute("unicode");
+   var underlineThickness = $VirtualDom.attribute("underline-thickness");
+   var underlinePosition = $VirtualDom.attribute("underline-position");
+   var u2 = $VirtualDom.attribute("u2");
+   var u1 = $VirtualDom.attribute("u1");
+   var type$ = $VirtualDom.attribute("type");
+   var transform = $VirtualDom.attribute("transform");
+   var to = $VirtualDom.attribute("to");
+   var title = $VirtualDom.attribute("title");
+   var textLength = $VirtualDom.attribute("textLength");
+   var targetY = $VirtualDom.attribute("targetY");
+   var targetX = $VirtualDom.attribute("targetX");
+   var target = $VirtualDom.attribute("target");
+   var tableValues = $VirtualDom.attribute("tableValues");
+   var systemLanguage = $VirtualDom.attribute("systemLanguage");
+   var surfaceScale = $VirtualDom.attribute("surfaceScale");
+   var style = $VirtualDom.attribute("style");
+   var string = $VirtualDom.attribute("string");
+   var strikethroughThickness = $VirtualDom.attribute("strikethrough-thickness");
+   var strikethroughPosition = $VirtualDom.attribute("strikethrough-position");
+   var stitchTiles = $VirtualDom.attribute("stitchTiles");
+   var stemv = $VirtualDom.attribute("stemv");
+   var stemh = $VirtualDom.attribute("stemh");
+   var stdDeviation = $VirtualDom.attribute("stdDeviation");
+   var startOffset = $VirtualDom.attribute("startOffset");
+   var spreadMethod = $VirtualDom.attribute("spreadMethod");
+   var speed = $VirtualDom.attribute("speed");
+   var specularExponent = $VirtualDom.attribute("specularExponent");
+   var specularConstant = $VirtualDom.attribute("specularConstant");
+   var spacing = $VirtualDom.attribute("spacing");
+   var slope = $VirtualDom.attribute("slope");
+   var seed = $VirtualDom.attribute("seed");
+   var scale = $VirtualDom.attribute("scale");
+   var ry = $VirtualDom.attribute("ry");
+   var rx = $VirtualDom.attribute("rx");
+   var rotate = $VirtualDom.attribute("rotate");
+   var result = $VirtualDom.attribute("result");
+   var restart = $VirtualDom.attribute("restart");
+   var requiredFeatures = $VirtualDom.attribute("requiredFeatures");
+   var requiredExtensions = $VirtualDom.attribute("requiredExtensions");
+   var repeatDur = $VirtualDom.attribute("repeatDur");
+   var repeatCount = $VirtualDom.attribute("repeatCount");
+   var renderingIntent = $VirtualDom.attribute("rendering-intent");
+   var refY = $VirtualDom.attribute("refY");
+   var refX = $VirtualDom.attribute("refX");
+   var radius = $VirtualDom.attribute("radius");
+   var r = $VirtualDom.attribute("r");
+   var primitiveUnits = $VirtualDom.attribute("primitiveUnits");
+   var preserveAspectRatio = $VirtualDom.attribute("preserveAspectRatio");
+   var preserveAlpha = $VirtualDom.attribute("preserveAlpha");
+   var pointsAtZ = $VirtualDom.attribute("pointsAtZ");
+   var pointsAtY = $VirtualDom.attribute("pointsAtY");
+   var pointsAtX = $VirtualDom.attribute("pointsAtX");
+   var points = $VirtualDom.attribute("points");
+   var pointOrder = $VirtualDom.attribute("point-order");
+   var patternUnits = $VirtualDom.attribute("patternUnits");
+   var patternTransform = $VirtualDom.attribute("patternTransform");
+   var patternContentUnits = $VirtualDom.attribute("patternContentUnits");
+   var pathLength = $VirtualDom.attribute("pathLength");
+   var path = $VirtualDom.attribute("path");
+   var panose1 = $VirtualDom.attribute("panose-1");
+   var overlineThickness = $VirtualDom.attribute("overline-thickness");
+   var overlinePosition = $VirtualDom.attribute("overline-position");
+   var origin = $VirtualDom.attribute("origin");
+   var orientation = $VirtualDom.attribute("orientation");
+   var orient = $VirtualDom.attribute("orient");
+   var order = $VirtualDom.attribute("order");
+   var operator = $VirtualDom.attribute("operator");
+   var offset = $VirtualDom.attribute("offset");
+   var numOctaves = $VirtualDom.attribute("numOctaves");
+   var name = $VirtualDom.attribute("name");
+   var mode = $VirtualDom.attribute("mode");
+   var min = $VirtualDom.attribute("min");
+   var method = $VirtualDom.attribute("method");
+   var media = $VirtualDom.attribute("media");
+   var max = $VirtualDom.attribute("max");
+   var mathematical = $VirtualDom.attribute("mathematical");
+   var maskUnits = $VirtualDom.attribute("maskUnits");
+   var maskContentUnits = $VirtualDom.attribute("maskContentUnits");
+   var markerWidth = $VirtualDom.attribute("markerWidth");
+   var markerUnits = $VirtualDom.attribute("markerUnits");
+   var markerHeight = $VirtualDom.attribute("markerHeight");
+   var local = $VirtualDom.attribute("local");
+   var limitingConeAngle = $VirtualDom.attribute("limitingConeAngle");
+   var lengthAdjust = $VirtualDom.attribute("lengthAdjust");
+   var lang = $VirtualDom.attribute("lang");
+   var keyTimes = $VirtualDom.attribute("keyTimes");
+   var keySplines = $VirtualDom.attribute("keySplines");
+   var keyPoints = $VirtualDom.attribute("keyPoints");
+   var kernelUnitLength = $VirtualDom.attribute("kernelUnitLength");
+   var kernelMatrix = $VirtualDom.attribute("kernelMatrix");
+   var k4 = $VirtualDom.attribute("k4");
+   var k3 = $VirtualDom.attribute("k3");
+   var k2 = $VirtualDom.attribute("k2");
+   var k1 = $VirtualDom.attribute("k1");
+   var k = $VirtualDom.attribute("k");
+   var intercept = $VirtualDom.attribute("intercept");
+   var in2 = $VirtualDom.attribute("in2");
+   var in$ = $VirtualDom.attribute("in");
+   var ideographic = $VirtualDom.attribute("ideographic");
+   var id = $VirtualDom.attribute("id");
+   var horizOriginY = $VirtualDom.attribute("horiz-origin-y");
+   var horizOriginX = $VirtualDom.attribute("horiz-origin-x");
+   var horizAdvX = $VirtualDom.attribute("horiz-adv-x");
+   var height = $VirtualDom.attribute("height");
+   var hanging = $VirtualDom.attribute("hanging");
+   var gradientUnits = $VirtualDom.attribute("gradientUnits");
+   var gradientTransform = $VirtualDom.attribute("gradientTransform");
+   var glyphRef = $VirtualDom.attribute("glyphRef");
+   var glyphName = $VirtualDom.attribute("glyph-name");
+   var g2 = $VirtualDom.attribute("g2");
+   var g1 = $VirtualDom.attribute("g1");
+   var fy = $VirtualDom.attribute("fy");
+   var fx = $VirtualDom.attribute("fx");
+   var from = $VirtualDom.attribute("from");
+   var format = $VirtualDom.attribute("format");
+   var filterUnits = $VirtualDom.attribute("filterUnits");
+   var filterRes = $VirtualDom.attribute("filterRes");
+   var externalResourcesRequired = $VirtualDom.attribute("externalResourcesRequired");
+   var exponent = $VirtualDom.attribute("exponent");
+   var end = $VirtualDom.attribute("end");
+   var elevation = $VirtualDom.attribute("elevation");
+   var edgeMode = $VirtualDom.attribute("edgeMode");
+   var dy = $VirtualDom.attribute("dy");
+   var dx = $VirtualDom.attribute("dx");
+   var dur = $VirtualDom.attribute("dur");
+   var divisor = $VirtualDom.attribute("divisor");
+   var diffuseConstant = $VirtualDom.attribute("diffuseConstant");
+   var descent = $VirtualDom.attribute("descent");
+   var decelerate = $VirtualDom.attribute("decelerate");
+   var d = $VirtualDom.attribute("d");
+   var cy = $VirtualDom.attribute("cy");
+   var cx = $VirtualDom.attribute("cx");
+   var contentStyleType = $VirtualDom.attribute("contentStyleType");
+   var contentScriptType = $VirtualDom.attribute("contentScriptType");
+   var clipPathUnits = $VirtualDom.attribute("clipPathUnits");
+   var $class = $VirtualDom.attribute("class");
+   var capHeight = $VirtualDom.attribute("cap-height");
+   var calcMode = $VirtualDom.attribute("calcMode");
+   var by = $VirtualDom.attribute("by");
+   var bias = $VirtualDom.attribute("bias");
+   var begin = $VirtualDom.attribute("begin");
+   var bbox = $VirtualDom.attribute("bbox");
+   var baseProfile = $VirtualDom.attribute("baseProfile");
+   var baseFrequency = $VirtualDom.attribute("baseFrequency");
+   var azimuth = $VirtualDom.attribute("azimuth");
+   var autoReverse = $VirtualDom.attribute("autoReverse");
+   var attributeType = $VirtualDom.attribute("attributeType");
+   var attributeName = $VirtualDom.attribute("attributeName");
+   var ascent = $VirtualDom.attribute("ascent");
+   var arabicForm = $VirtualDom.attribute("arabic-form");
+   var amplitude = $VirtualDom.attribute("amplitude");
+   var allowReorder = $VirtualDom.attribute("allowReorder");
+   var alphabetic = $VirtualDom.attribute("alphabetic");
+   var additive = $VirtualDom.attribute("additive");
+   var accumulate = $VirtualDom.attribute("accumulate");
+   var accelerate = $VirtualDom.attribute("accelerate");
+   var accentHeight = $VirtualDom.attribute("accent-height");
+   _elm.Svg.Attributes.values = {_op: _op
+                                ,accentHeight: accentHeight
+                                ,accelerate: accelerate
+                                ,accumulate: accumulate
+                                ,additive: additive
+                                ,alphabetic: alphabetic
+                                ,allowReorder: allowReorder
+                                ,amplitude: amplitude
+                                ,arabicForm: arabicForm
+                                ,ascent: ascent
+                                ,attributeName: attributeName
+                                ,attributeType: attributeType
+                                ,autoReverse: autoReverse
+                                ,azimuth: azimuth
+                                ,baseFrequency: baseFrequency
+                                ,baseProfile: baseProfile
+                                ,bbox: bbox
+                                ,begin: begin
+                                ,bias: bias
+                                ,by: by
+                                ,calcMode: calcMode
+                                ,capHeight: capHeight
+                                ,$class: $class
+                                ,clipPathUnits: clipPathUnits
+                                ,contentScriptType: contentScriptType
+                                ,contentStyleType: contentStyleType
+                                ,cx: cx
+                                ,cy: cy
+                                ,d: d
+                                ,decelerate: decelerate
+                                ,descent: descent
+                                ,diffuseConstant: diffuseConstant
+                                ,divisor: divisor
+                                ,dur: dur
+                                ,dx: dx
+                                ,dy: dy
+                                ,edgeMode: edgeMode
+                                ,elevation: elevation
+                                ,end: end
+                                ,exponent: exponent
+                                ,externalResourcesRequired: externalResourcesRequired
+                                ,filterRes: filterRes
+                                ,filterUnits: filterUnits
+                                ,format: format
+                                ,from: from
+                                ,fx: fx
+                                ,fy: fy
+                                ,g1: g1
+                                ,g2: g2
+                                ,glyphName: glyphName
+                                ,glyphRef: glyphRef
+                                ,gradientTransform: gradientTransform
+                                ,gradientUnits: gradientUnits
+                                ,hanging: hanging
+                                ,height: height
+                                ,horizAdvX: horizAdvX
+                                ,horizOriginX: horizOriginX
+                                ,horizOriginY: horizOriginY
+                                ,id: id
+                                ,ideographic: ideographic
+                                ,in$: in$
+                                ,in2: in2
+                                ,intercept: intercept
+                                ,k: k
+                                ,k1: k1
+                                ,k2: k2
+                                ,k3: k3
+                                ,k4: k4
+                                ,kernelMatrix: kernelMatrix
+                                ,kernelUnitLength: kernelUnitLength
+                                ,keyPoints: keyPoints
+                                ,keySplines: keySplines
+                                ,keyTimes: keyTimes
+                                ,lang: lang
+                                ,lengthAdjust: lengthAdjust
+                                ,limitingConeAngle: limitingConeAngle
+                                ,local: local
+                                ,markerHeight: markerHeight
+                                ,markerUnits: markerUnits
+                                ,markerWidth: markerWidth
+                                ,maskContentUnits: maskContentUnits
+                                ,maskUnits: maskUnits
+                                ,mathematical: mathematical
+                                ,max: max
+                                ,media: media
+                                ,method: method
+                                ,min: min
+                                ,mode: mode
+                                ,name: name
+                                ,numOctaves: numOctaves
+                                ,offset: offset
+                                ,operator: operator
+                                ,order: order
+                                ,orient: orient
+                                ,orientation: orientation
+                                ,origin: origin
+                                ,overlinePosition: overlinePosition
+                                ,overlineThickness: overlineThickness
+                                ,panose1: panose1
+                                ,path: path
+                                ,pathLength: pathLength
+                                ,patternContentUnits: patternContentUnits
+                                ,patternTransform: patternTransform
+                                ,patternUnits: patternUnits
+                                ,pointOrder: pointOrder
+                                ,points: points
+                                ,pointsAtX: pointsAtX
+                                ,pointsAtY: pointsAtY
+                                ,pointsAtZ: pointsAtZ
+                                ,preserveAlpha: preserveAlpha
+                                ,preserveAspectRatio: preserveAspectRatio
+                                ,primitiveUnits: primitiveUnits
+                                ,r: r
+                                ,radius: radius
+                                ,refX: refX
+                                ,refY: refY
+                                ,renderingIntent: renderingIntent
+                                ,repeatCount: repeatCount
+                                ,repeatDur: repeatDur
+                                ,requiredExtensions: requiredExtensions
+                                ,requiredFeatures: requiredFeatures
+                                ,restart: restart
+                                ,result: result
+                                ,rotate: rotate
+                                ,rx: rx
+                                ,ry: ry
+                                ,scale: scale
+                                ,seed: seed
+                                ,slope: slope
+                                ,spacing: spacing
+                                ,specularConstant: specularConstant
+                                ,specularExponent: specularExponent
+                                ,speed: speed
+                                ,spreadMethod: spreadMethod
+                                ,startOffset: startOffset
+                                ,stdDeviation: stdDeviation
+                                ,stemh: stemh
+                                ,stemv: stemv
+                                ,stitchTiles: stitchTiles
+                                ,strikethroughPosition: strikethroughPosition
+                                ,strikethroughThickness: strikethroughThickness
+                                ,string: string
+                                ,style: style
+                                ,surfaceScale: surfaceScale
+                                ,systemLanguage: systemLanguage
+                                ,tableValues: tableValues
+                                ,target: target
+                                ,targetX: targetX
+                                ,targetY: targetY
+                                ,textLength: textLength
+                                ,title: title
+                                ,to: to
+                                ,transform: transform
+                                ,type$: type$
+                                ,u1: u1
+                                ,u2: u2
+                                ,underlinePosition: underlinePosition
+                                ,underlineThickness: underlineThickness
+                                ,unicode: unicode
+                                ,unicodeRange: unicodeRange
+                                ,unitsPerEm: unitsPerEm
+                                ,vAlphabetic: vAlphabetic
+                                ,vHanging: vHanging
+                                ,vIdeographic: vIdeographic
+                                ,vMathematical: vMathematical
+                                ,values: values
+                                ,version: version
+                                ,vertAdvY: vertAdvY
+                                ,vertOriginX: vertOriginX
+                                ,vertOriginY: vertOriginY
+                                ,viewBox: viewBox
+                                ,viewTarget: viewTarget
+                                ,width: width
+                                ,widths: widths
+                                ,x: x
+                                ,xHeight: xHeight
+                                ,x1: x1
+                                ,x2: x2
+                                ,xChannelSelector: xChannelSelector
+                                ,xlinkActuate: xlinkActuate
+                                ,xlinkArcrole: xlinkArcrole
+                                ,xlinkHref: xlinkHref
+                                ,xlinkRole: xlinkRole
+                                ,xlinkShow: xlinkShow
+                                ,xlinkTitle: xlinkTitle
+                                ,xlinkType: xlinkType
+                                ,xmlBase: xmlBase
+                                ,xmlLang: xmlLang
+                                ,xmlSpace: xmlSpace
+                                ,y: y
+                                ,y1: y1
+                                ,y2: y2
+                                ,yChannelSelector: yChannelSelector
+                                ,z: z
+                                ,zoomAndPan: zoomAndPan
+                                ,alignmentBaseline: alignmentBaseline
+                                ,baselineShift: baselineShift
+                                ,clipPath: clipPath
+                                ,clipRule: clipRule
+                                ,clip: clip
+                                ,colorInterpolationFilters: colorInterpolationFilters
+                                ,colorInterpolation: colorInterpolation
+                                ,colorProfile: colorProfile
+                                ,colorRendering: colorRendering
+                                ,color: color
+                                ,cursor: cursor
+                                ,direction: direction
+                                ,display: display
+                                ,dominantBaseline: dominantBaseline
+                                ,enableBackground: enableBackground
+                                ,fillOpacity: fillOpacity
+                                ,fillRule: fillRule
+                                ,fill: fill
+                                ,filter: filter
+                                ,floodColor: floodColor
+                                ,floodOpacity: floodOpacity
+                                ,fontFamily: fontFamily
+                                ,fontSizeAdjust: fontSizeAdjust
+                                ,fontSize: fontSize
+                                ,fontStretch: fontStretch
+                                ,fontStyle: fontStyle
+                                ,fontVariant: fontVariant
+                                ,fontWeight: fontWeight
+                                ,glyphOrientationHorizontal: glyphOrientationHorizontal
+                                ,glyphOrientationVertical: glyphOrientationVertical
+                                ,imageRendering: imageRendering
+                                ,kerning: kerning
+                                ,letterSpacing: letterSpacing
+                                ,lightingColor: lightingColor
+                                ,markerEnd: markerEnd
+                                ,markerMid: markerMid
+                                ,markerStart: markerStart
+                                ,mask: mask
+                                ,opacity: opacity
+                                ,overflow: overflow
+                                ,pointerEvents: pointerEvents
+                                ,shapeRendering: shapeRendering
+                                ,stopColor: stopColor
+                                ,stopOpacity: stopOpacity
+                                ,strokeDasharray: strokeDasharray
+                                ,strokeDashoffset: strokeDashoffset
+                                ,strokeLinecap: strokeLinecap
+                                ,strokeLinejoin: strokeLinejoin
+                                ,strokeMiterlimit: strokeMiterlimit
+                                ,strokeOpacity: strokeOpacity
+                                ,strokeWidth: strokeWidth
+                                ,stroke: stroke
+                                ,textAnchor: textAnchor
+                                ,textDecoration: textDecoration
+                                ,textRendering: textRendering
+                                ,unicodeBidi: unicodeBidi
+                                ,visibility: visibility
+                                ,wordSpacing: wordSpacing
+                                ,writingMode: writingMode};
+   return _elm.Svg.Attributes.values;
 };
 Elm.Task = Elm.Task || {};
 Elm.Task.make = function (_elm) {

@@ -51,7 +51,7 @@ defaultAppState = { sevenSegmentSample  = defaultSevenSegmentSample
 defaultSevenSegmentSample : SevenSegmentSample
 defaultSevenSegmentSample = { properties = defaultSevenSegmentProperties
                             , style = defaultSevenSegmentStyle
-                            , isVisible = False
+                            , isVisible = True
                             , pointIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.pointIndexes)
                             , colonIndexesText = String.join "," (List.map (\i -> toString i) defaultSevenSegmentProperties.colonIndexes)
                             }
@@ -195,7 +195,7 @@ knobView address sample =
   in  div [ style [if sample.isVisible then ("","") else ("display","none")] ] 
           [ div [ ] [ text "KNOB VIEW"] 
           , div [ Html.Attributes.style [("width","400px"),("height", "400px")] ]
-                [ knob sample.properties sample.style  ]]
+                [ knob sample.properties sample.style ]]
 
 
 --helpers

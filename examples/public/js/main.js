@@ -2169,7 +2169,7 @@ Elm.Example.Main.make = function (_elm) {
                                       return $Basics.toString(i);
                                    },
                                    $Html$Widgets.defaultSevenSegmentProperties.colonIndexes))
-                                   ,isVisible: false
+                                   ,isVisible: true
                                    ,pointIndexesText: A2($String.join,
                                    ",",
                                    A2($List.map,
@@ -3437,6 +3437,11 @@ Elm.Html.Attributes.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $VirtualDom = Elm.VirtualDom.make(_elm);
    var attribute = $VirtualDom.attribute;
+   var contextmenu = function (value) {
+      return A2(attribute,
+      "contextmenu",
+      value);
+   };
    var property = $VirtualDom.property;
    var stringProperty = F2(function (name,
    string) {
@@ -3461,13 +3466,8 @@ Elm.Html.Attributes.make = function (_elm) {
    };
    var accesskey = function ($char) {
       return A2(stringProperty,
-      "accesskey",
-      $String.fromList(_L.fromArray([$char])));
-   };
-   var contextmenu = function (value) {
-      return A2(stringProperty,
-      "contextmenu",
-      value);
+      "accessKey",
+      $String.fromChar($char));
    };
    var dir = function (value) {
       return A2(stringProperty,
@@ -3616,7 +3616,7 @@ Elm.Html.Attributes.make = function (_elm) {
    };
    var formaction = function (value) {
       return A2(stringProperty,
-      "formaction",
+      "formAction",
       value);
    };
    var list = function (value) {
@@ -4171,16 +4171,80 @@ Elm.Html.Widgets.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Svg = Elm.Svg.make(_elm),
    $Svg$Attributes = Elm.Svg.Attributes.make(_elm);
-   var knobSegment = F5(function (angle,
-   innerRadius,
-   outerRadius,
+   var knobLabel = F7(function (properties,
+   style,
+   range,
+   valuePerDivision,
    _v0,
-   index) {
+   divisionIndex,
+   angle) {
       return function () {
          switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
-                 var indexedAngle = angle * $Basics.toFloat(index) * ($Basics.pi / 180);
+                 var currentRangeValue = valuePerDivision * divisionIndex;
+                 return A2($Svg.text$,
+                 _L.fromArray([$Svg$Attributes.transform(A2($Basics._op["++"],
+                              "rotate(",
+                              A2($Basics._op["++"],
+                              $Basics.toString(currentRangeValue + $Basics.round(properties.rangeAngleMin)),
+                              A2($Basics._op["++"],
+                              " ",
+                              A2($Basics._op["++"],
+                              $Basics.toString(_v0._0),
+                              A2($Basics._op["++"],
+                              ",",
+                              A2($Basics._op["++"],
+                              $Basics.toString(_v0._1),
+                              ")")))))))
+                              ,$Svg$Attributes.x($Basics.toString(_v0._0 + 140))
+                              ,$Svg$Attributes.y($Basics.toString(_v0._1))]),
+                 _L.fromArray([$Svg.text($Basics.toString(currentRangeValue))]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 477 and 481");
+      }();
+   });
+   var knobLabels = F5(function (properties,
+   style,
+   range,
+   angleList,
+   _v4) {
+      return function () {
+         switch (_v4.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var divisions = $List.length(angleList);
+                 var valuePerDivision = $Basics.round(range) / divisions | 0;
+                 return A2($Svg.g,
+                 _L.fromArray([]),
+                 A3($List.map2,
+                 A5(knobLabel,
+                 properties,
+                 style,
+                 range,
+                 valuePerDivision,
+                 {ctor: "_Tuple2"
+                 ,_0: _v4._0
+                 ,_1: _v4._1}),
+                 _L.range(0,divisions + 1),
+                 angleList));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 470 and 472");
+      }();
+   });
+   var knobSegment = F6(function (properties,
+   style,
+   innerRadius,
+   outerRadius,
+   _v8,
+   angle) {
+      return function () {
+         switch (_v8.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var indexedAngle = (angle + properties.rangeAngleMin) * ($Basics.pi / 180);
                  var $ = $Basics.fromPolar({ctor: "_Tuple2"
                                            ,_0: innerRadius
                                            ,_1: indexedAngle}),
@@ -4194,37 +4258,161 @@ Elm.Html.Widgets.make = function (_elm) {
                  return A2($Svg.g,
                  _L.fromArray([]),
                  _L.fromArray([A2($Svg.line,
-                 _L.fromArray([$Svg$Attributes.x1($Basics.toString(x1$ + _v0._0))
-                              ,$Svg$Attributes.y1($Basics.toString(y1$ + _v0._1))
-                              ,$Svg$Attributes.x2($Basics.toString(x2$ + _v0._0))
-                              ,$Svg$Attributes.y2($Basics.toString(y2$ + _v0._1))
-                              ,$Svg$Attributes.$class($Basics.toString(angle * $Basics.toFloat(index)))
-                              ,$Svg$Attributes.style("stroke:rgb(255,0,0);stroke-width:2")]),
+                 _L.fromArray([$Svg$Attributes.x1($Basics.toString(x1$ + _v8._0))
+                              ,$Svg$Attributes.y1($Basics.toString(y1$ + _v8._1))
+                              ,$Svg$Attributes.x2($Basics.toString(x2$ + _v8._0))
+                              ,$Svg$Attributes.y2($Basics.toString(y2$ + _v8._1))
+                              ,$Svg$Attributes.$class($Basics.toString(angle))
+                              ,$Svg$Attributes.style(A2($Basics._op["++"],
+                              "stroke:",
+                              A2($Basics._op["++"],
+                              style.segmentColor,
+                              ";stroke-width:2")))]),
                  _L.fromArray([]))]));
               }();}
          _U.badCase($moduleName,
-         "between lines 385 and 393");
+         "between lines 458 and 466");
+      }();
+   });
+   var knobSegmentWithLabel = F7(function (properties,
+   style,
+   innerRadius,
+   outerRadius,
+   _v12,
+   angle,
+   labelValue) {
+      return function () {
+         switch (_v12.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var piAngle = (angle + properties.rangeAngleMin) * ($Basics.pi / 180);
+                 var $ = $Basics.fromPolar({ctor: "_Tuple2"
+                                           ,_0: innerRadius
+                                           ,_1: piAngle}),
+                 x1$ = $._0,
+                 y1$ = $._1;
+                 var $ = $Basics.fromPolar({ctor: "_Tuple2"
+                                           ,_0: outerRadius
+                                           ,_1: piAngle}),
+                 x2$ = $._0,
+                 y2$ = $._1;
+                 var labelRadius = outerRadius + 10;
+                 var $ = $Basics.fromPolar({ctor: "_Tuple2"
+                                           ,_0: labelRadius
+                                           ,_1: piAngle}),
+                 x3$ = $._0,
+                 y3$ = $._1;
+                 return A2($Svg.g,
+                 _L.fromArray([]),
+                 _L.fromArray([A2($Svg.line,
+                              _L.fromArray([$Svg$Attributes.x1($Basics.toString(x1$ + _v12._0))
+                                           ,$Svg$Attributes.y1($Basics.toString(y1$ + _v12._1))
+                                           ,$Svg$Attributes.x2($Basics.toString(x2$ + _v12._0))
+                                           ,$Svg$Attributes.y2($Basics.toString(y2$ + _v12._1))
+                                           ,$Svg$Attributes.$class($Basics.toString(piAngle))
+                                           ,$Svg$Attributes.style(A2($Basics._op["++"],
+                                           "stroke:",
+                                           A2($Basics._op["++"],
+                                           style.segmentColor,
+                                           ";stroke-width:2")))]),
+                              _L.fromArray([]))
+                              ,A2($Svg.text$,
+                              _L.fromArray([$Svg$Attributes.x($Basics.toString(x3$ + _v12._0))
+                                           ,$Svg$Attributes.y($Basics.toString(y3$ + _v12._1 + 4))
+                                           ,$Svg$Attributes.textAnchor("middle")]),
+                              _L.fromArray([$Svg.text($Basics.toString(labelValue))]))]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 427 and 448");
+      }();
+   });
+   var knobHandle = F4(function (properties,
+   style,
+   range,
+   _v16) {
+      return function () {
+         switch (_v16.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var currentValuePercentage = $Basics.toFloat(properties.value) / $Basics.toFloat(properties.maxValue);
+                 var currentRangeValue = _U.cmp(properties.rangeAngleMin,
+                 properties.rangeAngleMax) > -1 ? A3($Basics.clamp,
+                 properties.rangeAngleMin,
+                 360 + properties.rangeAngleMax,
+                 currentValuePercentage * range + properties.rangeAngleMin) : A3($Basics.clamp,
+                 properties.rangeAngleMin,
+                 properties.rangeAngleMax,
+                 currentValuePercentage * range + properties.rangeAngleMin);
+                 return A2($Svg.g,
+                 _L.fromArray([$Svg$Attributes.transform(A2($Basics._op["++"],
+                 "rotate(",
+                 A2($Basics._op["++"],
+                 $Basics.toString(currentRangeValue),
+                 A2($Basics._op["++"],
+                 " ",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v16._0),
+                 A2($Basics._op["++"],
+                 ",",
+                 A2($Basics._op["++"],
+                 $Basics.toString(_v16._1),
+                 ")")))))))]),
+                 _L.fromArray([A2($Svg.circle,
+                              _L.fromArray([$Svg$Attributes.cx($Basics.toString(_v16._0))
+                                           ,$Svg$Attributes.cy($Basics.toString(_v16._1))
+                                           ,$Svg$Attributes.r("112")
+                                           ,$Svg$Attributes.fill(style.knobColor)]),
+                              _L.fromArray([]))
+                              ,A2($Svg.circle,
+                              _L.fromArray([$Svg$Attributes.cx($Basics.toString(_v16._0 + 90))
+                                           ,$Svg$Attributes.cy($Basics.toString(_v16._1))
+                                           ,$Svg$Attributes.r("10")
+                                           ,$Svg$Attributes.fill(style.knobPointerColor)]),
+                              _L.fromArray([]))]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 406 and 412");
       }();
    });
    var knob = F2(function (properties,
    style) {
       return function () {
+         var range = _U.cmp(properties.rangeAngleMin,
+         properties.rangeAngleMax) > -1 ? 360 - properties.rangeAngleMin + properties.rangeAngleMax : properties.rangeAngleMax - properties.rangeAngleMin;
+         var smallSegments = properties.smallSegments;
+         var segments = properties.segments;
+         var barAngle = range / $Basics.toFloat(segments);
+         var barAngles = A2($List.map,
+         function (a) {
+            return $Basics.toFloat(a) * barAngle;
+         },
+         _L.range(0,
+         properties.segments));
+         var smallBarAngle = range / $Basics.toFloat(segments + smallSegments);
+         var barSmallAngles = A2($List.map,
+         function (a) {
+            return $Basics.toFloat(a) * smallBarAngle;
+         },
+         _L.range(0,
+         properties.smallSegments + properties.segments));
+         var labelValuePerUnit = $Basics.toFloat(properties.maxValue) / $Basics.toFloat(segments);
+         var labelValues = A2($List.map,
+         function (s) {
+            return $Basics.round($Basics.toFloat(s) * labelValuePerUnit);
+         },
+         _L.range(0,segments));
          var centerY = 340 / 2;
          var centerX = 340 / 2;
-         var smallBarHeight = 5;
-         var barHeight = 10;
+         var smallBarHeight = 7;
+         var barHeight = 15;
          var radius = 120;
          var middleRadius = radius + smallBarHeight;
          var largeRadius = radius + barHeight;
-         var smallSegments = properties.smallSegments;
-         var segments = properties.segments;
-         var barAngle = 360 / $Basics.toFloat(segments);
-         var smallBarAngle = 360 / $Basics.toFloat(segments + smallSegments);
          var containerHeight = 340;
          var containerWidth = 340;
          return A2($Svg.svg,
          _L.fromArray([$Svg$Attributes.version("1.1")
-                      ,$Svg$Attributes.$class($Basics.toString(barAngle))
+                      ,$Svg$Attributes.$class($Basics.toString(range))
                       ,$Svg$Attributes.height("100%")
                       ,$Svg$Attributes.width("100%")
                       ,$Svg$Attributes.x("0")
@@ -4237,25 +4425,35 @@ Elm.Html.Widgets.make = function (_elm) {
                       " ",
                       $Basics.toString(containerHeight)))))]),
          A2($Basics._op["++"],
-         A2($List.map,
-         A4(knobSegment,
-         barAngle,
+         A3($List.map2,
+         A5(knobSegmentWithLabel,
+         properties,
+         style,
          radius,
          largeRadius,
          {ctor: "_Tuple2"
          ,_0: centerX
          ,_1: centerY}),
-         _L.range(0,segments)),
+         barAngles,
+         labelValues),
+         A2($Basics._op["++"],
          A2($List.map,
-         A4(knobSegment,
-         smallBarAngle,
+         A5(knobSegment,
+         properties,
+         style,
          radius,
          middleRadius,
          {ctor: "_Tuple2"
          ,_0: centerX
          ,_1: centerY}),
-         _L.range(0,
-         smallSegments + segments))));
+         barSmallAngles),
+         _L.fromArray([A4(knobHandle,
+         properties,
+         style,
+         range,
+         {ctor: "_Tuple2"
+         ,_0: centerX
+         ,_1: centerY})]))));
       }();
    });
    var simulatedAnalogMeterPointer = F2(function (properties,
@@ -4641,12 +4839,12 @@ Elm.Html.Widgets.make = function (_elm) {
                       style$)]));
       }();
    });
-   var segmentedBarGraphBar = F4(function (_v13,
+   var segmentedBarGraphBar = F4(function (_v29,
    properties,
    style,
    index) {
       return function () {
-         switch (_v13.ctor)
+         switch (_v29.ctor)
          {case "_Tuple2":
             return function () {
                  var ranges = properties.ranges;
@@ -4674,19 +4872,19 @@ Elm.Html.Widgets.make = function (_elm) {
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v13._0 * index + 4),
+                 $Basics.toString(_v29._0 * index + 4),
                  " 8)")));
                  return A2($Svg.rect,
                  A2($Basics._op["++"],
                  _L.fromArray([transformAttribute]),
                  _L.fromArray([$Svg$Attributes.$class($Basics.toString(barValue))
                               ,$Svg$Attributes.fill(barColor)
-                              ,$Svg$Attributes.width($Basics.toString(_v13._0 - 8))
-                              ,$Svg$Attributes.height($Basics.toString(_v13._1 - 16))])),
+                              ,$Svg$Attributes.width($Basics.toString(_v29._0 - 8))
+                              ,$Svg$Attributes.height($Basics.toString(_v29._1 - 16))])),
                  _L.fromArray([]));
               }();}
          _U.badCase($moduleName,
-         "between lines 204 and 212");
+         "between lines 221 and 229");
       }();
    });
    var segmentedBarGraph = F2(function (properties,
@@ -4742,19 +4940,19 @@ Elm.Html.Widgets.make = function (_elm) {
                                 ,$Svg$Attributes.fill(style.textColor)]),
                    _L.fromArray([]))]));
    });
-   var seventSegmentColons = F3(function (_v20,
-   indexes,
-   style) {
+   var seventSegmentColons = F3(function (style,
+   _v36,
+   indexes) {
       return function () {
-         switch (_v20.ctor)
+         switch (_v36.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(seventSegmentColon,
               style,
-              _v20._0),
+              _v36._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 177, column 3 to 52");
+         "on line 194, column 3 to 52");
       }();
    });
    var sevenSegmentPoint = F3(function (style,
@@ -4769,137 +4967,237 @@ Elm.Html.Widgets.make = function (_elm) {
                    ,$Svg$Attributes.fill(style.textColor)]),
       _L.fromArray([]))]));
    });
-   var sevenSegmentPoints = F3(function (_v24,
-   indexes,
-   style) {
+   var sevenSegmentPoints = F3(function (style,
+   _v40,
+   indexes) {
       return function () {
-         switch (_v24.ctor)
+         switch (_v40.ctor)
          {case "_Tuple2":
             return A2($List.map,
               A2(sevenSegmentPoint,
               style,
-              _v24._0),
+              _v40._0),
               indexes);}
          _U.badCase($moduleName,
-         "on line 166, column 3 to 51");
+         "on line 183, column 3 to 51");
       }();
    });
-   var sevenSegmentDigitPolygon = F2(function (points$,
-   attributes) {
-      return A2($Svg.polygon,
-      A2($Basics._op["++"],
-      _L.fromArray([$Svg$Attributes.points(points$)]),
-      attributes),
-      _L.fromArray([]));
-   });
-   var sevenSegmentDigit = F4(function (_v28,
+   var sevenSegmentDigitPolygon = F5(function (properties,
    style,
+   points$,
+   attributes,
+   isOn) {
+      return function () {
+         var element = isOn ? A2($Svg.polygon,
+         A2($Basics._op["++"],
+         _L.fromArray([$Svg$Attributes.points(points$)
+                      ,$Svg$Attributes.fill(style.textColor)]),
+         attributes),
+         _L.fromArray([])) : properties.isDimmedWhenOff ? A2($Svg.g,
+         _L.fromArray([]),
+         _L.fromArray([A2($Svg.polygon,
+                      A2($Basics._op["++"],
+                      _L.fromArray([$Svg$Attributes.points(points$)
+                                   ,$Svg$Attributes.fill(style.textColor)]),
+                      attributes),
+                      _L.fromArray([]))
+                      ,A2($Svg.polygon,
+                      A2($Basics._op["++"],
+                      _L.fromArray([$Svg$Attributes.points(points$)
+                                   ,$Svg$Attributes.fill("#000")
+                                   ,$Svg$Attributes.opacity("0.8")]),
+                      attributes),
+                      _L.fromArray([]))])) : A2($Svg.g,
+         _L.fromArray([]),
+         _L.fromArray([]));
+         return element;
+      }();
+   });
+   var sevenSegmentDigit = F5(function (properties,
+   style,
+   _v44,
    index,
    digit) {
       return function () {
-         switch (_v28.ctor)
+         switch (_v44.ctor)
          {case "_Tuple2":
             return function () {
                  var transformAttribute = $Svg$Attributes.transform(A2($Basics._op["++"],
                  "translate(",
                  A2($Basics._op["++"],
-                 $Basics.toString(_v28._0 * index),
+                 $Basics.toString(_v44._0 * index),
                  " 0)")));
-                 var newForegroundAttribute = _L.fromArray([transformAttribute
-                                                           ,$Svg$Attributes.fill(style.textColor)]);
-                 var segmentA = A2(sevenSegmentDigitPolygon,
-                 " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2",
-                 newForegroundAttribute);
-                 var segmentB = A2(sevenSegmentDigitPolygon,
-                 "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2",
-                 newForegroundAttribute);
-                 var segmentC = A2(sevenSegmentDigitPolygon,
-                 "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6",
-                 newForegroundAttribute);
-                 var segmentD = A2(sevenSegmentDigitPolygon,
-                 "145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1",
-                 newForegroundAttribute);
-                 var segmentE = A2(sevenSegmentDigitPolygon,
-                 " 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8",
-                 newForegroundAttribute);
-                 var segmentF = A2(sevenSegmentDigitPolygon,
-                 " 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ",
-                 newForegroundAttribute);
-                 var segmentG = A2(sevenSegmentDigitPolygon,
-                 " 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9",
-                 newForegroundAttribute);
+                 var newForegroundAttribute = _L.fromArray([transformAttribute]);
+                 var segmentA = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentB = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentC = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    "163.5, 176.5  175.5, 187.8  175.5, 285.5  163.5, 296.7  151.4, 283.4  151.4, 188.6",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentD = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    "145.4, 291.1  157.0, 303.9  145.4, 316.0   52.9, 316     40.0, 305.2   52.1, 291.1",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentE = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    " 45.2, 284.2   33.6, 296.7   22.3, 284.2   22.3, 188.6   33.8, 176.5   45.2, 187.8",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentF = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    " 33.8, 163.2   22.3, 150.4   22.3,  53.9   33.8,  41.8   45.2,  53.9   47.3, 150  ",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segmentG = function (isOn) {
+                    return A5(sevenSegmentDigitPolygon,
+                    properties,
+                    style,
+                    " 39.6, 170     51.7, 156.8  146.2, 156.8  157.0, 170    145.8, 182.9   52.1, 182.9",
+                    newForegroundAttribute,
+                    isOn);
+                 };
+                 var segment = F7(function (a,
+                 b,
+                 c,
+                 d,
+                 e,
+                 f,
+                 g) {
+                    return _L.fromArray([segmentA(a)
+                                        ,segmentB(b)
+                                        ,segmentC(c)
+                                        ,segmentD(d)
+                                        ,segmentE(e)
+                                        ,segmentF(f)
+                                        ,segmentG(g)]);
+                 });
                  var polygons = function () {
                     switch (digit + "")
                     {case " ":
                        return _L.fromArray([]);
-                       case "0":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentE
-                                           ,segmentF]);
-                       case "1":
-                       return _L.fromArray([segmentB
-                                           ,segmentC]);
-                       case "2":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentD
-                                           ,segmentE
-                                           ,segmentG]);
-                       case "3":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentG]);
-                       case "4":
-                       return _L.fromArray([segmentB
-                                           ,segmentC
-                                           ,segmentF
-                                           ,segmentG]);
-                       case "5":
-                       return _L.fromArray([segmentA
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentF
-                                           ,segmentG]);
-                       case "6":
-                       return _L.fromArray([segmentA
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentE
-                                           ,segmentF
-                                           ,segmentG]);
-                       case "7":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentC]);
-                       case "8":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentE
-                                           ,segmentF
-                                           ,segmentG]);
-                       case "9":
-                       return _L.fromArray([segmentA
-                                           ,segmentB
-                                           ,segmentC
-                                           ,segmentD
-                                           ,segmentF
-                                           ,segmentG]);}
-                    _U.badCase($moduleName,
-                    "between lines 143 and 155");
+                       case "0": return A7(segment,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true,
+                         false);
+                       case "1": return A7(segment,
+                         false,
+                         true,
+                         true,
+                         false,
+                         false,
+                         false,
+                         false);
+                       case "2": return A7(segment,
+                         true,
+                         true,
+                         false,
+                         true,
+                         true,
+                         false,
+                         true);
+                       case "3": return A7(segment,
+                         true,
+                         true,
+                         true,
+                         true,
+                         false,
+                         false,
+                         true);
+                       case "4": return A7(segment,
+                         false,
+                         true,
+                         true,
+                         false,
+                         false,
+                         true,
+                         true);
+                       case "5": return A7(segment,
+                         true,
+                         false,
+                         true,
+                         true,
+                         false,
+                         true,
+                         true);
+                       case "6": return A7(segment,
+                         true,
+                         false,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true);
+                       case "7": return A7(segment,
+                         true,
+                         true,
+                         true,
+                         false,
+                         false,
+                         false,
+                         false);
+                       case "8": return A7(segment,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true,
+                         true);
+                       case "9": return A7(segment,
+                         true,
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         true);}
+                    return A7(segment,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false);
                  }();
                  return A2($Svg.g,
                  _L.fromArray([]),
                  polygons);
               }();}
          _U.badCase($moduleName,
-         "between lines 127 and 155");
+         "between lines 138 and 168");
       }();
    });
    var sevenSegment = F2(function (properties,
@@ -4931,33 +5229,39 @@ Elm.Html.Widgets.make = function (_elm) {
          _L.fromArray([]))]),
          A2($Basics._op["++"],
          A2($List.indexedMap,
-         A2(sevenSegmentDigit,
+         A3(sevenSegmentDigit,
+         properties,
+         style,
          {ctor: "_Tuple2"
          ,_0: containerWidth
-         ,_1: containerHeight},
-         style),
+         ,_1: containerHeight}),
          $String.toList(properties.digits)),
          A2($Basics._op["++"],
          A3(sevenSegmentPoints,
+         style,
          {ctor: "_Tuple2"
          ,_0: containerWidth
          ,_1: containerHeight},
-         properties.pointIndexes,
-         style),
+         properties.pointIndexes),
          A3(seventSegmentColons,
+         style,
          {ctor: "_Tuple2"
          ,_0: containerWidth
          ,_1: containerHeight},
-         properties.colonIndexes,
-         style)))));
+         properties.colonIndexes)))));
       }();
    });
-   var defaultKnobStyle = {_: {}};
+   var defaultKnobStyle = {_: {}
+                          ,knobColor: "#444"
+                          ,knobPointerColor: "#F44"
+                          ,segmentColor: "#F44"};
    var defaultKnobProperties = {_: {}
-                               ,rangeAngleMax: 30
-                               ,rangeAngleMin: 90
+                               ,maxValue: 100
+                               ,rangeAngleMax: 20
+                               ,rangeAngleMin: 160
                                ,segments: 20
-                               ,smallSegments: 120};
+                               ,smallSegments: 60
+                               ,value: 0};
    var defaultSimulatedAnalogMeterStyle = {_: {}
                                           ,backgroundColor: "#000"
                                           ,foreColor: "#fff"};
@@ -4989,18 +5293,30 @@ Elm.Html.Widgets.make = function (_elm) {
    var defaultSevenSegmentProperties = {_: {}
                                        ,colonIndexes: _L.fromArray([1])
                                        ,digits: "1234 4567890"
+                                       ,isDimmedWhenOff: true
                                        ,isSlant: false
                                        ,pointIndexes: _L.fromArray([7])};
-   var KnobStyle = {_: {}};
-   var KnobProperties = F4(function (a,
+   var KnobStyle = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,knobColor: b
+             ,knobPointerColor: c
+             ,segmentColor: a};
+   });
+   var KnobProperties = F6(function (a,
    b,
    c,
-   d) {
+   d,
+   e,
+   f) {
       return {_: {}
-             ,rangeAngleMax: d
-             ,rangeAngleMin: c
-             ,segments: a
-             ,smallSegments: b};
+             ,maxValue: b
+             ,rangeAngleMax: f
+             ,rangeAngleMin: e
+             ,segments: c
+             ,smallSegments: d
+             ,value: a};
    });
    var SimulatedAnalogMeterStyle = F2(function (a,
    b) {
@@ -5054,13 +5370,15 @@ Elm.Html.Widgets.make = function (_elm) {
              ,backgroundColor: a
              ,textColor: b};
    });
-   var SevenSegmentProperties = F4(function (a,
+   var SevenSegmentProperties = F5(function (a,
    b,
    c,
-   d) {
+   d,
+   e) {
       return {_: {}
              ,colonIndexes: c
              ,digits: a
+             ,isDimmedWhenOff: e
              ,isSlant: d
              ,pointIndexes: b};
    });
@@ -14680,16 +14998,36 @@ Elm.Svg.Attributes.make = function (_elm) {
    var y2 = $VirtualDom.attribute("y2");
    var y1 = $VirtualDom.attribute("y1");
    var y = $VirtualDom.attribute("y");
-   var xmlSpace = $VirtualDom.attribute("xml:space");
-   var xmlLang = $VirtualDom.attribute("xml:lang");
-   var xmlBase = $VirtualDom.attribute("xml:base");
-   var xlinkType = $VirtualDom.attribute("xlink:type");
-   var xlinkTitle = $VirtualDom.attribute("xlink:title");
-   var xlinkShow = $VirtualDom.attribute("xlink:show");
-   var xlinkRole = $VirtualDom.attribute("xlink:role");
-   var xlinkHref = $VirtualDom.attribute("xlink:href");
-   var xlinkArcrole = $VirtualDom.attribute("xlink:arcrole");
-   var xlinkActuate = $VirtualDom.attribute("xlink:actuate");
+   var xmlSpace = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:space");
+   var xmlLang = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:lang");
+   var xmlBase = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/XML/1998/namespace",
+   "xml:base");
+   var xlinkType = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:type");
+   var xlinkTitle = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:title");
+   var xlinkShow = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:show");
+   var xlinkRole = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:role");
+   var xlinkHref = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:href");
+   var xlinkArcrole = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:arcrole");
+   var xlinkActuate = A2($VirtualDom.attributeNS,
+   "http://www.w3.org/1999/xlink",
+   "xlink:actuate");
    var xChannelSelector = $VirtualDom.attribute("xChannelSelector");
    var x2 = $VirtualDom.attribute("x2");
    var x1 = $VirtualDom.attribute("x1");
