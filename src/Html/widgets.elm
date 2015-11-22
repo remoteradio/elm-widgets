@@ -2,7 +2,7 @@ module Html.Widgets (sevenSegment, defaultSevenSegmentProperties, defaultSevenSe
                     ,segmentedBarGraph,defaultSegmentedBarGraphProperties,defaultSegmentBarGraphStyle,SegmentedBarGraphProperties,SegmentedBarGraphStyle
                     ,simulatedAnalogMeter,defaultSimulatedAnalogMeterProperties,defaultSimulatedAnalogMeterStyle,SimulatedAnalogMeterProperties,SimulatedAnalogMeterStyle
                     ,knob,defaultKnobProperties,defaultKnobStyle,KnobProperties,KnobStyle
-                    ,defaultMeterRangeOk) where
+                    ,defaultMeterRangeOk,defaultMeterRangeAlert) where
 {-| Svg Widgets using Elm-html
 
 
