@@ -88,6 +88,7 @@ type alias MeterRange = { color : String
 
 {-| Default properties for SevenSegmentProperties
 -}
+defaultSevenSegmentProperties : SevenSegmentProperties
 defaultSevenSegmentProperties = { digits = "1234 4567890"
                                 , pointIndexes = [ 7 ]
                                 , colonIndexes = [ 1 ]
@@ -97,6 +98,7 @@ defaultSevenSegmentProperties = { digits = "1234 4567890"
 
 {-| Default style for SevenSegmentStyle
 -}
+defaultSevenSegmentStyle : SevenSegmentStyle
 defaultSevenSegmentStyle =  { backgroundColor = "#000"
                             , textColor = "#0F0"}
 
@@ -110,22 +112,26 @@ defaultSegmentedBarGraphProperties =  { currentValue = 70
 
 {-| Default style for SegmentedBarGraph
 -}
+defaultSegmentBarGraphStyle : SegmentedBarGraphStyle
 defaultSegmentBarGraphStyle = { emptyColor = "#444"
                               , backgroundColor = "#000" }
 
 {-| Default properties for SimulatedAnalogMeter
 -}
+defaultSimulatedAnalogMeterProperties : SimulatedAnalogMeterProperties
 defaultSimulatedAnalogMeterProperties = { currentValue = 50
                                         , maxValue = 100
                                         , ranges  = [ defaultMeterRangeOk, defaultMeterRangeAlert ]}
 
 {-| Default style for SimulatedAnalogMeter
 -}
+defaultSimulatedAnalogMeterStyle : SimulatedAnalogMeterStyle
 defaultSimulatedAnalogMeterStyle =  { foreColor = "#fff"
                                     , backgroundColor = "#000"  }
 
 {-| Default properties for Knob
 -}
+defaultKnobProperties : KnobProperties
 defaultKnobProperties = { segments = 20 
                         , smallSegments = 60
                         , rangeAngleMin = 160
@@ -135,6 +141,7 @@ defaultKnobProperties = { segments = 20
 
 {-| Default style for Knob
 -}
+defaultKnobStyle : KnobStyle
 defaultKnobStyle =  { segmentColor = "#F44"
                     , knobColor = "#444"
                     , knobPointerColor = "#F44" }
