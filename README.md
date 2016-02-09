@@ -1,7 +1,13 @@
 # elm-widgets
-Analog control widgets in ELM (unpublished) written in elm-svg
+Analog control widgets in ELM written in elm-svg
 
 demo: https://obscure-sands-3870.herokuapp.com/
+
+### Installation
+On your project folder. Execute the ff commands:
+```sh
+elm-package install remoteradio\elm-widgets
+```
 
 ### Seven Segment
 ```sh
