@@ -133,7 +133,7 @@ defaultSimulatedAnalogMeterStyle =  { foreColor = "#fff"
 {-| Default properties for Knob
 -}
 defaultKnobProperties : KnobProperties
-defaultKnobProperties = { segments = 20 
+defaultKnobProperties = { segments = 20
                         , smallSegments = 60
                         , rangeAngleMin = 160
                         , rangeAngleMax = 20
@@ -165,12 +165,12 @@ defaultMeterRangeAlert =  { color = "#F00"
 {-| Creates Seven Segment Widget
 -}
 sevenSegment : SevenSegmentProperties -> SevenSegmentStyle -> Svg
-sevenSegment properties style = 
+sevenSegment properties style =
   let containerWidth = 200
       containerHeight = 340
       digitLength = (String.length properties.digits)
   in svg [ version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString (containerWidth * digitLength)) ++ " " ++ (toString containerHeight)) ]
-              ([ rect [x "0", y "0", width (toString (containerWidth * digitLength)), height (toString (containerHeight )), fill style.backgroundColor ] [ ] ] 
+              ([ rect [x "0", y "0", width (toString (containerWidth * digitLength)), height (toString (containerHeight )), fill style.backgroundColor ] [ ] ]
                 ++
               (List.indexedMap (sevenSegmentDigit properties style ( containerWidth, containerHeight)) (String.toList properties.digits))
                 ++
@@ -182,7 +182,7 @@ sevenSegment properties style =
 -}
 sevenSegmentDigit : SevenSegmentProperties -> SevenSegmentStyle -> (Int, Int) -> Int -> Char  -> Svg
 sevenSegmentDigit properties style (width, height) index digit  =
-  let transformAttribute = transform ("translate(" ++ (toString (width * index)) ++ " 0)")  
+  let transformAttribute = transform ("translate(" ++ (toString (width * index)) ++ " 0)")
       newForegroundAttribute = [ transformAttribute ]
       segmentA isOn = sevenSegmentDigitPolygon properties style " 39.6,  35.4   52.5,  22.1  145.0,  22.1  157.0,  35.4  145.0,  48.2   52.5,  48.2" newForegroundAttribute isOn
       segmentB isOn = sevenSegmentDigitPolygon properties style "151.4,  53.1  164.3,  41.8  175.5,  53.1  175.5, 150.8  163.5, 163.2  151.4, 151.2" newForegroundAttribute isOn
@@ -211,10 +211,10 @@ sevenSegmentDigit properties style (width, height) index digit  =
 -}
 sevenSegmentDigitPolygon : SevenSegmentProperties -> SevenSegmentStyle -> String -> List Attribute -> Bool -> Svg
 sevenSegmentDigitPolygon properties style points' attributes isOn =
-  let element = if | isOn -> polygon ([ points points', fill style.textColor ] ++ attributes) [ ]
-                   | otherwise -> if  | properties.isDimmedWhenOff -> Svg.g [ ] [ polygon ([ points points', fill style.textColor ] ++ attributes) [ ]
+  let element = if isOn then polygon ([ points points', fill style.textColor ] ++ attributes) [ ]
+                else  if  properties.isDimmedWhenOff then Svg.g [ ] [ polygon ([ points points', fill style.textColor ] ++ attributes) [ ]
                                                                                 , polygon ([ points points', fill "#000", opacity "0.8" ] ++ attributes) [ ] ]
-                                      | otherwise -> Svg.g [ ][ ]
+                      else Svg.g [ ][ ]
   in element
 
 {-| Creates Points for sevenSegment
@@ -226,8 +226,8 @@ sevenSegmentPoints style (width, height) indexes =
 {-| Creates point for sevenSegmentPoints
 -}
 sevenSegmentPoint : SevenSegmentStyle ->Int -> Int -> Svg
-sevenSegmentPoint style containerWidth index =               
-  Svg.g [ ] 
+sevenSegmentPoint style containerWidth index =
+  Svg.g [ ]
         [ circle [ cx (toString ((index + 1) * containerWidth)), cy "300" , r "16", fill style.textColor ] [ ] ]
 
 {-| Creates colons for sevenSegment
@@ -239,8 +239,8 @@ seventSegmentColons style (width, height) indexes  =
 {-| Creates colon for sevenSegmentColons
 -}
 seventSegmentColon : SevenSegmentStyle ->Int -> Int -> Svg
-seventSegmentColon style containerWidth index =               
-  Svg.g [ ] 
+seventSegmentColon style containerWidth index =
+  Svg.g [ ]
         [ circle [ cx (toString ((index + 1) * containerWidth)), cy "110" , r "16", fill style.textColor ] [ ]
         , circle [ cx (toString ((index + 1) * containerWidth)), cy "230" , r "16", fill style.textColor ] [ ] ]
 
@@ -260,7 +260,7 @@ segmentedBarGraph properties style =
 -}
 segmentedBarGraphBar : (Int, Int) -> SegmentedBarGraphProperties -> SegmentedBarGraphStyle -> Int -> Svg
 segmentedBarGraphBar (width', height') properties style index =
-  let transformAttribute = transform ("translate(" ++ (toString ((width' * index) + 4)) ++ " 8)") 
+  let transformAttribute = transform ("translate(" ++ (toString ((width' * index) + 4)) ++ " 8)")
       barValue = ((toFloat index) / (toFloat properties.segments)) * (toFloat properties.maxValue)
       ranges = properties.ranges
       getRange = List.filter (\r -> r.minValue <= barValue && barValue <= r.maxValue ) ranges
@@ -273,7 +273,7 @@ segmentedBarGraphBar (width', height') properties style index =
 {-| Creates Simulated Analog Meter Widget
 -}
 simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeter properties style' = 
+simulatedAnalogMeter properties style' =
   let containerWidth = 400
       containerHeight = 200
   in svg  [ Svg.Attributes.style "background:#000", version "1.1",height "100%", width "100%", x "0", y "0",  viewBox ("0 0 " ++ (toString containerWidth) ++ " " ++ (toString containerHeight)) ]
@@ -285,7 +285,7 @@ simulatedAnalogMeter properties style' =
 {-|  Creates bars for simulatedAnalogMeter
 -}
 simulatedAnalogMeterBars : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterBars properties style = 
+simulatedAnalogMeterBars properties style =
   Svg.g [ ] [ simulatedAnalogMeterBar       0.0   114   -45 0     properties style
             , simulatedAnalogMeterSmallBar  25    97    -37 0.062 properties style
             , simulatedAnalogMeterSmallBar  50    79    -34 0.125 properties style
@@ -307,17 +307,17 @@ simulatedAnalogMeterBars properties style =
 {-| creates labels for simulatedAnalogMeter
 -}
 simulatedAnalogMeterLabels : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterLabels properties style = 
+simulatedAnalogMeterLabels properties style =
   Svg.g [ ] [ simulatedAnalogMeterLabel -10 110 -45 0     0     properties style
             , simulatedAnalogMeterLabel 97   47 -24 0.244 0.25  properties style
             , simulatedAnalogMeterLabel 202  30   0 0.49  0.50  properties style
             , simulatedAnalogMeterLabel 312  51  24 0.749 0.75  properties style
             , simulatedAnalogMeterLabel 416 114  45 0.99     1     properties style ]
 
-{-| creates label for simulatedAnalogMeterLabels 
+{-| creates label for simulatedAnalogMeterLabels
 -}
 simulatedAnalogMeterLabel : Float -> Float -> Float -> Float -> Float ->  SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterLabel x' y' rotation percentage labelPercentage properties style = 
+simulatedAnalogMeterLabel x' y' rotation percentage labelPercentage properties style =
   let ranges = properties.ranges
       valueToCheck = percentage * (toFloat properties.maxValue)
       labelPercentageValue  = labelPercentage * (toFloat properties.maxValue)
@@ -331,13 +331,13 @@ simulatedAnalogMeterLabel x' y' rotation percentage labelPercentage properties s
             , fill foreColor
             , class (toString properties.currentValue)
             , textAnchor "middle"
-            , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ] 
+            , transform ("rotate(" ++ (toString rotation) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ]
             [ text (toString labelPercentageValue) ]
 
 {-| Creates bar for simulatedAnalogMeterBars
 -}
 simulatedAnalogMeterBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterBar x' y' rotation percentage properties style = 
+simulatedAnalogMeterBar x' y' rotation percentage properties style =
   let height' = 20
       width' = 8
       ranges = properties.ranges
@@ -357,7 +357,7 @@ simulatedAnalogMeterBar x' y' rotation percentage properties style =
 {-| Creates small bar for simulatedAnalogMeterBars
 -}
 simulatedAnalogMeterSmallBar : Float -> Float -> Float -> Float -> SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterSmallBar x' y' rotation percentage properties style = 
+simulatedAnalogMeterSmallBar x' y' rotation percentage properties style =
   let height' = 10
       width' = 6
       ranges = properties.ranges
@@ -377,7 +377,7 @@ simulatedAnalogMeterSmallBar x' y' rotation percentage properties style =
 {-| Creates pointer for simulatedAnalogMeter
 -}
 simulatedAnalogMeterPointer : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterStyle -> Svg
-simulatedAnalogMeterPointer properties style = 
+simulatedAnalogMeterPointer properties style =
   let percentage = clamp -50 50 ((((toFloat properties.currentValue) / (toFloat properties.maxValue) ) * 100) - 50)
   in Svg.g  [ transform ("rotate(" ++ (toString percentage) ++ " 204,300)") ]
             [ polygon [ points "199,300 203,62 205,62 209,300", fill style.foreColor ] [ ] ]
@@ -385,8 +385,8 @@ simulatedAnalogMeterPointer properties style =
 {-| Creates knob widget
 -}
 knob : KnobProperties -> KnobStyle -> Svg
-knob properties style = 
-  let 
+knob properties style =
+  let
   -- have center radius, bar width
     containerWidth = 340
     containerHeight = 340
@@ -417,7 +417,7 @@ knob properties style =
               , width "100%"
               , x "0"
               , y "0"
-              ,  viewBox ("0 0 " ++ (toString containerWidth) ++ " " ++ (toString containerHeight)) ] 
+              ,  viewBox ("0 0 " ++ (toString containerWidth) ++ " " ++ (toString containerHeight)) ]
               ((List.map2 (knobSegmentWithLabel properties style radius largeRadius (centerX, centerY)) barAngles labelValues)
                 ++
               (List.map (knobSegment properties style radius middleRadius (centerX, centerY)) barSmallAngles)
@@ -428,32 +428,32 @@ knob properties style =
 {-| Creates a knob handle for knob
 -}
 knobHandle : KnobProperties -> KnobStyle -> Float -> (Float, Float) -> Svg
-knobHandle properties style range (x', y') = 
+knobHandle properties style range (x', y') =
   -- compute for the percentage of value over the maximum value
   let currentValuePercentage = (toFloat properties.value) / (toFloat properties.maxValue)
   -- compute the angle of the range value
-      currentRangeValue = if  | properties.rangeAngleMin >= properties.rangeAngleMax -> clamp properties.rangeAngleMin (360 + properties.rangeAngleMax) ((currentValuePercentage * range) + properties.rangeAngleMin)
-                              | otherwise -> clamp properties.rangeAngleMin properties.rangeAngleMax ((currentValuePercentage * range) + properties.rangeAngleMin)
-  in  Svg.g [ transform ("rotate(" ++ (toString currentRangeValue) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ] 
+      currentRangeValue = if properties.rangeAngleMin >= properties.rangeAngleMax then clamp properties.rangeAngleMin (360 + properties.rangeAngleMax) ((currentValuePercentage * range) + properties.rangeAngleMin)
+                          else clamp properties.rangeAngleMin properties.rangeAngleMax ((currentValuePercentage * range) + properties.rangeAngleMin)
+  in  Svg.g [ transform ("rotate(" ++ (toString currentRangeValue) ++ " " ++ (toString x') ++ "," ++ (toString y') ++ ")") ]
             [ circle [ cx (toString x'), cy (toString y'), r "112", fill style.knobColor ] [ ]
             , circle [ cx (toString (x' + 90)), cy (toString (y')), r "10", fill style.knobPointerColor ] [ ] ]
-                
+
 {-| Creates segments with label for knob
 -}
 knobSegmentWithLabel : KnobProperties -> KnobStyle -> Float -> Float ->(Float, Float) -> Float -> Int -> Svg
-knobSegmentWithLabel properties style innerRadius outerRadius (x', y') angle labelValue = 
+knobSegmentWithLabel properties style innerRadius outerRadius (x', y') angle labelValue =
   -- using index determine angle
   -- use that angle, radius 1 and center point to determine point position 2 xy
   -- use that angle, radius 2 and center point to determine point position 3 xy
   -- draw that line from position 1 and 2
              --int x = (int)(150 + radius * System.Math.Cos(angle));
              --int y = (int)(150 + radius * System.Math.Sin(angle));
-  let 
+  let
       labelRadius = outerRadius + 10
       piAngle = ((angle + properties.rangeAngleMin) * (pi / 180))
-      
-      --maxRange = 
-      --convertedIndexAngle = if  | properties.rangeAngleMin >= properties.rangeAngleMax -> 
+
+      --maxRange =
+      --convertedIndexAngle = if  | properties.rangeAngleMin >= properties.rangeAngleMax ->
       --                              if | currentRangeValue <= properties.rangeAngleMin -> (currentRangeValue + properties.maxValue)
       --                                 | False -> 1
       --                          | otherwise -> clamp properties.rangeAngleMin properties.rangeAngleMax ((currentValuePercentage * range) + properties.rangeAngleMin)
@@ -473,7 +473,7 @@ knobSegmentWithLabel properties style innerRadius outerRadius (x', y') angle lab
 {-| Creates segment for knob
 -}
 knobSegment : KnobProperties -> KnobStyle -> Float -> Float -> (Float, Float) -> Float -> Svg
-knobSegment properties style innerRadius outerRadius (x', y') angle = 
+knobSegment properties style innerRadius outerRadius (x', y') angle =
   -- using index determine angle
   -- use that angle, radius 1 and center point to determine point position 2 xy
   -- use that angle, radius 2 and center point to determine point position 3 xy
@@ -489,4 +489,3 @@ knobSegment properties style innerRadius outerRadius (x', y') angle =
                         , y2 (toString (y2' + y'))
                         , class (toString angle)
                         , Svg.Attributes.style ("stroke:" ++ style.segmentColor ++ ";stroke-width:2") ] [ ] ]
-

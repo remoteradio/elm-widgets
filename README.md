@@ -33,7 +33,7 @@ simulatedAnalogMeter : SimulatedAnalogMeterProperties -> SimulatedAnalogMeterSty
 ```
 usage example:
 ```sh
-let simulatedAnalogMeterProperties = 
+let simulatedAnalogMeterProperties =
       { defaultSimulatedAnalogMeterProperties | currentValue <- "22"
                                               , ranges <- [ { color = "#00F"
                                                             , minValue = 0
@@ -48,6 +48,5 @@ let simulatedAnalogMeterProperties =
 in simulatedAnalogMeter simulatedAnalogMeterProperties simulatedAnalogMeterStyle
 ```
 
-Installation (unpublished):
+Installation:
 elm-package install remoteradio/elm-widgets
-
