@@ -2,6 +2,7 @@
 Analog control widgets in ELM written in elm-svg
 
 demo: https://obscure-sands-3870.herokuapp.com/
+sample project: https://github.com/jundato/elm-widgets-src
 
 ### Installation
 On your project folder. Execute the ff commands:
